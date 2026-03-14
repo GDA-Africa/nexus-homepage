@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS CLI — The AI-Native Development Framework</title>
+<meta name="description" content="NEXUS CLI is an open-source scaffolding tool that gives AI coding agents complete project understanding. Documentation-driven development for the AI era.">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── ROOT ─── */
+:root{
+  --bg:#04070f; --bg2:#070b16; --bg3:#0b1020;
+  --violet:#7c3aed; --vb:#a78bfa; --vd:#2e1065; --v2:#4c1d95;
+  --cyan:#06b6d4; --cb:#67e8f9;
+  --amber:#f59e0b; --green:#10b981; --red:#ef4444;
+  --text:#f1f5f9; --tm:#94a3b8; --td:#334155; --tf:#1e293b;
+  --card:#07090f; --border:rgba(124,58,237,0.2);
+  --border-c:rgba(6,182,212,0.2);
+  --gv:rgba(124,58,237,0.08);
+  --gc:rgba(6,182,212,0.06);
+  --r8:8px; --r12:12px; --r16:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:default}
+a{color:inherit;text-decoration:none}
+
+/* ─── CANVAS / DECORATIVE LAYERS ─── */
+canvas#stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.7}
+#bg-grid{position:fixed;inset:0;z-index:1;background-image:linear-gradient(rgba(124,58,237,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.03) 1px,transparent 1px);background-size:72px 72px;pointer-events:none}
+#vignette{position:fixed;inset:0;z-index:2;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 30%,rgba(4,7,15,.8) 100%);pointer-events:none}
+#scanlines{position:fixed;inset:0;z-index:3;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.02) 3px,rgba(0,0,0,.02) 4px);pointer-events:none}
+
+/* ─── KEYFRAMES ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes gemFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes gemSpin{to{transform:rotate(360deg)}}
+@keyframes gemGlow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+@keyframes ringPulse{0%{transform:scale(.9);opacity:.7}100%{transform:scale(2.5);opacity:0}}
+@keyframes glowText{0%,100%{text-shadow:0 0 20px rgba(167,139,250,.5),0 0 40px rgba(124,58,237,.25)}50%{text-shadow:0 0 40px rgba(167,139,250,.9),0 0 80px rgba(124,58,237,.5),0 0 120px rgba(124,58,237,.2)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes shimmer{to{background-position:-200% 0}}
+@keyframes nodePop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
+@keyframes badgePop{0%{opacity:0;transform:scale(.7) translateY(6px)}70%{transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes wipeGo{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
+@keyframes orbitSpin{from{transform:rotate(0deg) translateX(110px) rotate(0deg)}to{transform:rotate(360deg) translateX(110px) rotate(-360deg)}}
+@keyframes scanMove{from{transform:translateY(-100%)}to{transform:translateY(100vh)}}
+@keyframes borderGlow{0%,100%{box-shadow:0 0 0 1px rgba(124,58,237,.25),0 0 20px rgba(124,58,237,.05)}50%{box-shadow:0 0 0 1px rgba(124,58,237,.5),0 0 40px rgba(124,58,237,.15)}}
+@keyframes skillFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(-2deg)}}
+@keyframes skillFloat2{0%,100%{transform:translateY(0) rotate(2.5deg)}50%{transform:translateY(-6px) rotate(2.5deg)}}
+@keyframes countUp{from{opacity:0}to{opacity:1}}
+@keyframes progressShimmer{to{background-position:-200% 0}}
+
+/* ─── REVEAL SYSTEM ─── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.up{opacity:1;transform:translateY(0)}
+.reveal-l{opacity:0;transform:translateX(-32px);transition:opacity .7s ease,transform .7s ease}
+.reveal-l.up{opacity:1;transform:translateX(0)}
+.reveal-r{opacity:0;transform:translateX(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal-r.up{opacity:1;transform:translateX(0)}
+.reveal-s{opacity:0;transform:scale(.92);transition:opacity .6s ease,transform .6s ease}
+.reveal-s.up{opacity:1;transform:scale(1)}
+
+/* ─── REUSABLE ─── */
+.mono{font-family:'Space Mono',monospace}
+.orb{font-family:'Orbitron',sans-serif}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-c);background:var(--gc);font-family:'Space Mono',monospace;font-size:10.5px;color:var(--cb);white-space:nowrap}
+.badge.v{border-color:var(--border);background:var(--gv);color:var(--vb)}
+.badge.g{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.06);color:#6ee7b7}
+.badge.a{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.06);color:#fcd34d}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:6px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all .25s ease;border:none;text-transform:uppercase}
+.btn-primary{background:linear-gradient(135deg,var(--violet),var(--v2));color:white;box-shadow:0 0 24px rgba(124,58,237,.35)}
+.btn-primary:hover{background:linear-gradient(135deg,#8b5cf6,var(--violet));box-shadow:0 0 36px rgba(124,58,237,.55);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--vb);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--gv);border-color:rgba(124,58,237,.45);box-shadow:0 0 20px rgba(124,58,237,.15)}
+.section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--vb);opacity:.7;margin-bottom:12px}
+.section-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(22px,3.5vw,44px);line-height:1.15;color:var(--text)}
+.hl-v{color:var(--vb);animation:glowText 3s ease-in-out infinite}
+.hl-c{color:var(--cb)}
+.divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--violet),transparent);margin:24px 0}
+section{position:relative;z-index:10}
+
+/* ─── GEM COMPONENT ─── */
+.gem-wrap{position:relative;flex-shrink:0;animation:gemFloat 4s ease-in-out infinite}
+.gem-glow{position:absolute;inset:-40%;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.28) 0%,transparent 65%);animation:gemGlow 2.8s ease-in-out infinite}
+.gem-ring{position:absolute;inset:-12%;border-radius:50%;border:1px solid rgba(124,58,237,.22);animation:ringPulse 3.2s ease-out infinite}
+.gem-ring.r2{animation-delay:-1.6s}
+.gem-ring.r3{animation-delay:-3.2s;border-color:rgba(6,182,212,.15)}
+.gem-body{position:absolute;inset:0;clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);background:linear-gradient(148deg,#c4b5fd 0%,#7c3aed 30%,#4c1d95 60%,#1e1b4b 100%);animation:gemSpin 20s linear infinite}
+.gem-mid{position:absolute;inset:14%;clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);background:linear-gradient(220deg,rgba(255,255,255,.32) 0%,rgba(167,139,250,.45) 45%,transparent 70%);animation:gemSpin 13s linear infinite reverse}
+.gem-shine{position:absolute;top:16%;left:20%;width:30%;height:28%;background:radial-gradient(circle,rgba(255,255,255,.8),transparent 68%);border-radius:50%}
+
+/* ─────────────────────────────────────
+   INTRO ANIMATION OVERLAY
+───────────────────────────────────── */
+#intro-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .9s ease;
+}
+#intro-overlay.fading{opacity:0;pointer-events:none}
+#stage{
+  position:relative;
+  width:min(100vw,calc(100vh * 16/9));
+  aspect-ratio:16/9;
+  overflow:hidden;
+}
+
+/* ─── RESPONSIVE INTRO / STAGE ─── */
+/* Portrait phones & small tablets: fill the whole screen, no 16/9 letterbox */
+@media(max-width:600px) and (orientation:portrait),(max-height:500px) and (max-width:768px){
+  #intro-overlay{
+    align-items:flex-start;  /* allow scenes to start from top */
+  }
+  #stage{
+    width:100vw;
+    height:100svh;           /* small viewport height = true usable area */
+    aspect-ratio:unset;
+    overflow:hidden;
+  }
+  /* Every scene: scrollable column, padded away from browser chrome */
+  .scene{
+    position:absolute;
+    inset:0;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+    padding:56px 16px 72px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+  }
+  .s-hl{font-size:clamp(15px,5vw,26px) !important}
+
+  /* ── S1: chat windows – de-absolute, stack vertically ── */
+  #s1 > div{
+    position:static !important;
+    display:flex !important;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    width:100%;
+  }
+  #cw1,#cw2,#cw3{
+    position:static !important;
+    width:100% !important;
+    max-width:340px;
+  }
+  #s1c{
+    position:static !important;
+    transform:none !important;
+    width:100% !important;
+    margin-top:6px;
+    text-align:center;
+  }
+
+  /* ── S3: tree panels – stack vertically ── */
+  #s3 > div{width:100% !important}
+  #s3 > div > div:nth-child(2){
+    flex-direction:column !important;
+    gap:10px !important;
+  }
+  #s3to{
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    min-width:unset !important;
+    justify-content:center;
+  }
+
+  /* ── S4: version timeline – cards stack vertically ── */
+  #s4 > div{width:100% !important}
+  #s4 > div > div:nth-child(2) > div:last-child{
+    flex-direction:column !important;
+    gap:10px !important;
+  }
+  #s4st{gap:16px !important;flex-wrap:wrap !important;justify-content:center}
+
+  /* ── S5: skills – vertical layout, hide decorative card stack ── */
+  #s5 > div{
+    flex-direction:column !important;
+    gap:16px !important;
+    width:100% !important;
+  }
+  #s5sk{
+    width:100% !important;
+    height:auto !important;
+    min-height:unset !important;
+  }
+  /* hide the two behind-cards, make front card full width & static */
+  #s5sk .sk-card:not(:last-child){display:none !important}
+  #s5sk .sk-card:last-child{
+    position:static !important;
+    width:100% !important;
+    animation:none !important;
+  }
+
+  /* ── S6: orbit diagram – scale down ── */
+  #s6ow{width:180px !important;height:180px !important}
+
+  /* ── UI chrome ── */
+  #skip-btn{bottom:14px;right:14px;font-size:8px;padding:6px 12px}
+  #scene-indicator{top:10px;right:14px;font-size:8px}
+}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.scene.active{opacity:1;pointer-events:auto}
+#wipe{position:fixed;inset:0;z-index:1999;pointer-events:none;background:linear-gradient(90deg,transparent 0%,rgba(76,29,149,.95) 25%,rgba(124,58,237,1) 45%,rgba(6,182,212,.9) 55%,rgba(124,58,237,1) 70%,rgba(76,29,149,.95) 80%,transparent 100%);transform:translateX(-110%)}
+#wipe.go{animation:wipeGo .6s cubic-bezier(.4,0,.2,1) forwards}
+#intro-progress{position:fixed;bottom:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--violet),var(--cyan),var(--violet));background-size:200% 100%;animation:progressShimmer 3s linear infinite;z-index:2100;box-shadow:0 0 8px var(--violet)}
+#scene-indicator{position:fixed;top:16px;right:20px;z-index:2100;font-family:'Space Mono',monospace;font-size:9px;color:var(--tm);letter-spacing:3px;opacity:.55}
+#skip-btn{position:fixed;bottom:24px;right:24px;z-index:2100;padding:8px 16px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:var(--vb);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;border-radius:4px;cursor:pointer;transition:all .2s}
+#skip-btn:hover{background:rgba(124,58,237,.25)}
+/* terminal */
+.terminal{background:#050810;border:1px solid rgba(124,58,237,.22);border-radius:9px;overflow:hidden;box-shadow:0 0 22px rgba(124,58,237,.08),0 18px 48px rgba(0,0,0,.55)}
+.t-bar{background:rgba(124,58,237,.09);padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(124,58,237,.13)}
+.t-dot{width:9px;height:9px;border-radius:50%}
+.t-dot.r{background:#ef4444}.t-dot.y{background:#f59e0b}.t-dot.g{background:#10b981}
+.t-lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--tm);margin-left:6px;letter-spacing:1px}
+.t-body{padding:14px 16px;font-family:'Space Mono',monospace;font-size:11px;color:#718096;line-height:1.85}
+.t-p{color:var(--green)}.t-c{color:var(--cb)}.t-ok{color:var(--green)}.t-dim{color:#334155}.t-v{color:var(--vb)}.t-w{color:var(--text)}
+.t-cur{display:inline-block;width:7px;height:13px;background:var(--cyan);vertical-align:middle;margin-left:2px;animation:blink .9s step-end infinite}
+/* skill card */
+.sk-card{background:var(--card);border:1px solid rgba(124,58,237,.32);border-radius:10px;padding:18px;font-family:'Space Mono',monospace;font-size:10.5px;line-height:1.75;box-shadow:0 0 18px rgba(124,58,237,.1),0 20px 50px rgba(0,0,0,.6);position:relative;overflow:hidden}
+.sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--cyan),var(--violet))}
+.sk-k{color:var(--cb)}.sk-v{color:var(--vb)}.sk-g{color:var(--green)}.sk-t{color:#fbbf24}.sk-h{color:var(--text);font-weight:700;font-size:12px}
+.sk-div{border:none;border-top:1px solid rgba(124,58,237,.22);margin:10px 0}
+/* tree */
+.tree-panel{background:#050810;border:1px solid rgba(255,255,255,.05);border-radius:9px;padding:16px 18px}
+.tree-panel.nex{border-color:rgba(124,58,237,.25);box-shadow:0 0 28px rgba(124,58,237,.07)}
+.tp-title{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.05)}
+.tl{font-family:'Space Mono',monospace;font-size:10px;line-height:1.95;display:flex;align-items:baseline;gap:6px;opacity:0;transform:translateX(-8px);transition:opacity .28s ease,transform .28s ease}
+.tl.on{opacity:1;transform:translateX(0)}
+.tl.cd{color:#e2e8f0}.tl.cn{color:var(--vb)}.tl.cc{color:var(--cyan)}.tl.ca{color:var(--amber)}.tl.cm{color:var(--green)}.tl.ct{color:var(--cb)}.tl.cp{color:var(--tm)}
+.tc{font-size:8.5px;color:var(--tf);letter-spacing:0}
+/* headline */
+.s-hl{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(20px,3.5vw,46px);color:var(--text);text-align:center;line-height:1.2}
+/* timeline */
+.tl-track{display:flex;align-items:center;width:100%;gap:0}
+.tl-node{width:14px;height:14px;border-radius:50%;border:2px solid var(--tf);background:var(--bg);flex-shrink:0;transition:all .4s ease}
+.tl-node.on{border-color:var(--violet);background:var(--violet);box-shadow:0 0 10px var(--violet),0 0 22px rgba(124,58,237,.4)}
+.tl-node.now{border-color:var(--amber);background:var(--amber);animation:nodePop .5s cubic-bezier(.34,1.56,.64,1) both,gemGlow 1.6s ease-in-out .5s infinite;box-shadow:0 0 14px var(--amber),0 0 28px rgba(245,158,11,.5)}
+.tl-line{flex:1;height:2px;background:var(--tf);position:relative;overflow:hidden}
+.tl-fill{position:absolute;top:0;left:0;height:100%;width:0%;background:linear-gradient(90deg,var(--violet),var(--cyan));box-shadow:0 0 8px var(--violet);transition:width 1.1s ease}
+
+/* ─────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:0 5%;
+  height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(4,7,15,.8);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(124,58,237,.12);
+  transform:translateY(-100%);
+  transition:transform .5s ease;
+}
+#nav.visible{transform:translateY(0)}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.nav-gem{width:26px;height:26px;position:relative;flex-shrink:0}
+.nav-gem .gem-body{clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.nav-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;letter-spacing:3px;color:var(--text)}
+.nav-name span{color:var(--vb)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-link{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--tm);text-transform:uppercase;transition:color .2s;cursor:pointer}
+.nav-link:hover{color:var(--vb)}
+.nav-cta .btn{padding:7px 16px;font-size:10px}
+
+/* ─────────────────────────────────────
+   HERO
+───────────────────────────────────── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:100px 5% 60px;
+  text-align:center;
+  position:relative;
+}
+.hero-bg-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(124,58,237,.1) 0%,transparent 65%);pointer-events:none;z-index:-1}
+.hero-gem-wrap{margin-bottom:36px}
+.hero-gem{width:100px;height:100px}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:5px;color:var(--vb);opacity:.75;text-transform:uppercase;margin-bottom:18px}
+.hero-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(28px,5.5vw,72px);line-height:1.05;color:var(--text);margin-bottom:22px;letter-spacing:-.02em}
+.hero-sub{font-family:'Rajdhani',sans-serif;font-size:clamp(15px,2vw,20px);color:var(--tm);max-width:620px;margin:0 auto 36px;line-height:1.7}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:56px}
+.hero-terminal{width:min(560px,90vw);text-align:left;margin:0 auto 40px}
+.hero-scroll{display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.45;margin-top:8px}
+.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--violet),transparent)}
+.hero-scroll-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--tm)}
+
+/* ─────────────────────────────────────
+   PROBLEM SECTION
+───────────────────────────────────── */
+#problem{padding:80px 5%;background:linear-gradient(to bottom,var(--bg),var(--bg2))}
+.problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:960px;margin:48px auto 0}
+.problem-card{background:var(--card);border:1px solid rgba(239,68,68,.15);border-radius:var(--r12);padding:28px 24px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.problem-card:hover{border-color:rgba(239,68,68,.3);box-shadow:0 0 30px rgba(239,68,68,.06)}
+.problem-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(239,68,68,.04),transparent 60%);pointer-events:none}
+.problem-icon{font-size:26px;margin-bottom:14px}
+.problem-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:.5px}
+.problem-desc{font-family:'Rajdhani',sans-serif;font-size:14px;color:var(--tm);line-height:1.65}
+.problem-after{margin-top:14px;padding:10px 12px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:6px;font-family:'Space Mono',monospace;font-size:9.5px;color:#6ee7b7;letter-spacing:.5px}
+
+/* ─────────────────────────────────────
+   HOW IT WORKS
+───────────────────────────────────── */
+#how{padding:100px 5%;text-align:center}
+.how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;max-width:900px;margin:56px auto 0;position:relative}
+.how-steps::before{content:'';position:absolute;top:40px;left:16.67%;right:16.67%;height:1px;background:linear-gradient(90deg,transparent,var(--violet),var(--cyan),var(--violet),transparent);opacity:.35}
+.how-step{padding:0 24px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.how-num{width:56px;height:56px;border-radius:50%;border:1px solid var(--border);background:var(--gv);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--vb);margin-bottom:20px;position:relative;z-index:1;box-shadow:0 0 20px rgba(124,58,237,.12)}
+.how-step-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:.5px}
+.how-step-desc{font-family:'Rajdhani',sans-serif;font-size:14px;color:var(--tm);line-height:1.65}
+.how-cmd{margin-top:12px;display:inline-block;padding:5px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-family:'Space Mono',monospace;font-size:10px;color:var(--cb)}
+
+/* ─────────────────────────────────────
+   INTELLIGENCE SYSTEM
+───────────────────────────────────── */
+#intelligence{padding:100px 5%;background:linear-gradient(to bottom,var(--bg2),var(--bg3))}
+.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1040px;margin:56px auto 0;align-items:start}
+.intel-files{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.intel-file{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden}
+.intel-file::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--violet);opacity:.5;transition:opacity .25s}
+.intel-file:hover{border-color:var(--border);transform:translateX(3px);box-shadow:0 0 16px rgba(124,58,237,.1)}
+.intel-file:hover::before{opacity:1}
+.intel-file.brain::before{background:var(--vb)}
+.intel-file.brain{border-color:rgba(167,139,250,.2);background:rgba(124,58,237,.05)}
+.intel-file.knowledge::before{background:var(--cyan)}
+.intel-file.knowledge{border-color:rgba(6,182,212,.18);background:rgba(6,182,212,.04)}
+.if-name{font-family:'Space Mono',monospace;font-size:10px;color:var(--cb);margin-bottom:4px}
+.if-name.vn{color:var(--vb)}
+.if-name.gn{color:#6ee7b7}
+.if-desc{font-family:'Rajdhani',sans-serif;font-size:12px;color:var(--tm);line-height:1.5}
+.intel-explain{display:flex;flex-direction:column;gap:22px}
+.intel-item{padding:20px;background:var(--card);border:1px solid var(--border);border-radius:var(--r12);transition:box-shadow .3s}
+.intel-item:hover{box-shadow:0 0 28px rgba(124,58,237,.1),0 0 0 1px rgba(124,58,237,.3)}
+.ii-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--vb);margin-bottom:8px;letter-spacing:.5px}
+.ii-desc{font-family:'Rajdhani',sans-serif;font-size:13.5px;color:var(--tm);line-height:1.65}
+
+/* ─────────────────────────────────────
+   SKILLS — NEW FEATURE
+───────────────────────────────────── */
+#skills{padding:100px 5%;position:relative;overflow:hidden}
+.skills-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,.07) 0%,transparent 65%);pointer-events:none}
+.skills-inner{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.skills-left{}
+.skills-new-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(245,158,11,.4);background:rgba(245,158,11,.07);font-family:'Space Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:1.5px;margin-bottom:20px}
+.skills-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(22px,3.8vw,50px);line-height:1.1;margin-bottom:18px}
+.skills-sub{font-family:'Rajdhani',sans-serif;font-size:clamp(14px,1.8vw,18px);color:var(--tm);line-height:1.7;margin-bottom:28px}
+.skills-points{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.skills-point{display:flex;gap:12px;align-items:flex-start}
+.sp-icon{font-size:14px;margin-top:2px;flex-shrink:0}
+.sp-text{}
+.sp-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px}
+.sp-desc{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--tm);line-height:1.5}
+.skills-cmds{display:flex;flex-direction:column;gap:8px}
+.skills-cmd{font-family:'Space Mono',monospace;font-size:10.5px;color:#94a3b8;padding:8px 12px;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:6px;transition:all .25s}
+.skills-cmd:hover{border-color:var(--border);color:var(--vb)}
+.skills-cmd span{color:var(--cb)}
+.skills-right{position:relative;height:300px}
+.skills-card-stack{position:relative;width:300px;height:300px}
+.sk-back1{position:absolute;top:22px;left:-20px;transform:rotate(-5deg);opacity:.35;z-index:1;animation:skillFloat 3.5s ease-in-out infinite;pointer-events:none}
+.sk-back2{position:absolute;top:11px;left:11px;transform:rotate(3.5deg);opacity:.25;z-index:2;animation:skillFloat2 3s ease-in-out infinite;pointer-events:none}
+.sk-front{position:absolute;top:0;left:0;z-index:3;animation:skillFloat 3s ease-in-out infinite}
+
+/* ─────────────────────────────────────
+   ECOSYSTEM
+───────────────────────────────────── */
+#ecosystem{padding:100px 5%;background:linear-gradient(to bottom,var(--bg3),var(--bg2));text-align:center}
+.eco-grid{max-width:900px;margin:0 auto}
+.eco-section-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--tm);margin-bottom:20px;margin-top:52px;text-transform:uppercase}
+.eco-section-title:first-child{margin-top:48px}
+.frameworks-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;max-width:700px;margin:0 auto}
+.framework-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all .28s}
+.framework-card:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:0 0 20px rgba(124,58,237,.1)}
+.fw-icon{font-size:22px}
+.fw-name{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--tm);letter-spacing:.5px;text-align:center}
+.tools-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:600px;margin:0 auto}
+.tool-badge{display:flex;align-items:center;gap:8px;padding:10px 18px;background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:8px;font-family:'Space Mono',monospace;font-size:10.5px;color:var(--tm);transition:all .25s;cursor:pointer}
+.tool-badge:hover{border-color:var(--border);color:var(--vb);box-shadow:0 0 16px rgba(124,58,237,.1)}
+.tool-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.eco-tagline{font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--tm);margin-top:36px;line-height:1.7}
+.eco-tagline strong{color:var(--vb)}
+
+/* ─────────────────────────────────────
+   QUICK START
+───────────────────────────────────── */
+#quickstart{padding:100px 5%;text-align:center}
+.qs-inner{max-width:680px;margin:0 auto}
+.qs-terminal{text-align:left;margin:48px auto 0;border-radius:var(--r12);overflow:hidden;border:1px solid rgba(124,58,237,.25);box-shadow:0 0 60px rgba(124,58,237,.1),0 40px 80px rgba(0,0,0,.6)}
+.qs-t-bar{background:rgba(124,58,237,.1);padding:10px 16px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(124,58,237,.15)}
+.qs-t-body{padding:22px;font-family:'Space Mono',monospace;font-size:11.5px;line-height:2;background:#050810}
+.qs-line{display:flex;align-items:baseline;gap:8px;opacity:0;transform:translateX(-8px);transition:all .28s}
+.qs-line.on{opacity:1;transform:translateX(0)}
+.qs-prompt{color:var(--green)} .qs-cmd{color:var(--cb)} .qs-comment{color:#334155} .qs-ok{color:var(--green)} .qs-v{color:var(--vb)} .qs-w{color:var(--text)} .qs-d{color:var(--tm)}
+
+/* ─────────────────────────────────────
+   OPEN SOURCE / STATS
+───────────────────────────────────── */
+#opensource{padding:100px 5%;background:linear-gradient(to bottom,var(--bg2),var(--bg));text-align:center}
+.stats-row{display:flex;justify-content:center;gap:60px;flex-wrap:wrap;margin:52px 0}
+.stat-item{text-align:center}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:clamp(28px,5vw,56px);font-weight:900;line-height:1;margin-bottom:6px}
+.stat-num.sv{color:var(--vb)}.stat-num.sc{color:var(--cb)}.stat-num.sg{color:#6ee7b7}.stat-num.sa{color:var(--amber)}
+.stat-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--tm);text-transform:uppercase}
+.os-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:820px;margin:0 auto 52px}
+.os-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r12);padding:24px;text-align:left;transition:box-shadow .3s}
+.os-card:hover{box-shadow:0 0 28px rgba(124,58,237,.1)}
+.os-card-icon{font-size:24px;margin-bottom:12px}
+.os-card-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
+.os-card-desc{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--tm);line-height:1.55}
+.os-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ─────────────────────────────────────
+   FOOTER
+───────────────────────────────────── */
+footer{padding:40px 5%;border-top:1px solid rgba(124,58,237,.12);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative;z-index:10}
+.footer-logo{display:flex;align-items:center;gap:10px}
+.footer-gem{width:22px;height:22px;position:relative}
+.footer-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;letter-spacing:3px;color:var(--tm)}
+.footer-name span{color:var(--vb)}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-link{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:1.5px;color:var(--tm);opacity:.6;transition:opacity .2s;cursor:pointer}
+.footer-link:hover{opacity:1}
+.footer-copy{font-family:'Space Mono',monospace;font-size:9px;color:var(--tm);opacity:.4;letter-spacing:1px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .intel-grid{grid-template-columns:1fr}
+  .skills-inner{grid-template-columns:1fr}
+  .skills-right{display:none}
+  .frameworks-grid{grid-template-columns:repeat(3,1fr)}
+  .how-steps::before{display:none}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- CANVAS -->
+<canvas id="stars"></canvas>
+<div id="bg-grid"></div>
+<div id="vignette"></div>
+<div id="scanlines"></div>
+
+<!-- ══════════════════════════════════════
+     INTRO ANIMATION OVERLAY
+══════════════════════════════════════ -->
+<div id="intro-overlay">
+<div id="stage">
+
+  <!-- S1: PROBLEM -->
+  <div id="s1" class="scene">
+    <div style="position:relative;width:100%;height:100%">
+      <div id="cw1" style="position:absolute;top:8%;left:4%;width:250px;opacity:0;transition:opacity .5s">
+        <div style="background:#0a0c16;border:1px solid rgba(255,255,255,.07);border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.6)">
+          <div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:8px">
+            <div style="width:9px;height:9px;border-radius:50%;background:#334155"></div>
+            <span class="mono" style="font-size:9px;color:var(--tm);letter-spacing:2px">CURSOR</span>
+            <span id="x1" style="margin-left:auto;color:var(--red);font-size:14px;opacity:0;transition:opacity .4s">✕</span>
+          </div>
+          <div style="padding:12px 14px">
+            <div id="q1" style="font-family:'Rajdhani',sans-serif;font-size:12px;color:var(--vb);background:rgba(124,58,237,.1);padding:7px 10px;border-radius:6px;text-align:right;margin-bottom:6px;min-height:30px"></div>
+            <div id="a1" style="font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--red);background:rgba(239,68,68,.06);padding:7px 10px;border-radius:6px;opacity:0;transition:opacity .4s;font-style:italic">⚠ No project context found.</div>
+          </div>
+        </div>
+      </div>
+      <div id="cw2" style="position:absolute;top:32%;right:5%;width:258px;opacity:0;transition:opacity .5s">
+        <div style="background:#0a0c16;border:1px solid rgba(255,255,255,.07);border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.6)">
+          <div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:8px">
+            <div style="width:9px;height:9px;border-radius:50%;background:#334155"></div>
+            <span class="mono" style="font-size:9px;color:var(--tm);letter-spacing:2px">COPILOT</span>
+            <span id="x2" style="margin-left:auto;color:var(--red);font-size:14px;opacity:0;transition:opacity .4s">✕</span>
+          </div>
+          <div style="padding:12px 14px">
+            <div id="q2" style="font-family:'Rajdhani',sans-serif;font-size:12px;color:var(--vb);background:rgba(124,58,237,.1);padding:7px 10px;border-radius:6px;text-align:right;margin-bottom:6px;min-height:30px"></div>
+            <div id="a2" style="font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--red);background:rgba(239,68,68,.06);padding:7px 10px;border-radius:6px;opacity:0;transition:opacity .4s;font-style:italic">⚠ I don't have project context.</div>
+          </div>
+        </div>
+      </div>
+      <div id="cw3" style="position:absolute;bottom:14%;left:9%;width:252px;opacity:0;transition:opacity .5s">
+        <div style="background:#0a0c16;border:1px solid rgba(255,255,255,.07);border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.6)">
+          <div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:8px">
+            <div style="width:9px;height:9px;border-radius:50%;background:#334155"></div>
+            <span class="mono" style="font-size:9px;color:var(--tm);letter-spacing:2px">WINDSURF</span>
+            <span id="x3" style="margin-left:auto;color:var(--red);font-size:14px;opacity:0;transition:opacity .4s">✕</span>
+          </div>
+          <div style="padding:12px 14px">
+            <div id="q3" style="font-family:'Rajdhani',sans-serif;font-size:12px;color:var(--vb);background:rgba(124,58,237,.1);padding:7px 10px;border-radius:6px;text-align:right;margin-bottom:6px;min-height:30px"></div>
+            <div id="a3" style="font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--red);background:rgba(239,68,68,.06);padding:7px 10px;border-radius:6px;opacity:0;transition:opacity .4s;font-style:italic">⚠ Starting from zero again.</div>
+          </div>
+        </div>
+      </div>
+      <div id="s1c" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;opacity:0;transition:opacity .8s;width:65%">
+        <div class="s-hl" id="h1a" style="opacity:0;transition:opacity .6s">AI tools are <span style="color:var(--vb);animation:glowText 2s ease-in-out infinite">powerful.</span></div>
+        <div class="s-hl" id="h1b" style="margin-top:8px;opacity:0;transition:opacity .6s">But they <span style="color:var(--red)">forget</span> everything.</div>
+        <div id="h1s" style="font-family:'Rajdhani',sans-serif;font-size:clamp(11px,1.6vw,17px);color:var(--tm);margin-top:14px;opacity:0;transition:opacity .6s">Every session starts from zero. No memory. No context. No understanding.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2: NEXUS INTRO -->
+  <div id="s2" class="scene">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:20px">
+      <div id="g2" class="gem-wrap" style="width:120px;height:120px;opacity:0;transform:scale(.4);transition:opacity .6s,transform .9s cubic-bezier(.34,1.56,.64,1)">
+        <div class="gem-glow"></div><div class="gem-ring"></div><div class="gem-ring r2"></div>
+        <div class="gem-body"></div><div class="gem-mid"></div><div class="gem-shine"></div>
+      </div>
+      <div id="s2t" style="opacity:0;transition:opacity .55s;text-align:center">
+        <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(26px,5vw,66px);color:var(--text);letter-spacing:7px;animation:glowText 3s ease-in-out infinite">NEXUS&nbsp;<span style="color:var(--vb)">CLI</span></div>
+        <div style="font-family:'Rajdhani',sans-serif;font-size:clamp(10px,1.6vw,17px);color:var(--tm);letter-spacing:5px;text-transform:uppercase;margin-top:6px">The AI-Native Development Framework</div>
+      </div>
+      <div id="s2b" style="display:flex;gap:10px;opacity:0;transition:opacity .55s;flex-wrap:wrap;justify-content:center">
+        <div class="badge">npm install -g @nexus-framework/cli</div>
+        <div class="badge v">Apache 2.0 · Open Source</div>
+        <div class="badge v">by GDA Africa</div>
+      </div>
+      <div id="s2m" style="opacity:0;transition:opacity .55s;text-align:center;max-width:540px">
+        <div style="font-family:'Orbitron',sans-serif;font-size:clamp(10px,1.5vw,17px);color:var(--tm);font-weight:400;letter-spacing:1px">Scaffolding tools generate <span style="text-decoration:line-through;color:var(--tf)">files.</span></div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:clamp(13px,2vw,24px);font-weight:700;color:var(--text);margin-top:6px">NEXUS generates <span style="color:var(--vb);animation:glowText 2s ease-in-out infinite">understanding.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3: WHAT IT DOES -->
+  <div id="s3" class="scene">
+    <div style="width:92%;display:flex;flex-direction:column;gap:12px">
+      <div id="s3h" style="text-align:center;opacity:0;transition:opacity .5s">
+        <div class="section-label">what you get</div>
+        <div class="s-hl" style="font-size:clamp(16px,2.7vw,34px)">Not just a project. A <span style="color:var(--vb);animation:glowText 2.5s ease-in-out infinite">knowledge system.</span></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div id="s3b" class="tree-panel" style="flex:1;opacity:0;transition:opacity .5s">
+          <div class="tp-title" style="color:var(--tm)">ANY SCAFFOLDER</div>
+          <div class="tl cd">my-app/</div><div class="tl cp">&nbsp;&nbsp;src/</div><div class="tl cp">&nbsp;&nbsp;package.json</div>
+          <div style="margin-top:10px;padding:9px 10px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.12);border-radius:6px">
+            <div class="mono" style="font-size:8.5px;color:var(--red);letter-spacing:1px;margin-bottom:3px">AI OPENS PROJECT:</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-size:12px;color:var(--tm);font-style:italic">"No context. Starting from scratch."</div>
+          </div>
+        </div>
+        <div id="s3a" class="tree-panel nex" style="flex:1.4;opacity:0;transition:opacity .5s">
+          <div class="tp-title" style="color:var(--vb)">🔮 WITH NEXUS</div>
+          <div id="nxl"></div>
+          <div id="s3ct" style="margin-top:10px;padding:9px 10px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:6px;opacity:0;transition:opacity .4s">
+            <div class="mono" style="font-size:8.5px;color:var(--green);letter-spacing:1px;margin-bottom:3px">AI OPENS PROJECT:</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-size:12px;color:var(--cb)">"Full context loaded. Ready to build."</div>
+          </div>
+        </div>
+        <div id="s3to" style="display:flex;flex-direction:column;gap:6px;opacity:0;transition:opacity .5s;flex-shrink:0;min-width:110px">
+          <div class="mono" style="font-size:8.5px;color:var(--tm);letter-spacing:2px;margin-bottom:3px">READ BY:</div>
+          <div class="badge" style="font-size:9px;padding:3px 9px;justify-content:center">Cursor</div>
+          <div class="badge" style="font-size:9px;padding:3px 9px;justify-content:center">Copilot</div>
+          <div class="badge" style="font-size:9px;padding:3px 9px;justify-content:center">Windsurf</div>
+          <div class="badge" style="font-size:9px;padding:3px 9px;justify-content:center">Cline</div>
+          <div class="badge v" style="font-size:9px;padding:3px 9px;justify-content:center">Claude Code</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: EVOLUTION TIMELINE -->
+  <div id="s4" class="scene">
+    <div style="width:88%;display:flex;flex-direction:column;align-items:center;gap:26px">
+      <div id="s4h" style="opacity:0;transition:opacity .5s;text-align:center">
+        <div class="section-label">version history</div>
+        <div class="s-hl" style="font-size:clamp(17px,2.7vw,34px)">Built in the open. <span style="color:var(--cb)">Shipped with care.</span></div>
+      </div>
+      <div style="width:100%">
+        <div class="tl-track"><div class="tl-node" id="n1"></div><div class="tl-line"><div class="tl-fill" id="f1"></div></div><div class="tl-node" id="n2"></div><div class="tl-line"><div class="tl-fill" id="f2"></div></div><div class="tl-node" id="n3"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:18px;gap:12px">
+          <div id="cv1" class="terminal" style="flex:1;opacity:0;transition:opacity .5s">
+            <div class="t-bar"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div><span class="t-lbl">v0.1.0 — GENESIS</span></div>
+            <div class="t-body" style="font-size:10.5px"><div style="color:var(--vb);font-weight:700;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:9.5px">SCAFFOLDING</div><div><span class="t-ok">✓</span> nexus init / adopt</div><div><span class="t-ok">✓</span> 6 frameworks</div><div><span class="t-ok">✓</span> Full toolchain</div><div><span class="t-ok">✓</span> CI/CD templates</div></div>
+          </div>
+          <div id="cv2" class="terminal" style="flex:1;opacity:0;transition:opacity .5s">
+            <div class="t-bar"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div><span class="t-lbl">v0.2.0 — INTELLIGENCE</span></div>
+            <div class="t-body" style="font-size:10.5px"><div style="color:var(--cb);font-weight:700;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:9.5px">AI LAYER</div><div><span class="t-ok">✓</span> 8 structured docs</div><div><span class="t-ok">✓</span> Project Brain</div><div><span class="t-ok">✓</span> Knowledge Base</div><div><span class="t-ok">✓</span> 190 tests passing</div></div>
+          </div>
+          <div id="cv3" class="terminal" style="flex:1;opacity:0;transition:opacity .5s;border-color:rgba(245,158,11,.4);box-shadow:0 0 20px rgba(245,158,11,.1)">
+            <div class="t-bar" style="background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.22)"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div><span class="t-lbl" style="color:var(--amber)">v0.3.0 — SKILLS ✦ NEXT</span></div>
+            <div class="t-body" style="font-size:10.5px"><div style="color:var(--amber);font-weight:700;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:9.5px">SKILLS SYSTEM</div><div style="color:var(--tm)">◈ @nexus-framework/skills</div><div style="color:var(--tm)">◈ Task-level AI knowledge</div><div style="color:var(--tm)">◈ nexus skill new/install</div><div style="color:var(--tm)">◈ Every agent. Always.</div></div>
+          </div>
+        </div>
+      </div>
+      <div id="s4st" style="display:flex;gap:40px;opacity:0;transition:opacity .5s">
+        <div style="text-align:center"><div style="font-family:'Orbitron',sans-serif;font-size:clamp(20px,3vw,38px);font-weight:900;color:var(--vb)" id="st1">0</div><div class="mono" style="font-size:8.5px;color:var(--tm);letter-spacing:2.5px;margin-top:3px">TESTS</div></div>
+        <div style="text-align:center"><div style="font-family:'Orbitron',sans-serif;font-size:clamp(20px,3vw,38px);font-weight:900;color:var(--cb)" id="st2">0</div><div class="mono" style="font-size:8.5px;color:var(--tm);letter-spacing:2.5px;margin-top:3px">FRAMEWORKS</div></div>
+        <div style="text-align:center"><div style="font-family:'Orbitron',sans-serif;font-size:clamp(20px,3vw,38px);font-weight:900;color:var(--green)" id="st3">0</div><div class="mono" style="font-size:8.5px;color:var(--tm);letter-spacing:2.5px;margin-top:3px">COMMANDS</div></div>
+        <div style="text-align:center"><div style="font-family:'Orbitron',sans-serif;font-size:clamp(20px,3vw,38px);font-weight:900;color:var(--amber)" id="st4">0</div><div class="mono" style="font-size:8.5px;color:var(--tm);letter-spacing:2.5px;margin-top:3px">AI TOOLS</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: SKILLS -->
+  <div id="s5" class="scene">
+    <div style="width:92%;display:flex;gap:32px;align-items:center">
+      <div style="flex:1;display:flex;flex-direction:column;gap:16px">
+        <div id="s5q" style="opacity:0;transition:opacity .5s">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:clamp(12px,1.7vw,18px);color:var(--tm);line-height:1.6">NEXUS tells AI agents <span style="color:var(--vb);font-weight:700">what</span> you're building.</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:clamp(12px,1.7vw,18px);color:var(--tm);line-height:1.6;margin-top:4px">But how does it know <span style="color:var(--cb);font-weight:700">how</span> you build?</div>
+        </div>
+        <div id="s5a" style="opacity:0;transition:opacity .5s">
+          <div style="font-family:'Orbitron',sans-serif;font-size:clamp(14px,2.4vw,28px);font-weight:400;color:var(--tm)">Introducing</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:clamp(18px,3.2vw,42px);font-weight:900;color:var(--vb);animation:glowText 2s ease-in-out infinite;line-height:1.1;margin-top:4px">NEXUS SKILLS</div>
+        </div>
+        <div id="s5e" style="opacity:0;transition:opacity .5s;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;gap:9px"><span style="color:var(--vb);margin-top:2px">◆</span><div><div style="font-family:'Rajdhani',sans-serif;font-size:clamp(11px,1.4vw,14.5px);font-weight:700;color:var(--text)">Core Skills</div><div style="font-family:'Rajdhani',sans-serif;font-size:clamp(10px,1.2vw,13px);color:var(--tm)">Framework-matched at init</div></div></div>
+          <div style="display:flex;gap:9px"><span style="color:var(--cb);margin-top:2px">◆</span><div><div style="font-family:'Rajdhani',sans-serif;font-size:clamp(11px,1.4vw,14.5px);font-weight:700;color:var(--text)">Custom Skills</div><div style="font-family:'Rajdhani',sans-serif;font-size:clamp(10px,1.2vw,13px);color:var(--tm)">Your conventions, never overwritten</div></div></div>
+          <div style="display:flex;gap:9px"><span style="color:var(--green);margin-top:2px">◆</span><div><div style="font-family:'Rajdhani',sans-serif;font-size:clamp(11px,1.4vw,14.5px);font-weight:700;color:var(--text)">Community Skills</div><div class="badge" style="font-size:9px;padding:2px 8px;margin-top:3px">@nexus-framework/skills</div></div></div>
+        </div>
+        <div id="s5tr" class="terminal" style="opacity:0;transition:opacity .5s">
+          <div class="t-bar"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div><span class="t-lbl">.nexus/skills/</span></div>
+          <div class="t-body"><span class="t-p">$</span> <span class="t-c" id="s5cmd"></span><span class="t-cur" id="s5cur"></span><div id="s5out" style="display:none;margin-top:6px"><div class="t-ok">✓ Created .nexus/skills/custom/auth-flow.md</div><div class="t-dim">&nbsp;&nbsp;status: draft · triggers: auth, login, session</div></div></div>
+        </div>
+      </div>
+      <div id="s5sk" style="opacity:0;transition:opacity .5s;flex-shrink:0;position:relative;width:288px;height:280px">
+        <div class="sk-card sk-back1" style="position:absolute;top:20px;left:-18px;width:270px"><div><span class="sk-k">skill:</span> <span class="sk-v">testing</span><br><span class="sk-k">status:</span> <span class="sk-g">active</span></div></div>
+        <div class="sk-card sk-back2" style="position:absolute;top:10px;left:10px;width:270px"><div><span class="sk-k">skill:</span> <span class="sk-v">routing</span><br><span class="sk-k">status:</span> <span class="sk-g">active</span></div></div>
+        <div class="sk-card" style="position:absolute;top:0;left:0;z-index:3;width:270px;animation:skillFloat 3s ease-in-out infinite">
+          <div><div><span class="sk-k">skill:</span> <span class="sk-v">component-creation</span></div><div><span class="sk-k">framework:</span> <span class="sk-v">next.js</span></div><div><span class="sk-k">triggers:</span></div><div>&nbsp;&nbsp;- <span class="sk-t">"creating a new component"</span></div><div>&nbsp;&nbsp;- <span class="sk-t">"building a UI element"</span></div><div><span class="sk-k">status:</span> <span class="sk-g">active</span></div></div>
+          <hr class="sk-div">
+          <div><div class="sk-h"># Skill: Creating Components</div><div style="color:var(--tm);margin-top:4px">## Steps</div><div style="color:#94a3b8">1. Place in src/components/</div><div style="color:#94a3b8">2. Add error boundary</div><div style="color:#94a3b8">3. Export from index.ts</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6: LANDING (final scene that becomes the page) -->
+  <div id="s6" class="scene">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
+      <div id="s6ow" style="opacity:0;transition:opacity .8s;position:relative;width:280px;height:280px;display:flex;align-items:center;justify-content:center">
+        <div style="position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(124,58,237,.18)"></div>
+        <div style="position:absolute;inset:40px;border-radius:50%;border:1px dashed rgba(6,182,212,.1)"></div>
+        <div style="position:absolute;top:50%;left:50%;margin:-17px 0 0 -17px;width:34px;height:34px;border-radius:7px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;transform-origin:center;animation:orbitSpin 9s linear infinite">📄</div>
+        <div style="position:absolute;top:50%;left:50%;margin:-17px 0 0 -17px;width:34px;height:34px;border-radius:7px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;animation:orbitSpin 9s linear infinite;animation-delay:-1.8s">🧠</div>
+        <div style="position:absolute;top:50%;left:50%;margin:-17px 0 0 -17px;width:34px;height:34px;border-radius:7px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;animation:orbitSpin 9s linear infinite;animation-delay:-3.6s">⚡</div>
+        <div style="position:absolute;top:50%;left:50%;margin:-17px 0 0 -17px;width:34px;height:34px;border-radius:7px;background:var(--card);border:1px solid rgba(167,139,250,.4);display:flex;align-items:center;justify-content:center;font-size:13px;animation:orbitSpin 9s linear infinite;animation-delay:-5.4s;color:var(--vb)">◆</div>
+        <div style="position:absolute;top:50%;left:50%;margin:-17px 0 0 -17px;width:34px;height:34px;border-radius:7px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;animation:orbitSpin 9s linear infinite;animation-delay:-7.2s">🔧</div>
+        <div class="gem-wrap" style="width:90px;height:90px;animation:gemFloat 4s ease-in-out infinite">
+          <div class="gem-glow"></div><div class="gem-body"></div><div class="gem-mid"></div><div class="gem-shine"></div>
+        </div>
+      </div>
+      <div id="s6t" style="opacity:0;transition:opacity .7s">
+        <div class="mono" style="font-size:clamp(9px,1.1vw,11px);color:var(--tm);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;opacity:.7">Open Source · Free Forever · Built by GDA Africa</div>
+        <div class="s-hl" style="font-size:clamp(16px,2.8vw,36px)">The future of development is <span style="color:var(--vb);animation:glowText 2s ease-in-out infinite">AI-native.</span></div>
+      </div>
+      <div id="s6l" style="display:flex;gap:10px;opacity:0;transition:opacity .7s;flex-wrap:wrap;justify-content:center">
+        <div class="badge v">github.com/GDA-Africa/nexus-cli</div>
+        <div class="badge">npmjs.com/package/@nexus-framework/cli</div>
+      </div>
+      <div id="s6q" style="opacity:0;transition:opacity .7s;max-width:500px">
+        <div style="font-family:'Orbitron',sans-serif;font-size:clamp(11px,1.6vw,18px);color:var(--tm);font-weight:400;font-style:italic;line-height:1.7">"Where AI agents don't just write code —</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:clamp(11px,1.6vw,18px);color:var(--cb);font-weight:700;font-style:italic;animation:glowText 2.5s ease-in-out infinite;line-height:1.7">they understand why."</div>
+      </div>
+      <div id="s6enter" style="opacity:0;transition:opacity .6s;margin-top:6px">
+        <button onclick="enterSite()" style="padding:12px 28px;background:linear-gradient(135deg,var(--violet),var(--v2));border:none;color:white;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;border-radius:6px;cursor:pointer;box-shadow:0 0 28px rgba(124,58,237,.45);transition:all .25s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 44px rgba(124,58,237,.65)'" onmouseout="this.style.transform='';this.style.boxShadow='0 0 28px rgba(124,58,237,.45)'">ENTER SITE →</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /stage -->
+</div><!-- /intro-overlay -->
+
+<div id="wipe"></div>
+<div id="intro-progress"></div>
+<div id="scene-indicator">01 / 06</div>
+<button id="skip-btn" onclick="skipToEnd()">SKIP ↓</button>
+
+<!-- ══════════════════════════════════════
+     MAIN SITE
+══════════════════════════════════════ -->
+<div id="main-site" style="opacity:0;transition:opacity .7s">
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo" onclick="scrollToTop()">
+    <div class="nav-gem" style="width:26px;height:26px;position:relative">
+      <div class="gem-body" style="position:absolute;inset:0"></div>
+      <div class="gem-mid" style="position:absolute;inset:0"></div>
+    </div>
+    <div class="nav-name">NEXUS <span>CLI</span></div>
+  </div>
+  <div class="nav-links">
+    <span class="nav-link" onclick="document.getElementById('intelligence').scrollIntoView({behavior:'smooth'})">Docs System</span>
+    <span class="nav-link" onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'})">Skills</span>
+    <span class="nav-link" onclick="document.getElementById('ecosystem').scrollIntoView({behavior:'smooth'})">Ecosystem</span>
+    <span class="nav-link" onclick="document.getElementById('quickstart').scrollIntoView({behavior:'smooth'})">Quick Start</span>
+    <span class="nav-link" onclick="window.open('https://github.com/GDA-Africa/nexus-cli','_blank')">GitHub ↗</span>
+  </div>
+  <div class="nav-cta">
+    <button class="btn btn-primary" onclick="document.getElementById('quickstart').scrollIntoView({behavior:'smooth'})">Get Started</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg-glow"></div>
+
+  <div class="hero-gem-wrap reveal">
+    <div class="hero-gem gem-wrap" style="width:110px;height:110px">
+      <div class="gem-glow"></div><div class="gem-ring"></div><div class="gem-ring r2"></div><div class="gem-ring r3"></div>
+      <div class="gem-body"></div><div class="gem-mid"></div><div class="gem-shine"></div>
+    </div>
+  </div>
+
+  <div class="hero-eyebrow reveal" style="transition-delay:.1s">The AI-Native Development Framework</div>
+
+  <h1 class="hero-title reveal" style="transition-delay:.2s">
+    Give your AI agents<br><span class="hl-v">complete project</span><br>understanding.
+  </h1>
+
+  <p class="hero-sub reveal" style="transition-delay:.3s">
+    NEXUS CLI scaffolds production-ready projects with a living knowledge system that AI coding tools read automatically — so they start every session with full context, not zero.
+  </p>
+
+  <div class="hero-ctas reveal" style="transition-delay:.4s">
+    <button class="btn btn-primary" onclick="document.getElementById('quickstart').scrollIntoView({behavior:'smooth'})">Get Started Free</button>
+    <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank"><button class="btn btn-ghost">View on GitHub →</button></a>
+  </div>
+
+  <div class="hero-badges reveal" style="transition-delay:.5s">
+    <div class="badge v">v0.2.0 stable</div>
+    <div class="badge g">190 tests passing</div>
+    <div class="badge">npm install -g @nexus-framework/cli</div>
+    <div class="badge v">Apache 2.0</div>
+  </div>
+
+  <div class="hero-terminal reveal" style="transition-delay:.6s">
+    <div class="terminal">
+      <div class="t-bar"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div><span class="t-lbl">terminal — nexus init</span></div>
+      <div class="t-body">
+        <div><span class="t-p">$</span> <span class="t-c">nexus init my-app</span></div>
+        <div class="t-dim">🔮 NEXUS CLI v0.2.0 — AI-Native Development Framework</div>
+        <div><span class="t-v">?</span> <span class="t-w">What are you building?</span> <span class="t-p">› Web Application</span></div>
+        <div><span class="t-v">?</span> <span class="t-w">Which framework?</span> <span class="t-p">› Next.js 15 (App Router)</span></div>
+        <div><span class="t-v">?</span> <span class="t-w">What vibe for your AI?</span> <span class="t-p">› 😊 Friendly · Balanced · "Nexus"</span></div>
+        <div class="t-dim">──────────────────────────────────────</div>
+        <div><span class="t-ok">✓</span> Project scaffolded</div>
+        <div><span class="t-ok">✓</span> NEXUS knowledge system initialized</div>
+        <div><span class="t-ok">✓</span> AI tool configs generated (Cursor, Copilot, Windsurf…)</div>
+        <div><span class="t-ok">✓</span> 8 AI-readable docs created</div>
+        <div class="t-dim">──────────────────────────────────────</div>
+        <div><span class="t-p">$</span> <span class="t-c">cd my-app && npm run dev</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <div class="hero-scroll-label">scroll</div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ── -->
+<section id="problem">
+  <div style="max-width:960px;margin:0 auto;text-align:center">
+    <div class="section-label reveal">the problem</div>
+    <h2 class="section-title reveal" style="transition-delay:.1s">AI tools are powerful.<br><span class="hl-v">But they forget everything.</span></h2>
+    <p class="reveal" style="transition-delay:.2s;font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--tm);margin-top:14px;line-height:1.7;max-width:580px;margin-left:auto;margin-right:auto">Every session, your AI agent starts from scratch. No memory of decisions. No understanding of conventions. No project context. Just you re-explaining everything. Again.</p>
+  </div>
+  <div class="problem-grid">
+    <div class="problem-card reveal">
+      <div class="problem-icon">🧠</div>
+      <div class="problem-title">No Project Context</div>
+      <div class="problem-desc">AI opens your project and asks "what's the architecture here?" — every single session. Cursor, Copilot, Windsurf — all of them.</div>
+      <div class="problem-after">With NEXUS → Agent reads project brain at startup. Full context. Always.</div>
+    </div>
+    <div class="problem-card reveal" style="transition-delay:.1s">
+      <div class="problem-icon">🔄</div>
+      <div class="problem-title">Wasted Decisions</div>
+      <div class="problem-desc">You decided on a pattern. You explained why. Then the session ended. Next time, the agent proposes something completely different.</div>
+      <div class="problem-after">With NEXUS → knowledge.md captures every decision. Agents don't unlearn.</div>
+    </div>
+    <div class="problem-card reveal" style="transition-delay:.2s">
+      <div class="problem-icon">⚡</div>
+      <div class="problem-title">Inconsistent Code</div>
+      <div class="problem-desc">No two sessions produce the same patterns. Components named differently. Imports structured differently. A codebase that drifts.</div>
+      <div class="problem-after">With NEXUS Skills → agents read how-to guides before every task.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how">
+  <div style="max-width:940px;margin:0 auto;text-align:center">
+    <div class="section-label reveal">workflow</div>
+    <h2 class="section-title reveal" style="transition-delay:.1s">From scaffold to <span class="hl-c">AI-powered workspace</span><br>in 2 minutes.</h2>
+  </div>
+  <div class="how-steps">
+    <div class="how-step reveal">
+      <div class="how-num">01</div>
+      <div class="how-step-title">Run nexus init</div>
+      <div class="how-step-desc">Answer 7 strategy-first questions. NEXUS scaffolds your project, generates 8 knowledge docs, configures every AI tool simultaneously.</div>
+      <div class="how-cmd">nexus init my-app</div>
+    </div>
+    <div class="how-step reveal" style="transition-delay:.15s">
+      <div class="how-num">02</div>
+      <div class="how-step-title">Open your AI tool</div>
+      <div class="how-step-desc">Open the project in Cursor, Copilot, Windsurf, Cline, or Claude Code. The agent automatically detects the NEXUS knowledge system.</div>
+      <div class="how-cmd">.cursorrules · AGENTS.md</div>
+    </div>
+    <div class="how-step reveal" style="transition-delay:.3s">
+      <div class="how-num">03</div>
+      <div class="how-step-title">AI works with context</div>
+      <div class="how-step-desc">Your agent reads the project brain, scans the knowledge base, loads the skill files, and starts building — with full understanding.</div>
+      <div class="how-cmd">index.md · knowledge.md</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INTELLIGENCE SYSTEM ── -->
+<section id="intelligence">
+  <div style="max-width:1040px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:0">
+      <div class="section-label reveal">the knowledge system</div>
+      <h2 class="section-title reveal" style="transition-delay:.1s">Eight living documents.<br><span class="hl-v">One project brain.</span> Infinite AI context.</h2>
+      <p class="reveal" style="transition-delay:.2s;font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--tm);margin-top:14px;line-height:1.7;max-width:560px;margin:14px auto 0">Every NEXUS project comes with a structured documentation system that AI agents parse automatically — covering vision through deployment.</p>
+    </div>
+    <div class="intel-grid">
+      <div class="reveal-l">
+        <div class="intel-files">
+          <div class="intel-file brain">
+            <div class="if-name vn" style="font-size:11px;margin-bottom:6px">🧠 index.md</div>
+            <div class="if-desc">Project Brain — status matrix, feature backlog, what to build next</div>
+          </div>
+          <div class="intel-file knowledge">
+            <div class="if-name" style="color:#6ee7b7;font-size:11px;margin-bottom:6px">📚 knowledge.md</div>
+            <div class="if-desc">Append-only memory — decisions, gotchas, patterns across sessions</div>
+          </div>
+          <div class="intel-file"><div class="if-name">01_vision.md</div><div class="if-desc">Product requirements, user stories, success metrics</div></div>
+          <div class="intel-file"><div class="if-name">02_architecture.md</div><div class="if-desc">System design, tech stack, data flow</div></div>
+          <div class="intel-file"><div class="if-name">03_data_contracts.md</div><div class="if-desc">Schemas, validation, relationships</div></div>
+          <div class="intel-file"><div class="if-name">04_api_contracts.md</div><div class="if-desc">Endpoints, interfaces, status codes</div></div>
+          <div class="intel-file"><div class="if-name">05_business_logic.md</div><div class="if-desc">Rules, algorithms, state machines</div></div>
+          <div class="intel-file"><div class="if-name">06_test_strategy.md</div><div class="if-desc">Coverage targets, test types, philosophy</div></div>
+          <div class="intel-file"><div class="if-name">07_implementation.md</div><div class="if-desc">Build order, file-by-file plan</div></div>
+          <div class="intel-file"><div class="if-name">08_deployment.md</div><div class="if-desc">Infrastructure, CI/CD, environment config</div></div>
+        </div>
+      </div>
+      <div class="intel-explain reveal-r" style="transition-delay:.15s">
+        <div class="intel-item">
+          <div class="ii-title">🧠 Project Brain</div>
+          <div class="ii-desc"><code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">index.md</code> is a live status matrix. AI agents check it before every task to understand what's done, what's in progress, and what should be built next. No more "what should I work on?"</div>
+        </div>
+        <div class="intel-item">
+          <div class="ii-title">📚 Progressive Knowledge Base</div>
+          <div class="ii-desc"><code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">knowledge.md</code> is append-only memory. Every architectural decision, every gotcha, every pattern gets logged here. Agents scan it before starting and write to it after discoveries.</div>
+        </div>
+        <div class="intel-item">
+          <div class="ii-title">🎭 Agent Persona</div>
+          <div class="ii-desc">Configure your AI's tone, verbosity, and identity. When the agent reads the NEXUS instructions and calls itself "Nexus" — you know it's synced. It's your signal that context is loaded.</div>
+        </div>
+        <div class="intel-item">
+          <div class="ii-title">🔧 Multi-Tool Distribution</div>
+          <div class="ii-desc">One knowledge system. Generated into <code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">.cursorrules</code>, <code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">AGENTS.md</code>, <code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">.windsurfrules</code>, <code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">copilot-instructions.md</code>, <code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">.clinerules</code>. Every agent reads the same truth.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="skills-glow"></div>
+  <div class="skills-inner" style="max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div class="reveal-l">
+      <div class="skills-new-badge">✦ NEW IN v0.3.0</div>
+      <h2 class="section-title" style="margin-bottom:16px">NEXUS <span class="hl-v">Skills</span> — task-level AI knowledge.</h2>
+      <p class="skills-sub">NEXUS tells agents <em>what</em> you're building. Skills tell them <em>how</em> to build it. Before writing a single line, agents read the relevant skill file and follow your exact conventions.</p>
+      <div class="skills-points">
+        <div class="skills-point">
+          <span class="sp-icon" style="color:var(--vb)">◆</span>
+          <div><div class="sp-title">Core Skills</div><div class="sp-desc">Generated at <code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">nexus init</code> — framework-specific task guides for components, routing, testing, API routes.</div></div>
+        </div>
+        <div class="skills-point">
+          <span class="sp-icon" style="color:var(--cb)">◆</span>
+          <div><div class="sp-title">Custom Skills</div><div class="sp-desc">Create project-specific conventions. Stored in <code style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cb)">.nexus/skills/custom/</code> — never overwritten by upgrades.</div></div>
+        </div>
+        <div class="skills-point">
+          <span class="sp-icon" style="color:var(--green)">◆</span>
+          <div><div class="sp-title">Community Skills</div><div class="sp-desc">Install from the official registry. Supabase, Stripe, Prisma and more — pre-built task knowledge for popular integrations.</div></div>
+        </div>
+      </div>
+      <div class="skills-cmds">
+        <div class="skills-cmd"><span>nexus</span> skill new auth-flow</div>
+        <div class="skills-cmd"><span>nexus</span> skill install @nexus-framework/skills-supabase</div>
+        <div class="skills-cmd"><span>nexus</span> skill list</div>
+      </div>
+    </div>
+    <div class="reveal-r" style="transition-delay:.2s;position:relative;height:320px">
+      <div style="position:relative;width:290px;height:310px">
+        <div class="sk-card" style="position:absolute;top:24px;left:-18px;width:274px;transform:rotate(-5deg);opacity:.35;animation:skillFloat 3.5s ease-in-out infinite;pointer-events:none"><div><span class="sk-k">skill:</span> <span class="sk-v">testing</span><br><span class="sk-k">status:</span> <span class="sk-g">active</span></div></div>
+        <div class="sk-card" style="position:absolute;top:12px;left:12px;width:274px;transform:rotate(3.5deg);opacity:.25;animation:skillFloat2 3s ease-in-out infinite;pointer-events:none"><div><span class="sk-k">skill:</span> <span class="sk-v">routing</span><br><span class="sk-k">status:</span> <span class="sk-g">active</span></div></div>
+        <div class="sk-card" style="position:absolute;top:0;left:0;z-index:3;width:274px;animation:skillFloat 3s ease-in-out infinite">
+          <div><div><span class="sk-k">skill:</span> <span class="sk-v">component-creation</span></div><div><span class="sk-k">version:</span> <span class="sk-v">1.0.0</span></div><div><span class="sk-k">framework:</span> <span class="sk-v">next.js</span></div><div><span class="sk-k">triggers:</span></div><div>&nbsp;&nbsp;- <span class="sk-t">"creating a new component"</span></div><div>&nbsp;&nbsp;- <span class="sk-t">"building a UI element"</span></div><div><span class="sk-k">status:</span> <span class="sk-g">active</span></div></div>
+          <hr class="sk-div">
+          <div><div class="sk-h"># Skill: Creating Components</div><div style="color:var(--tm);margin-top:5px">## When to Read This</div><div style="color:#94a3b8">Before creating any React component.</div><div style="color:var(--tm);margin-top:5px">## Steps</div><div style="color:#94a3b8">1. Place in src/components/</div><div style="color:#94a3b8">2. Add error boundary</div><div style="color:#94a3b8">3. Export from index.ts</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ECOSYSTEM ── -->
+<section id="ecosystem">
+  <div class="eco-grid">
+    <div style="text-align:center">
+      <div class="section-label reveal">ecosystem</div>
+      <h2 class="section-title reveal" style="transition-delay:.1s">Works with the tools<br><span class="hl-c">you already use.</span></h2>
+    </div>
+    <div class="eco-section-title reveal" style="transition-delay:.2s">6 FRAMEWORKS SUPPORTED</div>
+    <div class="frameworks-grid">
+      <div class="framework-card reveal" style="transition-delay:.1s"><div class="fw-icon">⚡</div><div class="fw-name">Next.js 15</div></div>
+      <div class="framework-card reveal" style="transition-delay:.15s"><div class="fw-icon">⚛️</div><div class="fw-name">React + Vite</div></div>
+      <div class="framework-card reveal" style="transition-delay:.2s"><div class="fw-icon">🔥</div><div class="fw-name">SvelteKit</div></div>
+      <div class="framework-card reveal" style="transition-delay:.25s"><div class="fw-icon">💚</div><div class="fw-name">Nuxt 3</div></div>
+      <div class="framework-card reveal" style="transition-delay:.3s"><div class="fw-icon">🚀</div><div class="fw-name">Astro 5</div></div>
+      <div class="framework-card reveal" style="transition-delay:.35s"><div class="fw-icon">💿</div><div class="fw-name">Remix 2</div></div>
+    </div>
+    <div class="eco-section-title reveal" style="transition-delay:.4s;margin-top:44px">5 AI TOOLS — ONE KNOWLEDGE SYSTEM</div>
+    <div class="tools-grid">
+      <div class="tool-badge reveal" style="transition-delay:.1s"><div class="tool-dot"></div>Cursor</div>
+      <div class="tool-badge reveal" style="transition-delay:.17s"><div class="tool-dot"></div>GitHub Copilot</div>
+      <div class="tool-badge reveal" style="transition-delay:.24s"><div class="tool-dot"></div>Windsurf</div>
+      <div class="tool-badge reveal" style="transition-delay:.31s"><div class="tool-dot"></div>Cline</div>
+      <div class="tool-badge reveal" style="transition-delay:.38s"><div class="tool-dot" style="background:var(--vb)"></div>Claude Code</div>
+    </div>
+    <p class="eco-tagline reveal" style="transition-delay:.45s;max-width:560px;margin:36px auto 0">Configure once. <strong>Every agent reads the same truth.</strong> Switch tools without re-explaining your project.</p>
+  </div>
+</section>
+
+<!-- ── QUICK START ── -->
+<section id="quickstart">
+  <div class="qs-inner">
+    <div style="text-align:center">
+      <div class="section-label reveal">quick start</div>
+      <h2 class="section-title reveal" style="transition-delay:.1s">Up and running<br><span class="hl-v">in 2 minutes.</span></h2>
+      <p class="reveal" style="transition-delay:.2s;font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--tm);margin-top:14px;line-height:1.7">Install globally via npm. Interactive setup handles everything.</p>
+    </div>
+    <div class="qs-terminal reveal" style="transition-delay:.3s" id="qs-terminal">
+      <div class="qs-t-bar"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div><span class="t-lbl">getting started with nexus</span></div>
+      <div class="qs-t-body" id="qs-body">
+        <div class="qs-line" id="ql1"><span class="qs-comment"># Install NEXUS CLI globally</span></div>
+        <div class="qs-line" id="ql2"><span class="qs-prompt">$</span> <span class="qs-cmd">npm install -g @nexus-framework/cli</span></div>
+        <div class="qs-line" id="ql3"><span class="qs-d">Installing @nexus-framework/cli...</span></div>
+        <div class="qs-line" id="ql4"><span class="t-ok">+</span> <span class="qs-w">@nexus-framework/cli@0.2.0</span></div>
+        <div class="qs-line" id="ql5">&nbsp;</div>
+        <div class="qs-line" id="ql6"><span class="qs-comment"># Create a new project</span></div>
+        <div class="qs-line" id="ql7"><span class="qs-prompt">$</span> <span class="qs-cmd">nexus init my-app</span></div>
+        <div class="qs-line" id="ql8"><span class="qs-v">🔮</span> <span class="qs-w">NEXUS CLI v0.2.0</span></div>
+        <div class="qs-line" id="ql9"><span class="qs-d">Strategy-first interactive setup...</span></div>
+        <div class="qs-line" id="qla"><span class="t-ok">✓</span> <span class="qs-w">Project scaffolded successfully</span></div>
+        <div class="qs-line" id="qlb"><span class="t-ok">✓</span> <span class="qs-w">8 AI-readable docs initialized</span></div>
+        <div class="qs-line" id="qlc"><span class="t-ok">✓</span> <span class="qs-w">Project brain + knowledge base created</span></div>
+        <div class="qs-line" id="qld"><span class="t-ok">✓</span> <span class="qs-w">AI tool configs generated for all 5 tools</span></div>
+        <div class="qs-line" id="qle"><span class="t-ok">✓</span> <span class="qs-w">Tests, CI/CD, TypeScript — all configured</span></div>
+        <div class="qs-line" id="qlf">&nbsp;</div>
+        <div class="qs-line" id="qlg"><span class="qs-comment"># Add NEXUS to an existing project</span></div>
+        <div class="qs-line" id="qlh"><span class="qs-prompt">$</span> <span class="qs-cmd">nexus adopt</span></div>
+        <div class="qs-line" id="qli"><span class="t-ok">✓</span> <span class="qs-w">NEXUS knowledge layer added — source code untouched</span></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:14px;margin-top:36px" class="reveal" style="transition-delay:.4s">
+      <button class="btn btn-primary" onclick="window.open('https://github.com/GDA-Africa/nexus-cli','_blank')">Read the Docs</button>
+      <button class="btn btn-ghost" onclick="window.open('https://npmjs.com/package/@nexus-framework/cli','_blank')">View on npm →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── OPEN SOURCE ── -->
+<section id="opensource">
+  <div style="max-width:860px;margin:0 auto;text-align:center">
+    <div class="section-label reveal">open source</div>
+    <h2 class="section-title reveal" style="transition-delay:.1s">Built in the open.<br><span class="hl-v">Designed for the AI era.</span></h2>
+    <p class="reveal" style="transition-delay:.2s;font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--tm);margin-top:14px;line-height:1.7;max-width:520px;margin-left:auto;margin-right:auto">NEXUS is the open-source developer framework from <strong style="color:var(--vb)">GDA Africa</strong> — the digital infrastructure for Africa's next generation of products. Free forever, Apache 2.0.</p>
+
+    <div class="stats-row">
+      <div class="stat-item reveal"><div class="stat-num sv" id="os1">190</div><div class="stat-lbl">tests passing</div></div>
+      <div class="stat-item reveal" style="transition-delay:.1s"><div class="stat-num sc" id="os2">6</div><div class="stat-lbl">frameworks</div></div>
+      <div class="stat-item reveal" style="transition-delay:.2s"><div class="stat-num sg" id="os3">4</div><div class="stat-lbl">commands</div></div>
+      <div class="stat-item reveal" style="transition-delay:.3s"><div class="stat-num sa" id="os4">5</div><div class="stat-lbl">AI tools</div></div>
+    </div>
+
+    <div class="os-cards">
+      <div class="os-card reveal">
+        <div class="os-card-icon">🔓</div>
+        <div class="os-card-title">Apache 2.0 License</div>
+        <div class="os-card-desc">Free for personal and commercial use. Fork it, extend it, ship it.</div>
+      </div>
+      <div class="os-card reveal" style="transition-delay:.1s">
+        <div class="os-card-icon">🌍</div>
+        <div class="os-card-title">Built by GDA Africa</div>
+        <div class="os-card-desc">Powering Africa's digital future. NEXUS is our open-source contribution to the global developer community.</div>
+      </div>
+      <div class="os-card reveal" style="transition-delay:.2s">
+        <div class="os-card-icon">🤝</div>
+        <div class="os-card-title">Contributions Welcome</div>
+        <div class="os-card-desc">Skills, frameworks, templates. See CONTRIBUTING.md. 190 tests, zero lint errors — the bar is high and worth it.</div>
+      </div>
+    </div>
+
+    <div class="divider" style="margin:0 auto 36px" class="reveal"></div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r16);padding:32px 36px;margin-bottom:36px;text-align:left;position:relative;overflow:hidden;" class="reveal">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--cyan),var(--violet))"></div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:12px;color:var(--tm);letter-spacing:3px;margin-bottom:16px;text-transform:uppercase">The NEXUS Promise</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:clamp(14px,2.2vw,22px);font-weight:400;color:var(--tm);line-height:1.7;font-style:italic">"Where AI agents don't just write code —</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:clamp(14px,2.2vw,22px);font-weight:700;color:var(--vb);line-height:1.7;font-style:italic;animation:glowText 3s ease-in-out infinite">they understand why."</div>
+    </div>
+
+    <div class="os-ctas reveal">
+      <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank"><button class="btn btn-primary">GitHub Repository ↗</button></a>
+      <a href="https://npmjs.com/package/@nexus-framework/cli" target="_blank"><button class="btn btn-ghost">npm Package ↗</button></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">
+    <div class="footer-gem gem-wrap" style="width:22px;height:22px;animation:none">
+      <div class="gem-body" style="position:absolute;inset:0;animation-duration:30s"></div>
+      <div class="gem-mid" style="position:absolute;inset:0"></div>
+    </div>
+    <div class="footer-name">NEXUS <span>CLI</span></div>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank" class="footer-link">GitHub</a>
+    <a href="https://npmjs.com/package/@nexus-framework/cli" target="_blank" class="footer-link">npm</a>
+    <span class="footer-link" onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'})">Skills</span>
+    <span class="footer-link" onclick="document.getElementById('quickstart').scrollIntoView({behavior:'smooth'})">Quick Start</span>
+    <span class="footer-link">Apache 2.0</span>
+  </div>
+  <div class="footer-copy">© 2026 GDA Africa — Powering Africa's Digital Future</div>
+</footer>
+
+</div><!-- /main-site -->
+
+<script>
+/* ─── PARTICLES ─── */
+(function(){
+  const cv=document.getElementById('stars'),cx=cv.getContext('2d');
+  function resize(){cv.width=innerWidth;cv.height=innerHeight}
+  resize();addEventListener('resize',resize);
+  const cols=['rgba(255,255,255,.7)','rgba(167,139,250,.55)','rgba(6,182,212,.45)','rgba(255,255,255,.35)'];
+  const pts=Array.from({length:130},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.6+.3,op:Math.random()*.4+.06,col:cols[Math.random()*cols.length|0],ph:Math.random()*Math.PI*2,sp:Math.random()*.012+.004}));
+  let fr=0;
+  (function draw(){cx.clearRect(0,0,cv.width,cv.height);fr++;pts.forEach(p=>{p.x=(p.x+p.vx+cv.width)%cv.width;p.y=(p.y+p.vy+cv.height)%cv.height;cx.globalAlpha=p.op*(.35+(Math.sin(fr*p.sp+p.ph)+1)*.325);cx.fillStyle=p.col;cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fill()});cx.globalAlpha=1;requestAnimationFrame(draw)})();
+})();
+
+/* ─── HELPERS ─── */
+const $=id=>document.getElementById(id);
+function vis(id,d=0){setTimeout(()=>{const e=$(id);if(e)e.style.opacity='1'},d)}
+function hide(id){const e=$(id);if(e)e.style.opacity='0'}
+function typeIn(el,text,spd=44,cb){if(!el)return;el.textContent='';let i=0;const t=setInterval(()=>{el.textContent+=text[i++];if(i>=text.length){clearInterval(t);if(cb)cb()}},spd)}
+function countUp(id,target,ms=1400){const el=$(id);if(!el)return;const s=performance.now();(function u(now){const p=Math.min((now-s)/ms,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target);if(p<1)requestAnimationFrame(u)})(s)}
+function setScene(n){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));const s=$('s'+n);if(s)s.classList.add('active');$('scene-indicator').textContent='0'+n+' / 06'}
+function doWipe(cb){const w=$('wipe');w.classList.remove('go');void w.offsetWidth;w.classList.add('go');setTimeout(cb,320);setTimeout(()=>w.classList.remove('go'),680)}
+
+/* ─── NEXUS TREE DATA ─── */
+const nxTree=[
+  {t:'my-app/',c:'cd',cm:''},{t:'  src/',c:'cp',cm:''},
+  {t:'  .nexus/',c:'cn',cm:''},{t:'    docs/',c:'cn',cm:''},
+  {t:'    ├─ 01_vision.md',c:'ca',cm:'← What are we building?'},
+  {t:'    ├─ 02_architecture.md',c:'ca',cm:'← System design'},
+  {t:'    └─ ...08_deployment.md',c:'ca',cm:'← 8 AI-readable docs'},
+  {t:'    ai/instructions.md',c:'cc',cm:'← The AI brain'},
+  {t:'    index.md',c:'cn',cm:'← Project brain'},
+  {t:'    knowledge.md',c:'cm',cm:'← Memory layer'},
+  {t:'  .cursorrules',c:'ct',cm:'← Cursor'},{t:'  AGENTS.md',c:'ct',cm:'← Claude Code'},
+  {t:'  .windsurfrules',c:'ct',cm:'← Windsurf'},
+];
+
+/* ─── ANIMATION TIMELINE ─── */
+let TOs=[],progStart=null,progRaf=null;
+const TOTAL=92000;
+function T(ms,fn){TOs.push(setTimeout(fn,ms))}
+function clearTOs(){TOs.forEach(clearTimeout);TOs=[]}
+
+function scene1(){
+  setScene(1);
+  T(400,()=>$('cw1').style.opacity='1');T(900,()=>typeIn($('q1'),"What's the project architecture?",38));T(2600,()=>$('a1').style.opacity='1');
+  T(1600,()=>$('cw2').style.opacity='1');T(2100,()=>typeIn($('q2'),"How should I name this component?",38));T(3800,()=>$('a2').style.opacity='1');
+  T(3100,()=>$('cw3').style.opacity='1');T(3600,()=>typeIn($('q3'),"What did we decide about routing?",38));T(5200,()=>$('a3').style.opacity='1');
+  T(5900,()=>{[$('cw1'),$('cw2'),$('cw3')].forEach(w=>{if(w){w.style.opacity='.18';w.style.filter='grayscale(1)';w.style.transition='all .6s'}});[$('x1'),$('x2'),$('x3')].forEach(x=>{if(x)x.style.opacity='1'})});
+  T(7000,()=>$('s1c').style.opacity='1');T(7300,()=>$('h1a').style.opacity='1');T(8100,()=>$('h1b').style.opacity='1');T(9000,()=>$('h1s').style.opacity='1');
+}
+function scene2(){
+  setScene(2);
+  T(300,()=>{const g=$('g2');g.style.opacity='1';g.style.transform='scale(1)';g.style.transition='opacity .6s ease,transform .9s cubic-bezier(.34,1.56,.64,1)'});
+  T(1100,()=>vis('s2t'));T(2400,()=>vis('s2b'));T(3700,()=>vis('s2m'));
+}
+function scene3(){
+  setScene(3);
+  const c=$('nxl');c.innerHTML='';
+  nxTree.forEach(item=>{const d=document.createElement('div');d.className='tl '+item.c;d.innerHTML='<span>'+item.t+'</span>'+(item.cm?'<span class="tc">'+item.cm+'</span>':'');c.appendChild(d)});
+  T(300,()=>vis('s3h'));T(700,()=>{vis('s3b');document.querySelectorAll('#s3b .tl').forEach((l,i)=>T(i*80,()=>l.classList.add('on')))});
+  T(1400,()=>vis('s3a'));c.querySelectorAll('.tl').forEach((l,i)=>T(1700+i*140,()=>l.classList.add('on')));
+  T(1700+nxTree.length*140+300,()=>vis('s3ct'));T(3400,()=>{vis('s3to');document.querySelectorAll('#s3to .badge').forEach((b,i)=>{b.style.opacity='0';T(i*180,()=>{b.style.opacity='1';b.style.animation='badgePop .4s ease both'})})});
+}
+function scene4(){
+  setScene(4);
+  T(300,()=>vis('s4h'));T(900,()=>{$('n1').classList.add('on');T(200,()=>$('f1').style.width='100%')});T(1200,()=>vis('cv1'));
+  T(2600,()=>{$('n2').classList.add('on');T(200,()=>$('f2').style.width='100%')});T(2900,()=>vis('cv2'));
+  T(4300,()=>$('n3').classList.add('now'));T(4700,()=>vis('cv3'));
+  T(6000,()=>{vis('s4st');countUp('st1',190,1600);T(300,()=>countUp('st2',6,900));T(600,()=>countUp('st3',4,700));T(900,()=>countUp('st4',5,800))});
+}
+function scene5(){
+  setScene(5);
+  T(400,()=>vis('s5q'));T(1900,()=>vis('s5a'));T(2600,()=>vis('s5sk'));T(3900,()=>vis('s5e'));
+  T(5400,()=>{vis('s5tr');T(600,()=>typeIn($('s5cmd'),'nexus skill new auth-flow',55,()=>{$('s5cur').style.display='none';T(300,()=>$('s5out').style.display='block')}))});
+}
+function scene6(){
+  setScene(6);
+  T(300,()=>vis('s6ow'));T(1400,()=>vis('s6t'));T(2700,()=>vis('s6l'));T(4000,()=>vis('s6q'));
+  T(6000,()=>vis('s6enter'));
+}
+function resetAnim(){
+  clearTOs();if(progRaf)cancelAnimationFrame(progRaf);
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  $('intro-progress').style.width='0%';
+  [$('cw1'),$('cw2'),$('cw3')].forEach(w=>{if(!w)return;w.style.opacity='0';w.style.filter='';});
+  [$('x1'),$('x2'),$('x3')].forEach(x=>{if(x)x.style.opacity='0'});
+  ['q1','q2','q3'].forEach(id=>{const e=$(id);if(e)e.textContent=''});
+  ['a1','a2','a3'].forEach(id=>hide(id));
+  ['s1c','h1a','h1b','h1s','s2t','s2b','s2m','s3h','s3b','s3a','s3ct','s3to','s4h','cv1','cv2','cv3','s4st','s5q','s5a','s5sk','s5e','s5tr','s6ow','s6t','s6l','s6q','s6enter'].forEach(id=>hide(id));
+  const g=$('g2');if(g){g.style.opacity='0';g.style.transform='scale(.4)';g.style.transition=''}
+  ['n1','n2','n3'].forEach(id=>{const e=$(id);if(e){e.classList.remove('on','now')}});
+  ['f1','f2'].forEach(id=>{const e=$(id);if(e)e.style.width='0%'});
+  ['st1','st2','st3','st4'].forEach(id=>{const e=$(id);if(e)e.textContent='0'});
+  const sc=$('s5cmd');if(sc)sc.textContent='';const scur=$('s5cur');if(scur)scur.style.display='inline-block';const so=$('s5out');if(so)so.style.display='none';
+  document.querySelectorAll('.tl').forEach(l=>l.classList.remove('on'));
+}
+function startAnim(){
+  resetAnim();
+  progStart=performance.now();
+  (function tick(){const e=Math.min((performance.now()-progStart)/TOTAL*100,100);$('intro-progress').style.width=e+'%';if(e<100)progRaf=requestAnimationFrame(tick)})(performance.now());
+  T(80,scene1);
+  T(14000,()=>doWipe(scene2));
+  T(30000,()=>doWipe(scene3));
+  T(50000,()=>doWipe(scene4));
+  T(63000,()=>doWipe(scene5));
+  T(82000,()=>doWipe(scene6));
+}
+function enterSite(){
+  clearTOs();if(progRaf)cancelAnimationFrame(progRaf);
+  const overlay=$('intro-overlay');
+  overlay.classList.add('fading');
+  const site=$('main-site');site.style.opacity='1';
+  const nav=$('nav');setTimeout(()=>nav.classList.add('visible'),600);
+  setTimeout(()=>{overlay.style.display='none';document.body.style.overflowY='auto'},950);
+  $('skip-btn').style.display='none';
+  $('intro-progress').style.display='none';
+  $('scene-indicator').style.display='none';
+}
+function skipToEnd(){doWipe(()=>{scene6();T(3000,enterSite)})}
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ─── SCROLL ANIMATIONS ─── */
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('up')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r,.reveal-s').forEach(el=>observer.observe(el));
+
+/* ─── NAV ON SCROLL ─── */
+let siteVisible=false;
+window.addEventListener('scroll',()=>{if(!siteVisible)return;const nav=$('nav');if(window.scrollY>50)nav.classList.add('visible');else nav.classList.remove('visible')});
+
+/* ─── QUICK START TERMINAL ANIMATION ─── */
+const qsLines=['ql1','ql2','ql3','ql4','ql5','ql6','ql7','ql8','ql9','qla','qlb','qlc','qld','qle','qlf','qlg','qlh','qli'];
+let qsPlayed=false;
+const qsObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting&&!qsPlayed){qsPlayed=true;qsLines.forEach((id,i)=>setTimeout(()=>{const l=$(id);if(l)l.classList.add('on')},i*110))}})},{threshold:.3});
+const qt=$('qs-terminal');if(qt)qsObserver.observe(qt);
+
+/* ─── INIT ─── */
+document.body.style.overflowY='hidden';
+addEventListener('load',()=>{
+  siteVisible=false;
+  setTimeout(()=>{startAnim()},400);
+  // Pre-reveal hero elements for after animation
+  document.querySelectorAll('#hero .reveal').forEach(el=>{
+    setTimeout(()=>el.classList.add('up'),200);
+  });
+});
+</script>
+</body>
+</html>
