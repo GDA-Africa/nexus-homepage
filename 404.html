@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — NEXUS CLI</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0d12;--panel:#0e1319;--line:rgba(255,255,255,.14);--ink:#e8edf2;--mut:#8a94a6;--faint:#566070;--mint:#34d399;--mint2:#6ee7b7;--vio2:#b4a7fb;--amber:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px}
+.box{max-width:560px;width:100%}
+.term{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.bar{display:flex;gap:8px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.08);background:#11161d}
+.dot{width:10px;height:10px;border-radius:50%;background:#2a3340}
+.lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mut);margin-left:6px}
+.body{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;padding:22px}
+.p{color:var(--mint)}.c{color:var(--ink)}.o{color:var(--faint)}.e{color:var(--amber)}.s{color:var(--mint2)}
+a{color:var(--mint);text-decoration:none}
+a:hover{text-decoration:underline}
+.caret{display:inline-block;width:7px;height:14px;background:var(--mint);vertical-align:-2px;animation:b .9s steps(1) infinite}
+@keyframes b{50%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="term">
+    <div class="bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="lbl">nexus-brain — drift detected</span></div>
+    <div class="body">
+      <div><span class="p">$</span> <span class="c">nexus doctor --page</span></div>
+      <div><span class="e">⚠ D404</span> <span class="o">— this page does not exist in the brain</span></div>
+      <div><span class="o">  fixHint: the knowledge base suggests one of these:</span></div>
+      <div>  → <a href="/">home</a> <span class="o">· the live MCP session</span></div>
+      <div>  → <a href="/docs">docs</a> <span class="o">· commands &amp; the 13 tools</span></div>
+      <div>  → <a href="https://github.com/GDA-Africa/nexus-cli">github</a> <span class="o">· source &amp; issues</span></div>
+      <div><span class="p">$</span> <span class="caret"></span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
