@@ -1,0 +1,178 @@
+# NEXUS CLI v1.0 — Full Documentation for LLMs and AI Agents
+
+> Complete plain-text reference. NEXUS is an open-source AI-native development
+> framework by GDA Africa (Apache 2.0). It gives every project a structured
+> brain and, since v1.0, serves that brain over MCP as schema-validated tools.
+> Canonical URLs: https://nexus.glenhalton.com (home), /docs.html (docs).
+> Packages: @nexus-framework/cli v1.0.0, @nexus-framework/skills v0.2.0 (npm).
+
+## What NEXUS is
+
+Scaffolding tools generate files; NEXUS generates understanding. `nexus init`
+(new project) or `nexus adopt` (existing project) creates a `.nexus/` directory:
+
+    .nexus/
+    ├─ docs/            # 8 structured docs + the two hot files:
+    │  ├─ index.md      # PROJECT BRAIN — status, backlog, vital signs, progress log
+    │  └─ knowledge.md  # append-only memory — decisions, gotchas, patterns
+    ├─ plans/           # durable multi-step work (+ _active.json pointer)
+    ├─ skills/          # core/ custom/ community/ — how THIS project does things
+    ├─ state/           # session tokens, sensor cache (gitignored)
+    └─ ai/              # master instructions every agent file embeds
+    .mcp.json           # registers the nexus-brain MCP server
+
+The numbered docs (01_vision … 08_deployment) carry YAML frontmatter with
+`status: template | populated`; `nexus upgrade` refreshes template-state files
+and preserves populated ones (the "smart file strategy"). Markdown is the only
+source of truth — no database, no daemon.
+
+## The MCP server (v1.0 headline)
+
+`nexus mcp` starts a stdio MCP server ("nexus-brain"). Generated projects
+register it in `.mcp.json`:
+
+    { "mcpServers": { "nexus-brain": {
+        "command": "npx", "args": ["-y", "@nexus-framework/cli", "mcp"] } } }
+
+Claude Code, Claude Cowork, and OpenAI Codex read .mcp.json automatically;
+Cursor users copy the entry to .cursor/mcp.json. The server is spawned per
+client and exits when the client disconnects. stdout carries only protocol.
+
+### Tools (10 read, 3 write)
+
+nexus_wake (READ) — Session handshake. Returns: deterministic token
+  "NX-WAKE-XXXX-YYYY-MM-DD" (sha256 of index.md + knowledge.md +
+  plans/_active.json + date), activePlan id, activePlanStatus, nextStep
+  (first unchecked step), doctorErrors, doctorWarnings. Echo the token in
+  your first response — `nexus doctor` (check D09) flags sessions without one.
+
+nexus_get_active_plan (READ) — Active plan: full markdown, steps array
+  ({index, checked, text}, 1-based), nextStep. If none: a note suggesting
+  nexus_list_plans or `nexus plan new`.
+
+nexus_query_knowledge (READ) — Args: query (keywords), category
+  (architecture|bug-fix|pattern|package|performance|convention|gotcha|integration),
+  limit (default 10). Returns matching entries newest-first: {category, title,
+  date, body}. Use before architectural decisions and debugging.
+
+nexus_get_vital_signs (READ) — Live sensors: git (branch, dirty, last commit),
+  files (stale folders), tests, packages. Fresher than the cached Vital Signs
+  block in index.md.
+
+nexus_brief (READ) — Args: since (git date expr, default "7 days ago").
+  Returns the markdown status digest (same as `nexus brief --md`).
+
+nexus_doctor (READ) — Args: minSeverity (info|warn|error). Returns findings
+  [{id: D01–D10, severity, description, fixHint}] + summary counts.
+
+nexus_list_plans (READ) — Args: status filter
+  (draft|approved|in_progress|blocked|done|abandoned). Returns plan summaries.
+
+nexus_get_plan (READ) — Args: id. Returns full plan markdown.
+
+nexus_list_skills (READ) — Installed skills across custom/core/community
+  (deduped by precedence custom > core > community) with name, source, title,
+  description, triggers. Match your task against triggers before significant work.
+
+nexus_get_skill (READ) — Args: name. Returns the skill markdown from the
+  highest-precedence directory containing it.
+
+nexus_plan_tick (WRITE) — Args: id, step (1-based), checked (default true).
+  Marks a checklist step; returns nextStep. Out-of-range steps return a clean
+  error. Never hand-edit plan checklists when this tool is available.
+
+nexus_plan_note (WRITE) — Args: id, message. Appends a timestamped note to the
+  plan's Notes section.
+
+nexus_add_knowledge_entry (WRITE) — Args: category (enum above), title, body
+  (1–3 sentences), optional why, howToApply. Appends a formatted entry before
+  the file footer; duplicate category+title is rejected (append-only discipline).
+
+### Recommended agent workflow in a NEXUS project
+
+1. nexus_wake → echo the token in your first response.
+2. nexus_get_active_plan → work the next unchecked step; do NOT re-derive plans.
+3. nexus_query_knowledge before decisions/debugging; nexus_list_skills →
+   nexus_get_skill for task-matched how-to instructions.
+4. During work: nexus_plan_tick / nexus_plan_note.
+5. After non-obvious discoveries: nexus_add_knowledge_entry.
+6. Without MCP: read .nexus/docs/index.md and .nexus/docs/knowledge.md before
+   every task; update them after; never delete knowledge entries (append-only).
+
+## CLI commands (16)
+
+Project setup:
+- nexus init [name] — interactive scaffold: strategy questions (project type,
+  data strategy, framework, patterns, persona), full toolchain, brain, skills,
+  .mcp.json, CI. Flags: --local, --adopt.
+- nexus adopt [path] — add brain + AI config to an existing project; never
+  touches source code. Flag: --force.
+- nexus upgrade [path] — regenerate templates; preserves populated docs, plans,
+  state (smart file strategy).
+- nexus repair [path] — fix missing/corrupted .nexus files only.
+
+Alive brain:
+- nexus mcp [path] — start the brain MCP server (stdio).
+- nexus wake [--quiet] [--no-active-plan] — handshake token; recorded in
+  .nexus/state/session.json.
+- nexus sync [--dry-run] [--json] [--scope] — run sensors, write the Vital
+  Signs block (idempotent, fenced by NEXUS:VITAL_SIGNS comments).
+- nexus plan new|list|show|start|tick|note|done — durable plans; lifecycle
+  draft → approved → in_progress → blocked|done|abandoned; `done` auto-appends
+  to the index Progress Log. Templates: feature|bug|refactor|spike|chore.
+- nexus doctor [--severity] [--fix] — 10 drift checks D01–D10 (placeholders,
+  stale phase, progress gap, knowledge bloat/staleness, stale/orphan plans,
+  missing vital signs, missed handshake, skills drift). CI exit codes.
+- nexus brief [--md] [--since] — ~30-line digest: vital signs, drift, plans,
+  shipped commits, suggested next actions.
+- nexus consolidate [--check] [--archive] — generates knowledge-summary.md
+  grouped by category; --check is a CI gate; deterministic, no LLM.
+- nexus brain status|check — health dashboard; auto-invoke layer prompts when
+  the brain needs sync/doctor.
+
+Skills:
+- nexus skill list | registry [--framework] | new [name] | install <pkg> |
+  remove <name> | status. Directories: custom/ (sacred, never touched),
+  core/ (framework-matched, refreshed on upgrade), community/ (installed).
+  Precedence: custom > core > community. Registry fetched live from npm.
+
+Maintenance:
+- nexus pack / nexus unpack — zip/restore .nexus/ backups.
+- nexus update — self-update from npm.
+
+## Brain-aware CI (deterministic)
+
+Generated GitHub Actions workflows include:
+- A PR job that runs `nexus sync` + `nexus brief --md` and upserts ONE sticky
+  PR comment (marker <!-- nexus-brain-brief -->) so reviewers see brain state
+  next to the diff. Non-blocking.
+- A doctor gate: `nexus doctor --severity=error` fails the build on drift
+  errors; warnings never block.
+No LLM dependency anywhere in this tier.
+
+## Skills registry (@nexus-framework/skills v0.2.0)
+
+Skills are markdown files with YAML frontmatter (skill, version, framework,
+category, triggers[], status) and fixed sections: When to Read This, Context,
+Steps, Patterns We Use, Anti-Patterns, Example, Validation. New in v0.2.0:
+nexus-mcp-usage, nexus-plans-workflow, brain-aware-ci (shared). Coverage:
+20 shared skills; next.js (8) and react-vite (12) complete; sveltekit/nuxt/
+astro/remix/go/python/rust have starter sets. Programmatic API:
+getSkillPath/getSkillContent/listSkills/listFrameworks. The registry is
+directory-driven; publishing to npm ships skills to all projects immediately.
+
+## Versions & history
+
+v0.1 (Feb 2026) Genesis: init/adopt, 6 frameworks (Next.js 15, React 19 + Vite,
+SvelteKit 2, Nuxt 3, Astro 5, Remix 2), toolchain, CI templates.
+v0.2 (Feb 2026) Intelligence: 8-doc system, project brain, knowledge base,
+agent personas. v0.3 (Mar 2026) Skills: live registry, skill command.
+v0.4 (May 2026) Alive Brain: sync, plan, doctor, brief, auto-invoke.
+v1.0 (Jun 2026) MCP: nexus mcp server (13 tools), wake + consolidate,
+brain-aware CI, generated .mcp.json + CLAUDE.md, 419 tests.
+
+## Requirements & license
+
+Node.js >= 20. TypeScript strict, ESM only. Apache 2.0. By GDA Africa
+(https://gdaafrica.org). Source: https://github.com/GDA-Africa/nexus-cli and
+https://github.com/GDA-Africa/nexus-skills.
