@@ -58,6 +58,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);ba
 .nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px;border:1px solid var(--mint);border-radius:8px;color:var(--mint)!important;transition:background .2s}
 .nav-cta:hover{background:var(--mintbg)}
 @media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
+@media(max-width:480px){
+  .nav-cta{font-size:10.5px;padding:6px 10px}
+  .hero{padding:110px 0 56px;gap:32px}
+  section{padding:64px 0}
+  .term-body{height:320px;font-size:11px}
+  .stats{gap:20px}
+  .qs-body{font-size:11px}
+  .tool-view pre{font-size:10.5px;padding:14px}
+}
 
 /* ── hero ── */
 .hero{padding:140px 0 80px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
@@ -136,11 +145,13 @@ h2 em{font-style:normal;color:var(--mint)}
 .duo-card li b{color:var(--ink)}
 
 /* tools grid */
-.tools-wrap{display:grid;grid-template-columns:380px 1fr;gap:22px;margin-top:44px;align-items:start}
+.tools-wrap{display:grid;grid-template-columns:minmax(0,460px) minmax(0,1fr);gap:22px;margin-top:44px;align-items:start}
 @media(max-width:900px){.tools-wrap{grid-template-columns:1fr}}
-.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.tool{font-family:var(--mono);font-size:11.5px;padding:11px 13px;border:1px solid var(--line);border-radius:9px;color:var(--mut);cursor:pointer;transition:all .25s;background:var(--panel);display:flex;align-items:center;gap:8px}
-.tool .rw{font-size:8.5px;letter-spacing:1px;margin-left:auto;color:var(--faint)}
+.tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+@media(max-width:380px){.tools-grid{grid-template-columns:1fr}}
+.tool{font-family:var(--mono);font-size:11px;padding:11px 12px;border:1px solid var(--line);border-radius:9px;color:var(--mut);cursor:pointer;transition:all .25s;background:var(--panel);display:flex;align-items:center;gap:8px;min-width:0}
+.tool .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tool .rw{font-size:8.5px;letter-spacing:1px;margin-left:auto;color:var(--faint);flex-shrink:0}
 .tool:hover{border-color:var(--line2);color:var(--ink)}
 .tool.on{border-color:var(--mint);color:var(--mint2);background:var(--mintbg);box-shadow:0 0 24px rgba(52,211,153,.08)}
 .tool.on .rw{color:var(--mint)}
@@ -176,7 +187,8 @@ h2 em{font-style:normal;color:var(--mint)}
 /* anatomy tree */
 .anatomy{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:44px;align-items:center}
 @media(max-width:840px){.anatomy{grid-template-columns:1fr}}
-.tree{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:22px;font-family:var(--mono);font-size:12.5px;line-height:2;white-space:pre}
+.tree{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:22px;font-family:var(--mono);font-size:12.5px;line-height:2;white-space:pre;overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:480px){.tree{font-size:10.5px;padding:14px}}
 .tree .d{color:var(--vio2)}.tree .f{color:var(--mut)}.tree .hot{color:var(--mint2)}
 .tree .note{color:var(--faint);font-size:10.5px}
 .an-points{display:flex;flex-direction:column;gap:18px}
@@ -502,8 +514,8 @@ function showTool(i){
   [...grid.children].forEach((c,j)=>c.classList.toggle('on',j===i));
 }
 TOOLS.forEach((t,i)=>{
-  const b=document.createElement('div');b.className='tool';
-  b.innerHTML=t[0]+'<span class="rw">'+(t[1]==='R'?'READ':'WRITE')+'</span>';
+  const b=document.createElement('div');b.className='tool';b.title=t[0];
+  b.innerHTML='<span class="nm">'+t[0]+'</span><span class="rw">'+(t[1]==='R'?'READ':'WRITE')+'</span>';
   b.onclick=()=>{pinned=i;clearInterval(cycleTimer);showTool(i)};
   grid.appendChild(b);
 });
