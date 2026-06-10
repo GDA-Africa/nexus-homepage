@@ -24,7 +24,7 @@ zip -r "$ZIP_NAME" . \
   -x "index.html.old" -x "*-legacy.html"
 
 echo "Contents:"
-unzip -l "$ZIP_NAME" | tail -n +4 | head -n -2
+zipinfo -1 "$ZIP_NAME"
 
 # ── 2. Transfer ───────────────────────────────────────────────────────────────
 echo "Transferring $ZIP_NAME to $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH"
