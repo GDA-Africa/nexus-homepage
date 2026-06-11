@@ -68,7 +68,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);ba
 .nav-links a.here{color:var(--mint)}
 .nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px;border:1px solid var(--mint);border-radius:8px;color:var(--mint)!important}
 .nav-cta:hover{background:var(--mintbg)}
-@media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
+.menu-btn:hover{border-color:var(--mint);color:var(--mint)}
+@media(max-width:720px){
+  .menu-btn{display:block}
+  .nav-links{display:none;position:fixed;top:57px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 24px 18px;background:rgba(10,13,18,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  body.nav-open .nav-links{display:flex}
+  .nav-links a{display:block!important;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
+  .nav-links a:last-child{border-bottom:none}
+  .nav-links a.nav-cta{border:1px solid var(--mint);padding:10px 14px;text-align:center;margin-top:8px}
+}
+
 
 /* full-screen hero demo */
 .stage{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:110px 0 60px}
@@ -153,6 +163,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <nav>
   <div class="nav-in">
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="nav-links">
       <a href="/mcp" class="here">MCP</a>
       <a href="/agents">Agents</a>
@@ -268,6 +279,9 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+/* mobile menu */
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
+
 
 /* ════ two-worlds demo ════ */
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;

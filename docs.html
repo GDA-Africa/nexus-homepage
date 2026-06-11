@@ -43,6 +43,16 @@ nav.top{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px
 .top-links{margin-left:auto;display:flex;gap:18px}
 .top-links a{font-size:13px;color:var(--mut)}
 .top-links a:hover{color:var(--ink);text-decoration:none}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
+.menu-btn:hover{border-color:var(--mint);color:var(--mint)}
+@media(max-width:720px){
+  .menu-btn{display:block}
+  .top-links{display:none;position:fixed;top:53px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 24px 18px;background:rgba(10,13,18,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  body.nav-open .top-links{display:flex}
+  .top-links a{display:block;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
+  .top-links a:last-child{border-bottom:none}
+}
+
 
 .layout{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;padding:96px 24px 80px}
 @media(max-width:880px){.layout{grid-template-columns:1fr;padding-top:84px}}
@@ -95,6 +105,7 @@ footer a{color:var(--mut)}
   <div class="top-in">
     <a class="logo" href="index.html"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
     <span class="crumb">/ docs / v1.1.0</span>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="top-links">
       <a href="index.html">Home</a>
       <a href="/mcp">MCP</a>
@@ -362,6 +373,8 @@ const sio=new IntersectionObserver(es=>{
     links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));});
 },{rootMargin:'-20% 0px -70% 0px'});
 secs.forEach(s=>sio.observe(s));
+/* mobile menu */
+document.querySelectorAll('.top-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
 </script>
 </body>
 </html>
