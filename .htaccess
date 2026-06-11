@@ -1,113 +1,89 @@
 # ══════════════════════════════════════════════════════════════════
 #  NEXUS CLI — nexus.glenhalton.com
-#  Apache .htaccess for cPanel shared hosting
-#  Sections: hardening · canonical host · clean URLs · MIME ·
-#            compression · caching · security headers · errors
+#  Apache/LiteSpeed .htaccess — conservative shared-hosting build.
+#  Every module-dependent block is guarded; no Options overrides that
+#  some cPanel configs reject; no DOCUMENT_ROOT assumptions.
 # ══════════════════════════════════════════════════════════════════
 
-# ── Basics ──────────────────────────────────────────────────────────
-Options -Indexes -MultiViews
-ServerSignature Off
 AddDefaultCharset UTF-8
-FileETag None
+DirectoryIndex index.html
 
-# ── Hardening: block everything that should never be public ───────
-# Hidden files & directories (.git, .nexus, .vscode, dotfiles like
-# .clinerules/.cursorrules/.windsurfrules) — but allow ACME challenges.
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteRule ^\.well-known/ - [L]
-  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+# ── Hardening ───────────────────────────────────────────────────────
+# Block dotfiles/dirs (.git, .nexus, .htaccess itself, editor configs)
+<IfModule mod_alias.c>
+  RedirectMatch 404 (^|/)\.(?!well-known)
 </IfModule>
 
-# Deploy artifacts, backups, source-ish files
-<FilesMatch "(?i)\.(sh|zip|tar|gz|bak|old|log|sql|env|ini|lock|yml|yaml)$">
+# Deploy artifacts, backups, agent/config files — never serve
+<FilesMatch "(?i)\.(sh|zip|tar|gz|bak|old|log|sql|ini|lock|yml|yaml|md)$">
   Require all denied
 </FilesMatch>
-<FilesMatch "(?i)^(deploy\.sh|nexus\.zip|index\.html\.old|.*-legacy\.html|AGENTS\.md|copilot-instructions\.md|NEXUS_CLI_README\.md)$">
+<FilesMatch "(?i)-legacy\.html$">
   Require all denied
 </FilesMatch>
 
-# ── Canonical host: force HTTPS + strip www ────────────────────────
+# ── Rewrites ────────────────────────────────────────────────────────
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # https://www.x → https://x  and  http://anything → https://x
-  RewriteCond %{HTTPS} !=on [OR]
-  RewriteCond %{HTTP_HOST} ^www\. [NC]
-  RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+  # Force HTTPS (preserve the original Host so local or alternate hosts are not forced to the
+  # canonical production host). This uses the request Host header instead of a hard-coded
+  # domain. If you *do* want to force a single canonical host in production, change the
+  # target to https://nexus.glenhalton.com%{REQUEST_URI} (but keep it guarded behind an env
+  # or deploy-time replace to avoid breaking local/testing).
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Strip www (preserve Host). This removes a leading www. while keeping the current Host
+  # value (so www.example.com -> https://example.com). Note: some setups prefer a single
+  # canonical host — change if needed.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
-  # ── Clean URLs ───────────────────────────────────────────────────
-  # /docs → /docs.html (pretty URL, no redirect)
+  # /docs → docs.html (internal, no redirect)
   RewriteRule ^docs/?$ docs.html [L]
 
-  # /<page> → /<page>.html when the file exists (future-proof)
-  RewriteCond %{REQUEST_FILENAME} !-d
+  # Extensionless pages: /<page> → <page>.html when it exists.
+  # REQUEST_FILENAME resolves correctly per-directory on cPanel
+  # (DOCUMENT_ROOT does not, on many subdomain setups).
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-  RewriteRule ^([^./]+)/?$ $1.html [L]
-
-  # Legacy entry points → canonical pages (301 keeps old links alive)
-  RewriteRule ^index\.html$ / [R=301,L]
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+?)/?$ $1.html [L]
 </IfModule>
 
-# ── MIME types ──────────────────────────────────────────────────────
+# ── MIME ────────────────────────────────────────────────────────────
 <IfModule mod_mime.c>
-  AddType image/svg+xml                 .svg
-  AddType application/manifest+json     .webmanifest
-  AddType font/woff2                    .woff2
-  AddCharset UTF-8 .html .css .js .svg .txt .xml .json .md
+  AddType image/svg+xml .svg
+  AddCharset UTF-8 .html .css .js .svg .txt .xml .json
 </IfModule>
 
-# ── Compression (gzip via mod_deflate; brotli if the host has it) ──
-<IfModule mod_brotli.c>
-  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml application/javascript application/json image/svg+xml
-</IfModule>
+# ── Compression ─────────────────────────────────────────────────────
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml application/javascript application/json application/xml image/svg+xml
-  # Ancient proxies/browsers
-  BrowserMatch ^Mozilla/4 gzip-only-text/html
-  BrowserMatch ^Mozilla/4\.0[678] no-gzip
 </IfModule>
 
 # ── Caching ─────────────────────────────────────────────────────────
-# HTML: 1 hour + revalidate (the pages change with releases).
-# llms.txt / robots / sitemap: 1 day. Static assets: 30 days.
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresDefault                        "access plus 1 hour"
-  ExpiresByType text/html               "access plus 1 hour"
-  ExpiresByType text/plain              "access plus 1 day"
-  ExpiresByType application/xml         "access plus 1 day"
-  ExpiresByType text/xml                "access plus 1 day"
-  ExpiresByType image/svg+xml           "access plus 30 days"
-  ExpiresByType image/x-icon            "access plus 30 days"
-  ExpiresByType font/woff2              "access plus 365 days"
-  ExpiresByType text/css                "access plus 7 days"
-  ExpiresByType application/javascript  "access plus 7 days"
+  ExpiresByType text/html              "access plus 1 hour"
+  ExpiresByType text/plain             "access plus 1 day"
+  ExpiresByType application/xml        "access plus 1 day"
+  ExpiresByType text/xml               "access plus 1 day"
+  ExpiresByType image/svg+xml          "access plus 30 days"
+  ExpiresByType image/x-icon           "access plus 30 days"
+  ExpiresByType text/css               "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
 </IfModule>
-<IfModule mod_headers.c>
-  <FilesMatch "\.(html)$">
-    Header set Cache-Control "public, max-age=3600, must-revalidate"
-  </FilesMatch>
-  <FilesMatch "\.(svg|ico|woff2)$">
-    Header set Cache-Control "public, max-age=2592000, immutable"
-  </FilesMatch>
-  <FilesMatch "\.(txt|xml)$">
-    Header set Cache-Control "public, max-age=86400"
-  </FilesMatch>
 
 # ── Security headers ────────────────────────────────────────────────
-  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+<IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
-  Header always set Cross-Origin-Opener-Policy "same-origin"
-  # CSP: single-file pages use inline <style>/<script>; fonts from Google.
-  Header always set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
-  # No caching surprises across the canonical redirect
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
   Header always unset X-Powered-By
 </IfModule>
 

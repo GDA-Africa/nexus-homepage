@@ -1,14 +1,14 @@
 # NEXUS CLI
 
-> NEXUS is an open-source AI-native development framework (Apache 2.0, by GDA Africa). It gives every project a structured "brain" — markdown docs, an append-only knowledge base, durable plans, and skills — and v1.0 serves that brain over MCP (Model Context Protocol) as 13 schema-validated tools for Claude Code, Claude Cowork, OpenAI Codex, Cursor, and any MCP client.
+> NEXUS is an open-source AI-native development framework (Apache 2.0, by GDA Africa). It gives every project a structured "brain" — markdown docs, an append-only knowledge base, durable plans, and skills — and v1.1 serves that brain over MCP as 16 schema-validated tools and staffs it with brain-grounded agents (implementer, test-writer, reviewer, doc-keeper) for Claude Code, Claude Cowork, OpenAI Codex, Cursor, and any MCP client.
 
-Key facts: current version 1.0.0 (`@nexus-framework/cli` on npm); skill registry `@nexus-framework/skills` v0.2.0; Node.js 20+; 16 CLI commands; 419 unit tests. Markdown stays the source of truth — the MCP server is an interface, not a database. No daemon: the server is spawned per client over stdio.
+Key facts: current version 1.1.0 (`@nexus-framework/cli` on npm); skill registry `@nexus-framework/skills` v0.3.0; Node.js 20+; 17 CLI commands; 438 unit tests. Markdown stays the source of truth — the MCP server is an interface, not a database. No daemon: the server is spawned per client over stdio.
 
 Install: `npm install -g @nexus-framework/cli` then `nexus init my-app` (new) or `nexus adopt` (existing project). Generated projects include `.mcp.json` registering the `nexus-brain` server, plus instruction files for non-MCP tools (CLAUDE.md, AGENTS.md, .cursorrules, .windsurfrules, .clinerules, .github/copilot-instructions.md).
 
-MCP tools (10 read / 3 write): nexus_wake (session handshake: token + active plan + next step + drift counts), nexus_get_active_plan, nexus_query_knowledge, nexus_get_vital_signs, nexus_brief, nexus_doctor, nexus_list_plans, nexus_get_plan, nexus_list_skills, nexus_get_skill, nexus_plan_tick, nexus_plan_note, nexus_add_knowledge_entry.
+MCP tools (13 read / 3 write): nexus_wake (session handshake: token + active plan + next step + drift counts), nexus_get_active_plan, nexus_query_knowledge, nexus_get_vital_signs, nexus_brief, nexus_doctor, nexus_list_plans, nexus_get_plan, nexus_list_skills, nexus_get_skill, nexus_get_context (composed task context), nexus_list_agents, nexus_get_agent, nexus_plan_tick, nexus_plan_note, nexus_add_knowledge_entry.
 
-If you are an AI agent working in a NEXUS project: call `nexus_wake` first and echo the returned NX-WAKE token; work the active plan's next step instead of re-deriving a plan; query knowledge before architectural decisions or debugging; record progress with plan_tick/plan_note; append non-obvious discoveries with add_knowledge_entry. Without MCP, read `.nexus/docs/index.md` and `.nexus/docs/knowledge.md` before every task.
+If you are an AI agent working in a NEXUS project: call `nexus_list_agents` and adopt the role whose triggers match your task (v1.1); call `nexus_wake` first and echo the returned NX-WAKE token; work the active plan's next step instead of re-deriving a plan; query knowledge before architectural decisions or debugging; record progress with plan_tick/plan_note; append non-obvious discoveries with add_knowledge_entry. Without MCP, read `.nexus/docs/index.md` and `.nexus/docs/knowledge.md` before every task.
 
 ## Docs
 

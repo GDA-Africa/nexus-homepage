@@ -1,10 +1,10 @@
-# NEXUS CLI v1.0 — Full Documentation for LLMs and AI Agents
+# NEXUS CLI v1.1 — Full Documentation for LLMs and AI Agents
 
 > Complete plain-text reference. NEXUS is an open-source AI-native development
 > framework by GDA Africa (Apache 2.0). It gives every project a structured
 > brain and, since v1.0, serves that brain over MCP as schema-validated tools.
 > Canonical URLs: https://nexus.glenhalton.com (home), /docs.html (docs).
-> Packages: @nexus-framework/cli v1.0.0, @nexus-framework/skills v0.2.0 (npm).
+> Packages: @nexus-framework/cli v1.1.0, @nexus-framework/skills v0.3.0 (npm).
 
 ## What NEXUS is
 
@@ -38,7 +38,7 @@ Claude Code, Claude Cowork, and OpenAI Codex read .mcp.json automatically;
 Cursor users copy the entry to .cursor/mcp.json. The server is spawned per
 client and exits when the client disconnects. stdout carries only protocol.
 
-### Tools (10 read, 3 write)
+### Tools (13 read, 3 write)
 
 nexus_wake (READ) — Session handshake. Returns: deterministic token
   "NX-WAKE-XXXX-YYYY-MM-DD" (sha256 of index.md + knowledge.md +
@@ -77,6 +77,17 @@ nexus_list_skills (READ) — Installed skills across custom/core/community
 nexus_get_skill (READ) — Args: name. Returns the skill markdown from the
   highest-precedence directory containing it.
 
+nexus_get_context (READ) — v1.1 keystone. Args: task, agent?, maxChars?.
+  Composes ONE scoped pack: active plan slice, top-5 matching knowledge
+  entries, trigger-matched skills, vitals digest, and (when agent named)
+  the docs from its context recipe. Deterministic, budget-capped.
+
+nexus_list_agents (READ) — v1.1. Agent roles in .nexus/agents/ (precedence
+  custom > core > community) with role, status, triggers.
+
+nexus_get_agent (READ) — v1.1. Args: name. One agent definition: context
+  recipe, least-privilege tool allowlist, working agreement.
+
 nexus_plan_tick (WRITE) — Args: id, step (1-based), checked (default true).
   Marks a checklist step; returns nextStep. Out-of-range steps return a clean
   error. Never hand-edit plan checklists when this tool is available.
@@ -99,7 +110,24 @@ nexus_add_knowledge_entry (WRITE) — Args: category (enum above), title, body
 6. Without MCP: read .nexus/docs/index.md and .nexus/docs/knowledge.md before
    every task; update them after; never delete knowledge entries (append-only).
 
-## CLI commands (16)
+## Agents (v1.1 headline)
+
+.nexus/agents/ holds brain-grounded role definitions (same ownership model
+as skills: core regenerated / custom SACRED / community installable). The
+core four: nexus-implementer (works the active plan), nexus-test-writer
+(verification keystone — detects test setup via sensors, writes tests
+matching 06_test_strategy.md, ASKS before scaffolding test infra, records
+waivers), nexus-reviewer (cites recorded conventions; read-only), and
+nexus-doc-keeper (brain hygiene). Generated as Claude Code subagents in
+.claude/agents/; degraded to "Agent Roles" tables in instruction files.
+Manage with `nexus agent list|new|install|remove|status|sync`.
+
+Verification gate: doctor D11 "Unverified Done" flags done plans whose
+Evidence section lacks test results or an explicit waiver; `nexus plan done`
+warns on empty evidence. If you are an agent: match your task against agent
+triggers (nexus_list_agents) and adopt the matching working agreement.
+
+## CLI commands (17)
 
 Project setup:
 - nexus init [name] — interactive scaffold: strategy questions (project type,
@@ -120,7 +148,8 @@ Alive brain:
 - nexus plan new|list|show|start|tick|note|done — durable plans; lifecycle
   draft → approved → in_progress → blocked|done|abandoned; `done` auto-appends
   to the index Progress Log. Templates: feature|bug|refactor|spike|chore.
-- nexus doctor [--severity] [--fix] — 10 drift checks D01–D10 (placeholders,
+- nexus agent list|new|install|remove|status|sync — v1.1 agent management.
+- nexus doctor [--severity] [--fix] — 11 drift checks D01–D11 (placeholders,
   stale phase, progress gap, knowledge bloat/staleness, stale/orphan plans,
   missing vital signs, missed handshake, skills drift). CI exit codes.
 - nexus brief [--md] [--since] — ~30-line digest: vital signs, drift, plans,
@@ -168,8 +197,10 @@ SvelteKit 2, Nuxt 3, Astro 5, Remix 2), toolchain, CI templates.
 v0.2 (Feb 2026) Intelligence: 8-doc system, project brain, knowledge base,
 agent personas. v0.3 (Mar 2026) Skills: live registry, skill command.
 v0.4 (May 2026) Alive Brain: sync, plan, doctor, brief, auto-invoke.
-v1.0 (Jun 2026) MCP: nexus mcp server (13 tools), wake + consolidate,
-brain-aware CI, generated .mcp.json + CLAUDE.md, 419 tests.
+v1.0 (Jun 2026) MCP: nexus mcp server, wake + consolidate, brain-aware CI,
+generated .mcp.json + CLAUDE.md. v1.1 (Jun 2026) Contextualized Agents:
+.nexus/agents/ core four, nexus_get_context, D11 verification gate, upgrade
+data-loss fix (preserve-by-default + automatic backups), 438 tests.
 
 ## Requirements & license
 

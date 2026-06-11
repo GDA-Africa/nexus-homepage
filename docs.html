@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS CLI Documentation — Commands, MCP Tools, Brain & Skills</title>
-<meta name="description" content="Complete NEXUS CLI v1.0 documentation: all 16 commands, the 13 MCP brain tools, the .nexus brain anatomy, skills system, brain-aware CI, and upgrade guide.">
+<meta name="description" content="Complete NEXUS CLI v1.1 documentation: all 17 commands, the 16 MCP brain tools, the agents system, the .nexus brain anatomy, skills system, brain-aware CI, and upgrade guide.">
 <link rel="canonical" href="https://nexus.glenhalton.com/docs.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/docs.html">
 <meta property="og:title" content="NEXUS CLI Documentation">
-<meta property="og:description" content="All 16 commands, 13 MCP brain tools, skills, and brain-aware CI — the complete v1.0 reference.">
+<meta property="og:description" content="All 17 commands, 16 MCP brain tools, agents, skills, and brain-aware CI — the complete v1.1 reference.">
 <meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -94,7 +94,7 @@ footer a{color:var(--mut)}
 <nav class="top">
   <div class="top-in">
     <a class="logo" href="index.html"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
-    <span class="crumb">/ docs / v1.0.0</span>
+    <span class="crumb">/ docs / v1.1.0</span>
     <div class="top-links">
       <a href="index.html">Home</a>
       <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
@@ -110,7 +110,7 @@ footer a{color:var(--mut)}
   <a href="#quickstart">Quick start</a>
   <div class="side-sec">MCP Server</div>
   <a href="#mcp">nexus mcp</a>
-  <a href="#mcp-tools">The 13 tools</a>
+  <a href="#mcp-tools">The 16 tools</a>
   <a href="#mcp-clients">Client setup</a>
   <div class="side-sec">Commands</div>
   <a href="#cmd-project">Project setup</a>
@@ -122,15 +122,16 @@ footer a{color:var(--mut)}
   <a href="#plans">Plans</a>
   <a href="#knowledge">Knowledge base</a>
   <a href="#skills">Skills system</a>
+  <a href="#agents">Agents (v1.1)</a>
   <a href="#ci">Brain-aware CI</a>
   <div class="side-sec">More</div>
-  <a href="#upgrade">Upgrading to v1.0</a>
+  <a href="#upgrade">Upgrading to v1.x</a>
   <a href="#frameworks">Frameworks</a>
 </aside>
 
 <article>
-  <h1>NEXUS CLI <em>v1.0</em> documentation</h1>
-  <p class="intro">Everything in one page: the MCP server, all 16 commands, and the concepts behind the project brain. <span class="mono" style="font-size:12px;color:var(--faint)">⌘F is your friend.</span></p>
+  <h1>NEXUS CLI <em>v1.1</em> documentation</h1>
+  <p class="intro">Everything in one page: the MCP server, the agents system, all 17 commands, and the concepts behind the project brain. <span class="mono" style="font-size:12px;color:var(--faint)">⌘F is your friend.</span></p>
 
   <!-- ════ START ════ -->
   <section id="install">
@@ -165,7 +166,7 @@ footer a{color:var(--mut)}
   </section>
 
   <section id="mcp-tools">
-    <h2>The 13 tools</h2>
+    <h2>The 16 tools</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Tool</th><th></th><th>What it does</th></tr>
       <tr><td>nexus_wake</td><td><span class="r">READ</span></td><td>Session handshake: deterministic <span class="mono">NX-WAKE-…</span> token + active plan + next step + doctor warn/error counts, in one call. Echo the token in your first response.</td></tr>
@@ -173,11 +174,14 @@ footer a{color:var(--mut)}
       <tr><td>nexus_query_knowledge</td><td><span class="r">READ</span></td><td>Targeted retrieval over <span class="mono">knowledge.md</span> — keyword + category filters, newest first. The 2 relevant gotchas, not 200 lines.</td></tr>
       <tr><td>nexus_get_vital_signs</td><td><span class="r">READ</span></td><td>Live repo sensors: git (branch, dirty, last commit), files, tests, packages. Fresher than the cached block in index.md.</td></tr>
       <tr><td>nexus_brief</td><td><span class="r">READ</span></td><td>Markdown status digest — same output as <span class="mono">nexus brief --md</span>.</td></tr>
-      <tr><td>nexus_doctor</td><td><span class="r">READ</span></td><td>D01–D10 drift report with severity filter.</td></tr>
+      <tr><td>nexus_doctor</td><td><span class="r">READ</span></td><td>D01–D11 drift report with severity filter.</td></tr>
       <tr><td>nexus_list_plans</td><td><span class="r">READ</span></td><td>All plans with status, owner, phase; optional status filter.</td></tr>
       <tr><td>nexus_get_plan</td><td><span class="r">READ</span></td><td>Full markdown of one plan by id.</td></tr>
       <tr><td>nexus_list_skills</td><td><span class="r">READ</span></td><td>Installed skills across custom/core/community with triggers — match your task before significant work.</td></tr>
       <tr><td>nexus_get_skill</td><td><span class="r">READ</span></td><td>One skill's markdown, honoring custom &gt; core &gt; community precedence.</td></tr>
+      <tr><td>nexus_get_context</td><td><span class="r">READ</span></td><td><b>v1.1.</b> ONE composed context pack per task: active plan slice + matching knowledge + trigger-matched skills + vitals digest + agent-recipe docs. Deterministic, budget-capped.</td></tr>
+      <tr><td>nexus_list_agents</td><td><span class="r">READ</span></td><td><b>v1.1.</b> List brain-grounded agent roles (custom &gt; core &gt; community) with triggers.</td></tr>
+      <tr><td>nexus_get_agent</td><td><span class="r">READ</span></td><td><b>v1.1.</b> One agent definition: context recipe, tool allowlist, working agreement.</td></tr>
       <tr><td>nexus_plan_tick</td><td><span class="w">WRITE</span></td><td>Mark a checklist step done (1-based index) or reopen it. Out-of-range steps return a clean error — never a corrupt file.</td></tr>
       <tr><td>nexus_plan_note</td><td><span class="w">WRITE</span></td><td>Append a timestamped note to a plan's Notes section.</td></tr>
       <tr><td>nexus_add_knowledge_entry</td><td><span class="w">WRITE</span></td><td>Append a validated entry (category, title, 1–3 sentence body, optional why/how-to-apply). Duplicates rejected — append-only stays clean.</td></tr>
@@ -212,10 +216,11 @@ footer a{color:var(--mut)}
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td>nexus mcp [path]</td><td>Start the brain MCP server (stdio). See <a href="#mcp">above</a>.</td></tr>
+      <tr><td>nexus agent &lt;sub&gt;</td><td><b>v1.1.</b> Manage brain-grounded agents: <span class="mono">list · new · install · remove · status · sync</span>. See <a href="#agents">Agents</a>.</td></tr>
       <tr><td>nexus wake [--quiet]</td><td>Issue the session handshake token (<span class="mono">NX-WAKE-XXXX-date</span>, derived from brain content + date). Recorded in <span class="mono">.nexus/state/session.json</span>; doctor D09 flags sessions without one. <span class="mono">--quiet</span> prints only the token, <span class="mono">--no-active-plan</span> for CI.</td></tr>
       <tr><td>nexus sync [--dry-run|--json]</td><td>Run repo sensors and write the Vital Signs block into <span class="mono">index.md</span>. Idempotent — safe to run in CI before doctor/brief. <span class="mono">--scope git|files|tests|packages</span> limits JSON output.</td></tr>
       <tr><td>nexus plan &lt;sub&gt;</td><td>Durable multi-step work: <span class="mono">new</span> (with --type feature|bug|refactor|spike|chore), <span class="mono">list</span>, <span class="mono">show</span>, <span class="mono">start</span>, <span class="mono">tick &lt;id&gt; &lt;step&gt;</span>, <span class="mono">note</span>, <span class="mono">done</span> (auto-appends to the Progress Log). Lifecycle: draft → approved → in_progress → blocked|done|abandoned.</td></tr>
-      <tr><td>nexus doctor [--severity] [--fix]</td><td>10 drift checks (D01–D10): unresolved placeholders, stale phase, progress gaps, knowledge bloat &amp; staleness, stale/orphan plans, missing vital signs, missed handshakes, skills drift. CI-friendly exit codes.</td></tr>
+      <tr><td>nexus doctor [--severity] [--fix]</td><td>11 drift checks (D01–D11): unresolved placeholders, stale phase, progress gaps, knowledge bloat &amp; staleness, stale/orphan plans, missing vital signs, missed handshakes, skills drift. CI-friendly exit codes.</td></tr>
       <tr><td>nexus brief [--md] [--since]</td><td>~30-line status digest: vital signs, drift, plans, shipped commits, suggested next actions. <span class="mono">--md</span> powers the CI PR comment.</td></tr>
       <tr><td>nexus consolidate [--check|--archive]</td><td>Memory hygiene: generates <span class="mono">knowledge-summary.md</span> grouped by category. <span class="mono">--check</span> is a CI gate; <span class="mono">--archive</span> moves year-old entries aside. Deterministic — no LLM.</td></tr>
       <tr><td>nexus brain &lt;status|check&gt;</td><td>Health dashboard + on-demand drift detection. The auto-invoke layer uses the same detector to prompt you when the brain needs attention.</td></tr>
@@ -287,6 +292,23 @@ footer a{color:var(--mut)}
     <p>v0.2.0 of the registry ships the MCP-era skills: <span class="mono">nexus-mcp-usage</span>, <span class="mono">nexus-plans-workflow</span>, and <span class="mono">brain-aware-ci</span>.</p>
   </section>
 
+  <section id="agents">
+    <h2>Agents <span class="chip">v1.1 HEADLINE</span></h2>
+    <p>Brain-grounded role definitions in <span class="mono">.nexus/agents/</span> — same ownership model as skills (core regenerated / <b>custom sacred</b> / community installable, precedence custom &gt; core &gt; community). Each agent carries a context recipe (docs, knowledge categories, skills, plan scope), a least-privilege MCP tool allowlist, and a handoff contract. Generated as Claude Code subagents in <span class="mono">.claude/agents/</span>; everywhere else, a fenced "Agent Roles" table in the instruction files. Regenerate outputs with <span class="mono">nexus agent sync</span>.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Agent</th><th>Role</th><th>Mission</th></tr>
+      <tr><td>nexus-implementer</td><td>build</td><td>Works the active plan's next step. Never re-derives an existing plan.</td></tr>
+      <tr><td>nexus-test-writer</td><td>verification</td><td>The keystone: detects test setup via sensors; writes tests matching <span class="mono">06_test_strategy.md</span>; <b>asks before scaffolding test infra</b> (never silent); records waivers visibly. Verifies other agents' work, never its own.</td></tr>
+      <tr><td>nexus-reviewer</td><td>review</td><td>Reviews against recorded conventions, citing knowledge entries. Read-only tool allowlist.</td></tr>
+      <tr><td>nexus-doc-keeper</td><td>hygiene</td><td>Progress log, knowledge entries, doctor triage. The brain stays truthful.</td></tr>
+    </table></div>
+    <h3>The verification gate (D11)</h3>
+    <p>Plans marked <span class="mono">done</span> must carry test evidence or an explicit waiver in their Evidence section — doctor check <b>D11 "Unverified Done"</b> flags violations, and <span class="mono">nexus plan done</span> warns on empty evidence. Completion without verification is visible, not impossible.</p>
+    <div class="code"><span class="p">$</span> <span class="c">nexus agent list</span>
+<span class="p">$</span> <span class="c">nexus agent new migration-runner</span>   <span class="o"># custom/ — sacred, overrides core by name</span>
+<span class="p">$</span> <span class="c">nexus agent sync</span>                    <span class="o"># regenerate .claude/agents/ + Agent Roles blocks</span></div>
+  </section>
+
   <section id="ci">
     <h2>Brain-aware CI</h2>
     <p>Generated workflows include a deterministic brain layer — no LLM anywhere:</p>
@@ -299,7 +321,7 @@ footer a{color:var(--mut)}
 
   <!-- ════ MORE ════ -->
   <section id="upgrade">
-    <h2>Upgrading to v1.0</h2>
+    <h2>Upgrading to v1.x</h2>
     <div class="code"><span class="p">$</span> <span class="c">npm install -g @nexus-framework/cli@latest</span>
 <span class="p">$</span> <span class="c">cd your-project && nexus upgrade</span></div>
     <ul class="plain">
