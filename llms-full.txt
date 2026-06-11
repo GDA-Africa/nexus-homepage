@@ -1,4 +1,4 @@
-# NEXUS CLI v1.1 — Full Documentation for LLMs and AI Agents
+# NEXUS CLI v1.1. Full Documentation for LLMs and AI Agents
 
 > Complete plain-text reference. NEXUS is an open-source AI-native development
 > framework by GDA Africa (Apache 2.0). It gives every project a structured
@@ -13,10 +13,10 @@ Scaffolding tools generate files; NEXUS generates understanding. `nexus init`
 
     .nexus/
     ├─ docs/            # 8 structured docs + the two hot files:
-    │  ├─ index.md      # PROJECT BRAIN — status, backlog, vital signs, progress log
-    │  └─ knowledge.md  # append-only memory — decisions, gotchas, patterns
+    │  ├─ index.md      # PROJECT BRAIN, status, backlog, vital signs, progress log
+    │  └─ knowledge.md  # append-only memory, decisions, gotchas, patterns
     ├─ plans/           # durable multi-step work (+ _active.json pointer)
-    ├─ skills/          # core/ custom/ community/ — how THIS project does things
+    ├─ skills/          # core/ custom/ community/, how THIS project does things
     ├─ state/           # session tokens, sensor cache (gitignored)
     └─ ai/              # master instructions every agent file embeds
     .mcp.json           # registers the nexus-brain MCP server
@@ -24,7 +24,7 @@ Scaffolding tools generate files; NEXUS generates understanding. `nexus init`
 The numbered docs (01_vision … 08_deployment) carry YAML frontmatter with
 `status: template | populated`; `nexus upgrade` refreshes template-state files
 and preserves populated ones (the "smart file strategy"). Markdown is the only
-source of truth — no database, no daemon.
+source of truth, no database, no daemon.
 
 ## The MCP server (v1.0 headline)
 
@@ -40,62 +40,62 @@ client and exits when the client disconnects. stdout carries only protocol.
 
 ### Tools (13 read, 3 write)
 
-nexus_wake (READ) — Session handshake. Returns: deterministic token
+nexus_wake (READ): Session handshake. Returns: deterministic token
   "NX-WAKE-XXXX-YYYY-MM-DD" (sha256 of index.md + knowledge.md +
   plans/_active.json + date), activePlan id, activePlanStatus, nextStep
   (first unchecked step), doctorErrors, doctorWarnings. Echo the token in
-  your first response — `nexus doctor` (check D09) flags sessions without one.
+  your first response, `nexus doctor` (check D09) flags sessions without one.
 
-nexus_get_active_plan (READ) — Active plan: full markdown, steps array
+nexus_get_active_plan (READ): Active plan: full markdown, steps array
   ({index, checked, text}, 1-based), nextStep. If none: a note suggesting
   nexus_list_plans or `nexus plan new`.
 
-nexus_query_knowledge (READ) — Args: query (keywords), category
+nexus_query_knowledge (READ): Args: query (keywords), category
   (architecture|bug-fix|pattern|package|performance|convention|gotcha|integration),
   limit (default 10). Returns matching entries newest-first: {category, title,
   date, body}. Use before architectural decisions and debugging.
 
-nexus_get_vital_signs (READ) — Live sensors: git (branch, dirty, last commit),
+nexus_get_vital_signs (READ): Live sensors: git (branch, dirty, last commit),
   files (stale folders), tests, packages. Fresher than the cached Vital Signs
   block in index.md.
 
-nexus_brief (READ) — Args: since (git date expr, default "7 days ago").
+nexus_brief (READ): Args: since (git date expr, default "7 days ago").
   Returns the markdown status digest (same as `nexus brief --md`).
 
-nexus_doctor (READ) — Args: minSeverity (info|warn|error). Returns findings
+nexus_doctor (READ): Args: minSeverity (info|warn|error). Returns findings
   [{id: D01–D10, severity, description, fixHint}] + summary counts.
 
-nexus_list_plans (READ) — Args: status filter
+nexus_list_plans (READ): Args: status filter
   (draft|approved|in_progress|blocked|done|abandoned). Returns plan summaries.
 
-nexus_get_plan (READ) — Args: id. Returns full plan markdown.
+nexus_get_plan (READ): Args: id. Returns full plan markdown.
 
-nexus_list_skills (READ) — Installed skills across custom/core/community
+nexus_list_skills (READ): Installed skills across custom/core/community
   (deduped by precedence custom > core > community) with name, source, title,
   description, triggers. Match your task against triggers before significant work.
 
-nexus_get_skill (READ) — Args: name. Returns the skill markdown from the
+nexus_get_skill (READ): Args: name. Returns the skill markdown from the
   highest-precedence directory containing it.
 
-nexus_get_context (READ) — v1.1 keystone. Args: task, agent?, maxChars?.
+nexus_get_context (READ): v1.1 keystone. Args: task, agent?, maxChars?.
   Composes ONE scoped pack: active plan slice, top-5 matching knowledge
   entries, trigger-matched skills, vitals digest, and (when agent named)
   the docs from its context recipe. Deterministic, budget-capped.
 
-nexus_list_agents (READ) — v1.1. Agent roles in .nexus/agents/ (precedence
+nexus_list_agents (READ): v1.1. Agent roles in .nexus/agents/ (precedence
   custom > core > community) with role, status, triggers.
 
-nexus_get_agent (READ) — v1.1. Args: name. One agent definition: context
+nexus_get_agent (READ): v1.1. Args: name. One agent definition: context
   recipe, least-privilege tool allowlist, working agreement.
 
-nexus_plan_tick (WRITE) — Args: id, step (1-based), checked (default true).
+nexus_plan_tick (WRITE): Args: id, step (1-based), checked (default true).
   Marks a checklist step; returns nextStep. Out-of-range steps return a clean
   error. Never hand-edit plan checklists when this tool is available.
 
-nexus_plan_note (WRITE) — Args: id, message. Appends a timestamped note to the
+nexus_plan_note (WRITE): Args: id, message. Appends a timestamped note to the
   plan's Notes section.
 
-nexus_add_knowledge_entry (WRITE) — Args: category (enum above), title, body
+nexus_add_knowledge_entry (WRITE): Args: category (enum above), title, body
   (1–3 sentences), optional why, howToApply. Appends a formatted entry before
   the file footer; duplicate category+title is rejected (append-only discipline).
 
@@ -115,7 +115,7 @@ nexus_add_knowledge_entry (WRITE) — Args: category (enum above), title, body
 .nexus/agents/ holds brain-grounded role definitions (same ownership model
 as skills: core regenerated / custom SACRED / community installable). The
 core four: nexus-implementer (works the active plan), nexus-test-writer
-(verification keystone — detects test setup via sensors, writes tests
+(verification keystone, detects test setup via sensors, writes tests
 matching 06_test_strategy.md, ASKS before scaffolding test infra, records
 waivers), nexus-reviewer (cites recorded conventions; read-only), and
 nexus-doc-keeper (brain hygiene). Generated as Claude Code subagents in
@@ -130,33 +130,33 @@ triggers (nexus_list_agents) and adopt the matching working agreement.
 ## CLI commands (17)
 
 Project setup:
-- nexus init [name] — interactive scaffold: strategy questions (project type,
+- nexus init [name]: interactive scaffold: strategy questions (project type,
   data strategy, framework, patterns, persona), full toolchain, brain, skills,
   .mcp.json, CI. Flags: --local, --adopt.
-- nexus adopt [path] — add brain + AI config to an existing project; never
+- nexus adopt [path]: add brain + AI config to an existing project; never
   touches source code. Flag: --force.
-- nexus upgrade [path] — regenerate templates; preserves populated docs, plans,
+- nexus upgrade [path]: regenerate templates; preserves populated docs, plans,
   state (smart file strategy).
-- nexus repair [path] — fix missing/corrupted .nexus files only.
+- nexus repair [path]: fix missing/corrupted .nexus files only.
 
 Alive brain:
-- nexus mcp [path] — start the brain MCP server (stdio).
-- nexus wake [--quiet] [--no-active-plan] — handshake token; recorded in
+- nexus mcp [path]: start the brain MCP server (stdio).
+- nexus wake [--quiet] [--no-active-plan]: handshake token; recorded in
   .nexus/state/session.json.
-- nexus sync [--dry-run] [--json] [--scope] — run sensors, write the Vital
+- nexus sync [--dry-run] [--json] [--scope]: run sensors, write the Vital
   Signs block (idempotent, fenced by NEXUS:VITAL_SIGNS comments).
-- nexus plan new|list|show|start|tick|note|done — durable plans; lifecycle
+- nexus plan new|list|show|start|tick|note|done: durable plans; lifecycle
   draft → approved → in_progress → blocked|done|abandoned; `done` auto-appends
   to the index Progress Log. Templates: feature|bug|refactor|spike|chore.
-- nexus agent list|new|install|remove|status|sync — v1.1 agent management.
-- nexus doctor [--severity] [--fix] — 11 drift checks D01–D11 (placeholders,
+- nexus agent list|new|install|remove|status|sync: v1.1 agent management.
+- nexus doctor [--severity] [--fix]: 11 drift checks D01–D11 (placeholders,
   stale phase, progress gap, knowledge bloat/staleness, stale/orphan plans,
   missing vital signs, missed handshake, skills drift). CI exit codes.
-- nexus brief [--md] [--since] — ~30-line digest: vital signs, drift, plans,
+- nexus brief [--md] [--since]: ~30-line digest: vital signs, drift, plans,
   shipped commits, suggested next actions.
-- nexus consolidate [--check] [--archive] — generates knowledge-summary.md
+- nexus consolidate [--check] [--archive]: generates knowledge-summary.md
   grouped by category; --check is a CI gate; deterministic, no LLM.
-- nexus brain status|check — health dashboard; auto-invoke layer prompts when
+- nexus brain status|check: health dashboard; auto-invoke layer prompts when
   the brain needs sync/doctor.
 
 Skills:
@@ -166,8 +166,8 @@ Skills:
   Precedence: custom > core > community. Registry fetched live from npm.
 
 Maintenance:
-- nexus pack / nexus unpack — zip/restore .nexus/ backups.
-- nexus update — self-update from npm.
+- nexus pack / nexus unpack: zip/restore .nexus/ backups.
+- nexus update: self-update from npm.
 
 ## Brain-aware CI (deterministic)
 

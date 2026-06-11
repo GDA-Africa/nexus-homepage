@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS CLI Documentation — Commands, MCP Tools, Brain & Skills</title>
+<title>NEXUS CLI Documentation: Commands, MCP Tools, Brain & Skills</title>
 <meta name="description" content="Complete NEXUS CLI v1.1 documentation: all 17 commands, the 16 MCP brain tools, the agents system, the .nexus brain anatomy, skills system, brain-aware CI, and upgrade guide.">
 <link rel="canonical" href="https://nexus.glenhalton.com/docs.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/docs.html">
 <meta property="og:title" content="NEXUS CLI Documentation">
-<meta property="og:description" content="All 17 commands, 16 MCP brain tools, agents, skills, and brain-aware CI — the complete v1.1 reference.">
+<meta property="og:description" content="All 17 commands, 16 MCP brain tools, agents, skills, and brain-aware CI, the complete v1.1 reference.">
 <meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -147,7 +147,7 @@ footer a{color:var(--mut)}
   <section id="quickstart">
     <h2>Quick start</h2>
     <div class="code"><span class="p">$</span> <span class="c">nexus init my-app</span>      <span class="o"># new project, interactive setup</span>
-<span class="p">$</span> <span class="c">cd my-app && claude</span>     <span class="o"># or codex / cursor — .mcp.json is already there</span>
+<span class="p">$</span> <span class="c">cd my-app && claude</span>     <span class="o"># or codex / cursor, .mcp.json is already there</span>
 <span class="o">› agent calls nexus_wake → NX-WAKE-7K9F-2026-06-10</span>
 <span class="o">› "Synced with the brain. What are we building?"</span></div>
     <p>Already have a project? <span class="mono" style="color:var(--mint2)">nexus adopt</span> adds the brain without touching your source code.</p>
@@ -162,7 +162,7 @@ footer a{color:var(--mut)}
 } }</div>
     <ul class="plain">
       <li><b>No daemon, no database.</b> The server is spawned per client over stdio and exits when the client disconnects. Markdown in <span class="mono">.nexus/</span> stays the only source of truth.</li>
-      <li><b>Validated writes.</b> Write tools reuse the same parser/lifecycle layer as the CLI — malformed plan frontmatter becomes impossible, not just detectable.</li>
+      <li><b>Validated writes.</b> Write tools reuse the same parser/lifecycle layer as the CLI, malformed plan frontmatter becomes impossible, not just detectable.</li>
       <li><b>Protocol-clean stdout.</b> Auto-invoke prompts and update banners are bypassed for this command.</li>
     </ul>
   </section>
@@ -173,27 +173,27 @@ footer a{color:var(--mut)}
       <tr><th>Tool</th><th></th><th>What it does</th></tr>
       <tr><td>nexus_wake</td><td><span class="r">READ</span></td><td>Session handshake: deterministic <span class="mono">NX-WAKE-…</span> token + active plan + next step + doctor warn/error counts, in one call. Echo the token in your first response.</td></tr>
       <tr><td>nexus_get_active_plan</td><td><span class="r">READ</span></td><td>The current unit of work: full plan markdown, checklist with indices, next unchecked step.</td></tr>
-      <tr><td>nexus_query_knowledge</td><td><span class="r">READ</span></td><td>Targeted retrieval over <span class="mono">knowledge.md</span> — keyword + category filters, newest first. The 2 relevant gotchas, not 200 lines.</td></tr>
+      <tr><td>nexus_query_knowledge</td><td><span class="r">READ</span></td><td>Targeted retrieval over <span class="mono">knowledge.md</span>, keyword + category filters, newest first. The 2 relevant gotchas, not 200 lines.</td></tr>
       <tr><td>nexus_get_vital_signs</td><td><span class="r">READ</span></td><td>Live repo sensors: git (branch, dirty, last commit), files, tests, packages. Fresher than the cached block in index.md.</td></tr>
-      <tr><td>nexus_brief</td><td><span class="r">READ</span></td><td>Markdown status digest — same output as <span class="mono">nexus brief --md</span>.</td></tr>
+      <tr><td>nexus_brief</td><td><span class="r">READ</span></td><td>Markdown status digest, same output as <span class="mono">nexus brief --md</span>.</td></tr>
       <tr><td>nexus_doctor</td><td><span class="r">READ</span></td><td>D01–D11 drift report with severity filter.</td></tr>
       <tr><td>nexus_list_plans</td><td><span class="r">READ</span></td><td>All plans with status, owner, phase; optional status filter.</td></tr>
       <tr><td>nexus_get_plan</td><td><span class="r">READ</span></td><td>Full markdown of one plan by id.</td></tr>
-      <tr><td>nexus_list_skills</td><td><span class="r">READ</span></td><td>Installed skills across custom/core/community with triggers — match your task before significant work.</td></tr>
+      <tr><td>nexus_list_skills</td><td><span class="r">READ</span></td><td>Installed skills across custom/core/community with triggers, match your task before significant work.</td></tr>
       <tr><td>nexus_get_skill</td><td><span class="r">READ</span></td><td>One skill's markdown, honoring custom &gt; core &gt; community precedence.</td></tr>
       <tr><td>nexus_get_context</td><td><span class="r">READ</span></td><td><b>v1.1.</b> ONE composed context pack per task: active plan slice + matching knowledge + trigger-matched skills + vitals digest + agent-recipe docs. Deterministic, budget-capped.</td></tr>
       <tr><td>nexus_list_agents</td><td><span class="r">READ</span></td><td><b>v1.1.</b> List brain-grounded agent roles (custom &gt; core &gt; community) with triggers.</td></tr>
       <tr><td>nexus_get_agent</td><td><span class="r">READ</span></td><td><b>v1.1.</b> One agent definition: context recipe, tool allowlist, working agreement.</td></tr>
-      <tr><td>nexus_plan_tick</td><td><span class="w">WRITE</span></td><td>Mark a checklist step done (1-based index) or reopen it. Out-of-range steps return a clean error — never a corrupt file.</td></tr>
+      <tr><td>nexus_plan_tick</td><td><span class="w">WRITE</span></td><td>Mark a checklist step done (1-based index) or reopen it. Out-of-range steps return a clean error, never a corrupt file.</td></tr>
       <tr><td>nexus_plan_note</td><td><span class="w">WRITE</span></td><td>Append a timestamped note to a plan's Notes section.</td></tr>
-      <tr><td>nexus_add_knowledge_entry</td><td><span class="w">WRITE</span></td><td>Append a validated entry (category, title, 1–3 sentence body, optional why/how-to-apply). Duplicates rejected — append-only stays clean.</td></tr>
+      <tr><td>nexus_add_knowledge_entry</td><td><span class="w">WRITE</span></td><td>Append a validated entry (category, title, 1–3 sentence body, optional why/how-to-apply). Duplicates rejected, append-only stays clean.</td></tr>
     </table></div>
   </section>
 
   <section id="mcp-clients">
     <h2>Client setup</h2>
     <h3>Claude Code / Claude Cowork / OpenAI Codex</h3>
-    <p>Nothing to do — both read the generated <span class="mono">.mcp.json</span> at the project root.</p>
+    <p>Nothing to do, both read the generated <span class="mono">.mcp.json</span> at the project root.</p>
     <h3>Cursor</h3>
     <p>Copy the same server entry into <span class="mono">.cursor/mcp.json</span> (project) or <span class="mono">~/.cursor/mcp.json</span> (global).</p>
     <h3>Anything else that speaks MCP</h3>
@@ -203,7 +203,7 @@ footer a{color:var(--mut)}
 
   <!-- ════ COMMANDS ════ -->
   <section id="cmd-project">
-    <h2>Commands — project setup</h2>
+    <h2>Commands, project setup</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td>nexus init [name]</td><td>Scaffold a new project: interactive strategy questions, framework templates, full <span class="mono">.nexus/</span> brain, skills, <span class="mono">.mcp.json</span>, CI workflow, agent instruction files. <span class="mono">--local</span> keeps .nexus out of git; <span class="mono">--adopt</span> is shorthand for adopt.</td></tr>
@@ -214,28 +214,28 @@ footer a{color:var(--mut)}
   </section>
 
   <section id="cmd-brain">
-    <h2>Commands — alive brain</h2>
+    <h2>Commands, alive brain</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td>nexus mcp [path]</td><td>Start the brain MCP server (stdio). See <a href="#mcp">above</a>.</td></tr>
       <tr><td>nexus agent &lt;sub&gt;</td><td><b>v1.1.</b> Manage brain-grounded agents: <span class="mono">list · new · install · remove · status · sync</span>. See <a href="#agents">Agents</a>.</td></tr>
       <tr><td>nexus wake [--quiet]</td><td>Issue the session handshake token (<span class="mono">NX-WAKE-XXXX-date</span>, derived from brain content + date). Recorded in <span class="mono">.nexus/state/session.json</span>; doctor D09 flags sessions without one. <span class="mono">--quiet</span> prints only the token, <span class="mono">--no-active-plan</span> for CI.</td></tr>
-      <tr><td>nexus sync [--dry-run|--json]</td><td>Run repo sensors and write the Vital Signs block into <span class="mono">index.md</span>. Idempotent — safe to run in CI before doctor/brief. <span class="mono">--scope git|files|tests|packages</span> limits JSON output.</td></tr>
+      <tr><td>nexus sync [--dry-run|--json]</td><td>Run repo sensors and write the Vital Signs block into <span class="mono">index.md</span>. Idempotent, safe to run in CI before doctor/brief. <span class="mono">--scope git|files|tests|packages</span> limits JSON output.</td></tr>
       <tr><td>nexus plan &lt;sub&gt;</td><td>Durable multi-step work: <span class="mono">new</span> (with --type feature|bug|refactor|spike|chore), <span class="mono">list</span>, <span class="mono">show</span>, <span class="mono">start</span>, <span class="mono">tick &lt;id&gt; &lt;step&gt;</span>, <span class="mono">note</span>, <span class="mono">done</span> (auto-appends to the Progress Log). Lifecycle: draft → approved → in_progress → blocked|done|abandoned.</td></tr>
       <tr><td>nexus doctor [--severity] [--fix]</td><td>11 drift checks (D01–D11): unresolved placeholders, stale phase, progress gaps, knowledge bloat &amp; staleness, stale/orphan plans, missing vital signs, missed handshakes, skills drift. CI-friendly exit codes.</td></tr>
       <tr><td>nexus brief [--md] [--since]</td><td>~30-line status digest: vital signs, drift, plans, shipped commits, suggested next actions. <span class="mono">--md</span> powers the CI PR comment.</td></tr>
-      <tr><td>nexus consolidate [--check|--archive]</td><td>Memory hygiene: generates <span class="mono">knowledge-summary.md</span> grouped by category. <span class="mono">--check</span> is a CI gate; <span class="mono">--archive</span> moves year-old entries aside. Deterministic — no LLM.</td></tr>
+      <tr><td>nexus consolidate [--check|--archive]</td><td>Memory hygiene: generates <span class="mono">knowledge-summary.md</span> grouped by category. <span class="mono">--check</span> is a CI gate; <span class="mono">--archive</span> moves year-old entries aside. Deterministic, no LLM.</td></tr>
       <tr><td>nexus brain &lt;status|check&gt;</td><td>Health dashboard + on-demand drift detection. The auto-invoke layer uses the same detector to prompt you when the brain needs attention.</td></tr>
     </table></div>
   </section>
 
   <section id="cmd-skills">
-    <h2>Commands — skills</h2>
+    <h2>Commands, skills</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td>nexus skill list</td><td>All installed skills (core / custom / community) with status.</td></tr>
-      <tr><td>nexus skill registry</td><td>Browse <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">@nexus-framework/skills</a> live from npm — new skills appear without a CLI update. <span class="mono">--framework</span> filters.</td></tr>
-      <tr><td>nexus skill new [name]</td><td>Scaffold a custom skill in <span class="mono">custom/</span> — yours, sacred, never touched by NEXUS.</td></tr>
+      <tr><td>nexus skill registry</td><td>Browse <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">@nexus-framework/skills</a> live from npm, new skills appear without a CLI update. <span class="mono">--framework</span> filters.</td></tr>
+      <tr><td>nexus skill new [name]</td><td>Scaffold a custom skill in <span class="mono">custom/</span>, yours, sacred, never touched by NEXUS.</td></tr>
       <tr><td>nexus skill install &lt;pkg&gt;</td><td>Install a community skill pack into <span class="mono">community/</span>.</td></tr>
       <tr><td>nexus skill remove &lt;name&gt;</td><td>Remove a community skill (refuses core/custom).</td></tr>
       <tr><td>nexus skill status</td><td>Health-check: missing core skills, invalid frontmatter, deprecations.</td></tr>
@@ -243,7 +243,7 @@ footer a{color:var(--mut)}
   </section>
 
   <section id="cmd-maint">
-    <h2>Commands — maintenance</h2>
+    <h2>Commands, maintenance</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td>nexus pack [path]</td><td>Zip <span class="mono">.nexus/</span> into a portable <span class="mono">nexus-backup-&lt;timestamp&gt;.zip</span>.</td></tr>
@@ -255,21 +255,21 @@ footer a{color:var(--mut)}
   <!-- ════ CONCEPTS ════ -->
   <section id="brain">
     <h2>The brain</h2>
-    <p>Every NEXUS project carries a <span class="mono">.nexus/</span> directory — the brain. It is plain markdown: readable by humans, diffable in git, callable through MCP.</p>
+    <p>Every NEXUS project carries a <span class="mono">.nexus/</span> directory, the brain. It is plain markdown: readable by humans, diffable in git, callable through MCP.</p>
     <div class="code"><span class="k">.nexus/</span>
 ├─ <span class="k">docs/</span>            <span class="cm"># 8 structured docs + the two hot files:</span>
-│  ├─ <span class="s">index.md</span>      <span class="cm"># PROJECT BRAIN — status, backlog, vital signs, progress log</span>
-│  └─ <span class="s">knowledge.md</span>  <span class="cm"># append-only memory — decisions, gotchas, patterns</span>
+│  ├─ <span class="s">index.md</span>      <span class="cm"># PROJECT BRAIN, status, backlog, vital signs, progress log</span>
+│  └─ <span class="s">knowledge.md</span>  <span class="cm"># append-only memory, decisions, gotchas, patterns</span>
 ├─ <span class="k">plans/</span>           <span class="cm"># durable multi-step work (+ _active.json pointer)</span>
-├─ <span class="k">skills/</span>          <span class="cm"># core/ custom/ community/ — how YOUR project does things</span>
+├─ <span class="k">skills/</span>          <span class="cm"># core/ custom/ community/, how YOUR project does things</span>
 ├─ <span class="k">state/</span>           <span class="cm"># session tokens, sensor cache (gitignored)</span>
 └─ <span class="k">ai/</span>              <span class="cm"># master instructions every agent file embeds</span></div>
-    <p>The numbered docs (01_vision → 08_deployment) use YAML frontmatter with a <span class="mono">status</span> field — <span class="mono">template</span> vs <span class="mono">populated</span> — which is how <span class="mono">nexus upgrade</span> knows what to refresh and what to preserve.</p>
+    <p>The numbered docs (01_vision → 08_deployment) use YAML frontmatter with a <span class="mono">status</span> field. <span class="mono">template</span> vs <span class="mono">populated</span>, which is how <span class="mono">nexus upgrade</span> knows what to refresh and what to preserve.</p>
   </section>
 
   <section id="plans">
     <h2>Plans</h2>
-    <p>Plans are the unit of multi-step work: markdown files in <span class="mono">.nexus/plans/&lt;id&gt;.md</span> with frontmatter (id, title, status) and sections (Goal, Why, Acceptance Criteria, Steps, Notes, Evidence). They survive across sessions — agents resume instead of re-deriving.</p>
+    <p>Plans are the unit of multi-step work: markdown files in <span class="mono">.nexus/plans/&lt;id&gt;.md</span> with frontmatter (id, title, status) and sections (Goal, Why, Acceptance Criteria, Steps, Notes, Evidence). They survive across sessions, agents resume instead of re-deriving.</p>
     <div class="code"><span class="p">$</span> <span class="c">nexus plan new "Add OAuth" --type=feature</span>
 <span class="p">$</span> <span class="c">nexus plan start add-oauth</span>
 <span class="p">$</span> <span class="c">nexus plan tick add-oauth 2</span>     <span class="o"># or nexus_plan_tick via MCP</span>
@@ -279,24 +279,24 @@ footer a{color:var(--mut)}
 
   <section id="knowledge">
     <h2>Knowledge base</h2>
-    <p><span class="mono">knowledge.md</span> is append-only project memory. Entries are headed <span class="mono">### [category] Title</span> with categories: architecture, bug-fix, pattern, package, performance, convention, gotcha, integration. Agents scan it before decisions and write to it after discoveries — via <span class="mono">nexus_query_knowledge</span> / <span class="mono">nexus_add_knowledge_entry</span> in v1.0.</p>
-    <p><span class="mono">nexus consolidate</span> keeps it useful past 200 entries by generating a categorized summary layer — the raw log is never edited or deleted.</p>
+    <p><span class="mono">knowledge.md</span> is append-only project memory. Entries are headed <span class="mono">### [category] Title</span> with categories: architecture, bug-fix, pattern, package, performance, convention, gotcha, integration. Agents scan it before decisions and write to it after discoveries, via <span class="mono">nexus_query_knowledge</span> / <span class="mono">nexus_add_knowledge_entry</span> in v1.0.</p>
+    <p><span class="mono">nexus consolidate</span> keeps it useful past 200 entries by generating a categorized summary layer, the raw log is never edited or deleted.</p>
   </section>
 
   <section id="skills">
     <h2>Skills system</h2>
-    <p>Skills are pre-read instruction files that teach agents <b>how this project does things</b> — patterns, anti-patterns, validation steps. Three directories, strict precedence:</p>
+    <p>Skills are pre-read instruction files that teach agents <b>how this project does things</b>, patterns, anti-patterns, validation steps. Three directories, strict precedence:</p>
     <ul class="plain">
-      <li><b>custom/</b> — yours, created with <span class="mono">nexus skill new</span>. Sacred: never touched by upgrades.</li>
-      <li><b>core/</b> — framework-matched, sourced from the registry, refreshed on upgrade.</li>
-      <li><b>community/</b> — installed packs, reinstallable.</li>
+      <li><b>custom/</b>, yours, created with <span class="mono">nexus skill new</span>. Sacred: never touched by upgrades.</li>
+      <li><b>core/</b>, framework-matched, sourced from the registry, refreshed on upgrade.</li>
+      <li><b>community/</b>, installed packs, reinstallable.</li>
     </ul>
     <p>v0.2.0 of the registry ships the MCP-era skills: <span class="mono">nexus-mcp-usage</span>, <span class="mono">nexus-plans-workflow</span>, and <span class="mono">brain-aware-ci</span>.</p>
   </section>
 
   <section id="agents">
     <h2>Agents <span class="chip">v1.1 HEADLINE</span></h2>
-    <p>Brain-grounded role definitions in <span class="mono">.nexus/agents/</span> — same ownership model as skills (core regenerated / <b>custom sacred</b> / community installable, precedence custom &gt; core &gt; community). Each agent carries a context recipe (docs, knowledge categories, skills, plan scope), a least-privilege MCP tool allowlist, and a handoff contract. Generated as Claude Code subagents in <span class="mono">.claude/agents/</span>; everywhere else, a fenced "Agent Roles" table in the instruction files. Regenerate outputs with <span class="mono">nexus agent sync</span>.</p>
+    <p>Brain-grounded role definitions in <span class="mono">.nexus/agents/</span>, same ownership model as skills (core regenerated / <b>custom sacred</b> / community installable, precedence custom &gt; core &gt; community). Each agent carries a context recipe (docs, knowledge categories, skills, plan scope), a least-privilege MCP tool allowlist, and a handoff contract. Generated as Claude Code subagents in <span class="mono">.claude/agents/</span>; everywhere else, a fenced "Agent Roles" table in the instruction files. Regenerate outputs with <span class="mono">nexus agent sync</span>.</p>
     <div class="tbl-wrap"><table>
       <tr><th>Agent</th><th>Role</th><th>Mission</th></tr>
       <tr><td>nexus-implementer</td><td>build</td><td>Works the active plan's next step. Never re-derives an existing plan.</td></tr>
@@ -305,15 +305,15 @@ footer a{color:var(--mut)}
       <tr><td>nexus-doc-keeper</td><td>hygiene</td><td>Progress log, knowledge entries, doctor triage. The brain stays truthful.</td></tr>
     </table></div>
     <h3>The verification gate (D11)</h3>
-    <p>Plans marked <span class="mono">done</span> must carry test evidence or an explicit waiver in their Evidence section — doctor check <b>D11 "Unverified Done"</b> flags violations, and <span class="mono">nexus plan done</span> warns on empty evidence. Completion without verification is visible, not impossible.</p>
+    <p>Plans marked <span class="mono">done</span> must carry test evidence or an explicit waiver in their Evidence section, doctor check <b>D11 "Unverified Done"</b> flags violations, and <span class="mono">nexus plan done</span> warns on empty evidence. Completion without verification is visible, not impossible.</p>
     <div class="code"><span class="p">$</span> <span class="c">nexus agent list</span>
-<span class="p">$</span> <span class="c">nexus agent new migration-runner</span>   <span class="o"># custom/ — sacred, overrides core by name</span>
+<span class="p">$</span> <span class="c">nexus agent new migration-runner</span>   <span class="o"># custom/, sacred, overrides core by name</span>
 <span class="p">$</span> <span class="c">nexus agent sync</span>                    <span class="o"># regenerate .claude/agents/ + Agent Roles blocks</span></div>
   </section>
 
   <section id="ci">
     <h2>Brain-aware CI</h2>
-    <p>Generated workflows include a deterministic brain layer — no LLM anywhere:</p>
+    <p>Generated workflows include a deterministic brain layer, no LLM anywhere:</p>
     <ul class="plain">
       <li><b>Brief PR comments:</b> on every pull request, CI runs <span class="mono">nexus sync</span> + <span class="mono">nexus brief --md</span> and upserts one sticky comment (marker <span class="mono">&lt;!-- nexus-brain-brief --&gt;</span>) so reviewers see brain state next to the diff.</li>
       <li><b>Doctor gate:</b> <span class="mono">nexus doctor --severity=error</span> fails the build on drift errors; warnings inform but never block.</li>
@@ -329,7 +329,7 @@ footer a{color:var(--mut)}
     <ul class="plain">
       <li>Adds <span class="mono">.nexus/state/</span>, <span class="mono">.mcp.json</span>, and the MCP + handshake sections to your instruction files.</li>
       <li><b>Nothing is lost:</b> populated docs, knowledge, plans, and session state are always preserved.</li>
-      <li>New commands are no-ops until you use them — v0.3.x/v0.4.x projects keep working as-is.</li>
+      <li>New commands are no-ops until you use them, v0.3.x/v0.4.x projects keep working as-is.</li>
     </ul>
   </section>
 

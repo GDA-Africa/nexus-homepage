@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What are AI Agents? — NEXUS Contextualized Agents, Demoed Live</title>
-<meta name="description" content="AI agents explained — and how NEXUS v1.1 makes them brain-grounded: four specialized roles (implementer, test-writer, reviewer, doc-keeper) orchestrated over MCP, with a verification gate so no work completes untested.">
+<title>What are AI Agents? NEXUS Contextualized Agents, Demoed Live</title>
+<meta name="description" content="AI agents explained, and how NEXUS v1.1 makes them brain-grounded: four specialized roles (implementer, test-writer, reviewer, doc-keeper) orchestrated over MCP, with a verification gate so no work completes untested.">
 <link rel="canonical" href="https://nexus.glenhalton.com/agents">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://nexus.glenhalton.com/agents">
 <meta property="og:site_name" content="NEXUS CLI">
-<meta property="og:title" content="Contextualized Agents — specialized AI roles grounded in YOUR project">
+<meta property="og:title" content="Contextualized Agents: specialized AI roles grounded in YOUR project">
 <meta property="og:description" content="Watch four brain-grounded agents relay a task: implement → verify → review → document. Each with scoped context, least-privilege tools, and a completion gate.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NEXUS Contextualized Agents — the pipeline, demoed live">
+<meta name="twitter:title" content="NEXUS Contextualized Agents: the pipeline, demoed live">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "What are AI agents? NEXUS Contextualized Agents explained and demoed",
-  "description": "How NEXUS v1.1 defines specialized, brain-grounded agent roles — implementer, test-writer, reviewer, doc-keeper — orchestrated over MCP with a structural verification gate (doctor D11).",
+  "description": "How NEXUS v1.1 defines specialized, brain-grounded agent roles, implementer, test-writer, reviewer, doc-keeper, orchestrated over MCP with a structural verification gate (doctor D11).",
   "url": "https://nexus.glenhalton.com/agents",
   "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" },
   "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.1.0",
@@ -178,7 +178,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <div class="stage">
     <div class="kicker rv">contextualized agents · v1.1 headline</div>
     <h1 class="rv rv-d1">One task. Four specialists.<br><em>Zero unverified work.</em></h1>
-    <p class="lead rv rv-d2">Watch a real NEXUS pipeline run a feature: each agent wakes with its own scoped context, does <b>only its job</b>, and relays through the brain. The test-writer is the gate — nothing completes without evidence.</p>
+    <p class="lead rv rv-d2">Watch a real NEXUS pipeline run a feature: each agent wakes with its own scoped context, does <b>only its job</b>, and relays through the brain. The test-writer is the gate, nothing completes without evidence.</p>
 
     <div class="pipe rv rv-d2">
       <div class="agent-card" id="ag0"><div class="role">build</div><div class="nm">nexus-implementer</div><div class="st" id="st0">waiting…</div></div>
@@ -188,7 +188,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     </div>
 
     <div class="term rv rv-d3">
-      <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">nexus-brain · agent relay — task: "add OAuth login"</span><span class="term-live">LIVE</span></div>
+      <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">nexus-brain · agent relay · task: "add OAuth login"</span><span class="term-live">LIVE</span></div>
       <div class="term-body" id="relay"></div>
     </div>
     <div class="demo-foot rv rv-d3">
@@ -201,25 +201,25 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <section id="what">
     <div class="kicker rv">first principles</div>
     <h2 class="rv rv-d1">What is an AI agent, actually?</h2>
-    <p class="rv rv-d2"><b>An agent is an AI model given a role, tools, and a loop:</b> it perceives state, decides, acts through tool calls, and checks the result — repeatedly, until the job is done. The difference between a chatbot and an agent is that the agent <i>does</i> things: edits files, runs tests, updates trackers.</p>
-    <p class="rv rv-d2">Modern coding clients (Claude Code, Codex, Cursor) go further with <b>subagents</b> — specialized roles you can hand work to. But out of the box those roles are <b>generic</b>: "you are a code reviewer" knows nothing about <i>your</i> conventions, <i>your</i> past bugs, <i>your</i> current plan. That's the gap NEXUS closes.</p>
+    <p class="rv rv-d2"><b>An agent is an AI model given a role, tools, and a loop:</b> it perceives state, decides, acts through tool calls, and checks the result, repeatedly, until the job is done. The difference between a chatbot and an agent is that the agent <i>does</i> things: edits files, runs tests, updates trackers.</p>
+    <p class="rv rv-d2">Modern coding clients (Claude Code, Codex, Cursor) go further with <b>subagents</b>, specialized roles you can hand work to. But out of the box those roles are <b>generic</b>: "you are a code reviewer" knows nothing about <i>your</i> conventions, <i>your</i> past bugs, <i>your</i> current plan. That's the gap NEXUS closes.</p>
     <div class="duo">
       <div class="duo-card lose rv">
         <div class="duo-h">Generic subagent <span class="pill pill-old">STATELESS</span></div>
         <ul>
-          <li>"You are a code reviewer" — reviews against <b>vibes</b></li>
-          <li>Every tool available to every role — no separation of duties</li>
+          <li>"You are a code reviewer": reviews against <b>vibes</b></li>
+          <li>Every tool available to every role, no separation of duties</li>
           <li>Forgets everything between sessions</li>
-          <li>Marks its own homework — self-review is the weakest review</li>
+          <li>Marks its own homework, self-review is the weakest review</li>
         </ul>
       </div>
       <div class="duo-card win rv rv-d1">
         <div class="duo-h">NEXUS contextualized agent <span class="pill pill-new">BRAIN-GROUNDED</span></div>
         <ul>
           <li>Reviews against <b>your recorded conventions</b>, citing knowledge entries</li>
-          <li><b>Least-privilege tool allowlist</b> — the reviewer literally has no write tools</li>
+          <li><b>Least-privilege tool allowlist</b>, the reviewer literally has no write tools</li>
           <li>Resumes the durable plan exactly where work stopped</li>
-          <li><b>Separation of duties</b> — the test-writer verifies others, never itself</li>
+          <li><b>Separation of duties</b>, the test-writer verifies others, never itself</li>
         </ul>
       </div>
     </div>
@@ -229,7 +229,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <section id="nexus">
     <div class="kicker rv">the nexus implementation</div>
     <h2 class="rv rv-d1">Agents are a <em>brain primitive.</em></h2>
-    <p class="rv rv-d2">Each agent is a markdown definition in <span class="mono">.nexus/agents/</span> — frontmatter for the machinery, a working agreement for the behavior:</p>
+    <p class="rv rv-d2">Each agent is a markdown definition in <span class="mono">.nexus/agents/</span>, frontmatter for the machinery, a working agreement for the behavior:</p>
     <div class="code rv rv-d2"><span class="o">--- </span>
 <span class="k">agent:</span> <span class="s">nexus-test-writer</span>
 <span class="k">role:</span> <span class="s">verification</span>
@@ -244,12 +244,12 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <span class="o">---</span>
 <span class="c">## Mission · ## Working Agreement · ## Definition of Done · ## Anti-Patterns</span></div>
     <div class="cards">
-      <div class="card rv"><div class="ic">🏗</div><b>nexus-implementer</b><p>Works the active plan's next unchecked step. Never re-derives an existing plan. Hands finished work to the test-writer — never self-certifies.</p></div>
-      <div class="card hl rv rv-d1"><div class="ic">🧪</div><b>nexus-test-writer</b><p>The keystone. Detects your test setup via live sensors; writes tests matching your strategy doc; <b>asks before installing test infra — never silently</b>; records waivers visibly when you decline.</p></div>
-      <div class="card rv rv-d2"><div class="ic">🔍</div><b>nexus-reviewer</b><p>Reviews against recorded conventions, citing the exact knowledge entries. Read-only by design — findings go in the review, not the brain.</p></div>
+      <div class="card rv"><div class="ic">🏗</div><b>nexus-implementer</b><p>Works the active plan's next unchecked step. Never re-derives an existing plan. Hands finished work to the test-writer, never self-certifies.</p></div>
+      <div class="card hl rv rv-d1"><div class="ic">🧪</div><b>nexus-test-writer</b><p>The keystone. Detects your test setup via live sensors; writes tests matching your strategy doc; <b>asks before installing test infra, never silently</b>; records waivers visibly when you decline.</p></div>
+      <div class="card rv rv-d2"><div class="ic">🔍</div><b>nexus-reviewer</b><p>Reviews against recorded conventions, citing the exact knowledge entries. Read-only by design, findings go in the review, not the brain.</p></div>
       <div class="card rv rv-d3"><div class="ic">📚</div><b>nexus-doc-keeper</b><p>Keeps the brain truthful: progress log, knowledge entries, doctor triage. Stale brains are worse than no brains.</p></div>
     </div>
-    <p class="rv rv-d3" style="margin-top:26px">Same ownership model as skills: <b>core/</b> regenerates on upgrade, <b>custom/</b> is sacred (yours, never touched — and overrides core by name), <b>community/</b> installs from the registry. Generated as Claude Code subagents in <span class="mono">.claude/agents/</span>, degraded to "Agent Roles" tables for every other client. <span class="mono" style="color:var(--mint2)">nexus agent sync</span> regenerates the views; the definition is the only source of truth.</p>
+    <p class="rv rv-d3" style="margin-top:26px">Same ownership model as skills: <b>core/</b> regenerates on upgrade, <b>custom/</b> is sacred (yours, never touched, and overrides core by name), <b>community/</b> installs from the registry. Generated as Claude Code subagents in <span class="mono">.claude/agents/</span>, degraded to "Agent Roles" tables for every other client. <span class="mono" style="color:var(--mint2)">nexus agent sync</span> regenerates the views; the definition is the only source of truth.</p>
   </section>
 
   <!-- ═══ THE GATE ═══ -->
@@ -258,9 +258,9 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <h2 class="rv rv-d1">The verification gate: <em>D11.</em></h2>
     <p class="rv rv-d2">Every framework says agents "should" test their work. NEXUS makes it <b>structural</b>: a plan can't quietly reach <span class="mono">done</span> without test evidence or an explicit, human-approved waiver in its Evidence section.</p>
     <div class="cards">
-      <div class="card amber rv"><div class="ic">🚦</div><b>Doctor D11 — Unverified Done</b><p>The 11th drift check flags every completed plan with an empty Evidence section. Surfaces in <span class="mono">nexus doctor</span>, in CI PR comments, in briefs.</p></div>
-      <div class="card rv rv-d1"><div class="ic">⚠️</div><b>plan done warns</b><p>Completing with no evidence prints the warning and the exact commands to fix it — record results or record a waiver.</p></div>
-      <div class="card rv rv-d2"><div class="ic">🤝</div><b>Humans stay the boss</b><p>Waivers are first-class: "WAIVER: docs-only change, approved by Halton." Skipping verification is visible, never impossible — same doctrine as the wake handshake.</p></div>
+      <div class="card amber rv"><div class="ic">🚦</div><b>Doctor D11: Unverified Done</b><p>The 11th drift check flags every completed plan with an empty Evidence section. Surfaces in <span class="mono">nexus doctor</span>, in CI PR comments, in briefs.</p></div>
+      <div class="card rv rv-d1"><div class="ic">⚠️</div><b>plan done warns</b><p>Completing with no evidence prints the warning and the exact commands to fix it, record results or record a waiver.</p></div>
+      <div class="card rv rv-d2"><div class="ic">🤝</div><b>Humans stay the boss</b><p>Waivers are first-class: "WAIVER: docs-only change, approved by Halton." Skipping verification is visible, never impossible, same doctrine as the wake handshake.</p></div>
     </div>
   </section>
 
@@ -269,10 +269,10 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <div class="kicker rv">what you get</div>
     <h2 class="rv rv-d1">Why staffed beats <em>solo.</em></h2>
     <div class="cards">
-      <div class="card rv"><div class="ic">🎯</div><b>Right context, right role</b><p>Each agent composes only its recipe via <span class="mono" style="color:var(--mint2)">nexus_get_context</span> — the reviewer never drowns in implementation detail, the implementer never carries doctor taxonomy.</p></div>
+      <div class="card rv"><div class="ic">🎯</div><b>Right context, right role</b><p>Each agent composes only its recipe via <span class="mono" style="color:var(--mint2)">nexus_get_context</span>, the reviewer never drowns in implementation detail, the implementer never carries doctor taxonomy.</p></div>
       <div class="card rv rv-d1"><div class="ic">✅</div><b>Accuracy by structure</b><p>Implement → verify → review is a pipeline with a gate, not a suggestion. Separation of duties catches what self-review misses.</p></div>
-      <div class="card rv rv-d2"><div class="ic">🔁</div><b>Orchestration that survives</b><p>Handoffs live in the brain, flow over <a href="/mcp" style="color:var(--mint)">MCP</a>, and survive across sessions — even across different AI products.</p></div>
-      <div class="card rv rv-d3"><div class="ic">🧬</div><b>Yours to extend</b><p><span class="mono" style="color:var(--mint2)">nexus agent new migration-runner</span> — custom agents override core by name and are never touched by upgrades.</p></div>
+      <div class="card rv rv-d2"><div class="ic">🔁</div><b>Orchestration that survives</b><p>Handoffs live in the brain, flow over <a href="/mcp" style="color:var(--mint)">MCP</a>, and survive across sessions, even across different AI products.</p></div>
+      <div class="card rv rv-d3"><div class="ic">🧬</div><b>Yours to extend</b><p><span class="mono" style="color:var(--mint2)">nexus agent new migration-runner</span>, custom agents override core by name and are never touched by upgrades.</p></div>
     </div>
   </section>
 
@@ -323,10 +323,10 @@ const SCRIPT=[
                 '<span class="who">test-writer</span> <span class="out">→</span> <span class="k">nexus_plan_note</span> { <span class="k">"message"</span>: <span class="s">"evidence: vitest 14/14 passing"</span> }' ], true],
  [2,'reviewing vs conventions',[ '<span class="who">reviewer</span> <span class="out">→</span> <span class="k">nexus_query_knowledge</span> { <span class="k">"query"</span>: <span class="s">"oauth session"</span>, <span class="k">"category"</span>: <span class="s">"convention"</span> }',
                 '<span class="in">←</span> <span class="num">2</span> entries · review comments cite them directly',
-                '<span class="ok">✓ evidence verified — approved</span> <span class="cm">// no evidence = request changes</span>' ]],
+                '<span class="ok">✓ evidence verified, approved</span> <span class="cm">// no evidence = request changes</span>' ]],
  [3,'recording memory',[ '<span class="who">doc-keeper</span> <span class="out">→</span> <span class="k">nexus_add_knowledge_entry</span> { <span class="k">"category"</span>: <span class="s">"gotcha"</span>, <span class="k">"title"</span>: <span class="s">"Provider rate-limits token refresh"</span> }',
                 '<span class="in">←</span> { <span class="k">"appended"</span>: <span class="num">true</span> } <span class="cm">// the next agent starts smarter</span>',
-                '<span class="ok">✓ pipeline complete — verified, reviewed, remembered</span>' ]],
+                '<span class="ok">✓ pipeline complete, verified, reviewed, remembered</span>' ]],
 ];
 const relay=document.getElementById('relay');
 let runId=0;

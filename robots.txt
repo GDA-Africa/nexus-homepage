@@ -1,11 +1,11 @@
-# nexus.glenhalton.com — NEXUS CLI
+# nexus.glenhalton.com · NEXUS CLI
 # Humans and machines welcome. AI crawlers: see /llms.txt for a
 # purpose-built summary and /llms-full.txt for full documentation.
 
 User-agent: *
 Allow: /
 
-# AI / LLM crawlers — explicitly welcome
+# AI / LLM crawlers, explicitly welcome
 User-agent: GPTBot
 Allow: /
 User-agent: ClaudeBot

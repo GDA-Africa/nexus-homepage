@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What is MCP? — How NEXUS Serves Your Project's Brain to AI Agents</title>
-<meta name="description" content="MCP (Model Context Protocol) explained — and how NEXUS implements it: a brain server with 16 schema-validated tools that lets Claude Code, Codex, and Cursor query and update your project's memory instead of guessing.">
+<title>What is MCP? How NEXUS Serves Your Project's Brain to AI Agents</title>
+<meta name="description" content="MCP (Model Context Protocol) explained, and how NEXUS implements it: a brain server with 16 schema-validated tools that lets Claude Code, Codex, and Cursor query and update your project's memory instead of guessing.">
 <link rel="canonical" href="https://nexus.glenhalton.com/mcp">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://nexus.glenhalton.com/mcp">
 <meta property="og:site_name" content="NEXUS CLI">
-<meta property="og:title" content="MCP in NEXUS — your project's brain as a tool server">
-<meta property="og:description" content="Watch a live MCP session: an agent wakes, queries project memory, and updates plans through validated tool calls. No daemon, no database — markdown stays the source of truth.">
+<meta property="og:title" content="MCP in NEXUS, your project's brain as a tool server">
+<meta property="og:description" content="Watch a live MCP session: an agent wakes, queries project memory, and updates plans through validated tool calls. No daemon, no database, markdown stays the source of truth.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="What is MCP? The NEXUS implementation, demoed live">
 <script type="application/ld+json">
@@ -168,11 +168,11 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <div class="stage">
     <div class="kicker rv">model context protocol · explained &amp; demoed</div>
     <h1 class="rv rv-d1">Same agent. Same task.<br><em>One of them has a brain server.</em></h1>
-    <p class="lead rv rv-d2">Watch both sessions run. Left: an agent guessing its way through your repo. Right: the same agent connected to the <b>NEXUS brain over MCP</b> — querying project memory and updating plans through validated tool calls.</p>
+    <p class="lead rv rv-d2">Watch both sessions run. Left: an agent guessing its way through your repo. Right: the same agent connected to the <b>NEXUS brain over MCP</b>, querying project memory and updating plans through validated tool calls.</p>
 
     <div class="duo-demo rv rv-d2">
       <div class="term bad">
-        <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">agent — no MCP</span><span class="badge b-bad">GUESSING</span></div>
+        <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">agent · no MCP</span><span class="badge b-bad">GUESSING</span></div>
         <div class="term-body" id="demoBad"></div>
       </div>
       <div class="term good">
@@ -190,9 +190,9 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <section id="what">
     <div class="kicker rv">first principles</div>
     <h2 class="rv rv-d1">What is MCP, in one breath?</h2>
-    <p class="rv rv-d2"><b>MCP — the Model Context Protocol — is a standard way for AI models to call tools and read data from the outside world.</b> Think of it as USB for AI: instead of every app inventing its own plugin system, an MCP <b>server</b> exposes capabilities ("tools") with typed inputs and outputs, and any MCP <b>client</b> — Claude Code, Claude Cowork, OpenAI Codex, Cursor — can discover and call them. The model doesn't scrape or guess; it makes a structured call and gets a structured answer.</p>
+    <p class="rv rv-d2"><b>MCP, the Model Context Protocol, is a standard way for AI models to call tools and read data from the outside world.</b> Think of it as USB for AI: instead of every app inventing its own plugin system, an MCP <b>server</b> exposes capabilities ("tools") with typed inputs and outputs, and any MCP <b>client</b>, Claude Code, Claude Cowork, OpenAI Codex, Cursor, can discover and call them. The model doesn't scrape or guess; it makes a structured call and gets a structured answer.</p>
     <div class="cards">
-      <div class="card rv"><div class="ic">🔌</div><b>Tools, not prompts</b><p>Each capability has a name and a JSON schema. The model calls <span class="mono" style="color:var(--mint2)">nexus_wake {}</span> the way your code calls a function — arguments validated, result typed.</p></div>
+      <div class="card rv"><div class="ic">🔌</div><b>Tools, not prompts</b><p>Each capability has a name and a JSON schema. The model calls <span class="mono" style="color:var(--mint2)">nexus_wake {}</span> the way your code calls a function, arguments validated, result typed.</p></div>
       <div class="card rv rv-d1"><div class="ic">🔍</div><b>Discoverable</b><p>Clients ask the server "what can you do?" and get the full tool list with descriptions. No configuration beyond pointing at the server.</p></div>
       <div class="card rv rv-d2"><div class="ic">🤝</div><b>Universal</b><p>One server works with every MCP client. Write it once; Claude Code, Codex, and Cursor all speak to it the same way.</p></div>
     </div>
@@ -202,12 +202,12 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <section id="nexus">
     <div class="kicker rv">the nexus implementation</div>
     <h2 class="rv rv-d1">Your project's brain, <em>served.</em></h2>
-    <p class="rv rv-d2">Every NEXUS project carries a <span class="mono">.nexus/</span> brain — structured docs, an append-only knowledge base, durable plans, skills. Before MCP, agents were <b>told</b> to read those files. Instructions get skipped; whole files flood the context window; one typo in hand-edited frontmatter corrupts the brain.</p>
+    <p class="rv rv-d2">Every NEXUS project carries a <span class="mono">.nexus/</span> brain, structured docs, an append-only knowledge base, durable plans, skills. Before MCP, agents were <b>told</b> to read those files. Instructions get skipped; whole files flood the context window; one typo in hand-edited frontmatter corrupts the brain.</p>
     <p class="rv rv-d2"><b><span class="mono">nexus mcp</span> turns the brain into a server.</b> Generated projects ship a <span class="mono">.mcp.json</span> that registers it, so clients connect automatically:</p>
     <div class="code rv rv-d2">{ <span class="k">"mcpServers"</span>: { <span class="k">"nexus-brain"</span>: {
     <span class="k">"command"</span>: <span class="s">"npx"</span>, <span class="k">"args"</span>: [<span class="s">"-y"</span>, <span class="s">"@nexus-framework/cli"</span>, <span class="s">"mcp"</span>] } } }</div>
     <div class="cards">
-      <div class="card hl rv"><div class="ic">🧠</div><b>16 schema-validated tools</b><p>13 reads (wake, context, knowledge, plans, sensors, skills, agents) + 3 writes (plan tick/note, knowledge entry). Writes reuse the CLI's own parser — malformed brain state is <b>impossible</b>, not just detectable.</p></div>
+      <div class="card hl rv"><div class="ic">🧠</div><b>16 schema-validated tools</b><p>13 reads (wake, context, knowledge, plans, sensors, skills, agents) + 3 writes (plan tick/note, knowledge entry). Writes reuse the CLI's own parser, malformed brain state is <b>impossible</b>, not just detectable.</p></div>
       <div class="card rv rv-d1"><div class="ic">📄</div><b>Markdown stays the truth</b><p>No database, no daemon. The server is spawned per client over stdio and exits with it. Everything it serves is a file you can read, diff, and version.</p></div>
       <div class="card rv rv-d2"><div class="ic">🪪</div><b>Provable sessions</b><p><span class="mono" style="color:var(--mint2)">nexus_wake</span> issues a deterministic token derived from brain content + date. Agents echo it; <span class="mono">nexus doctor</span> flags sessions that skipped it.</p></div>
       <div class="card rv rv-d3"><div class="ic">🎯</div><b>Targeted, not torrential</b><p><span class="mono" style="color:var(--mint2)">nexus_query_knowledge</span> returns the 2 relevant gotchas, not 200 lines. <span class="mono" style="color:var(--mint2)">nexus_get_context</span> composes one budget-capped pack per task.</p></div>
@@ -218,14 +218,14 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <section id="orchestration">
     <div class="kicker rv">mcp × agents</div>
     <h2 class="rv rv-d1">The protocol is how NEXUS <em>orchestrates agents.</em></h2>
-    <p class="rv rv-d2">In v1.1, NEXUS defines <a href="/agents" style="color:var(--mint)">specialized agents</a> — implementer, test-writer, reviewer, doc-keeper. MCP is the nervous system that coordinates them: every handoff, every piece of context, every progress update flows through the same tool surface.</p>
+    <p class="rv rv-d2">In v1.1, NEXUS defines <a href="/agents" style="color:var(--mint)">specialized agents</a>, implementer, test-writer, reviewer, doc-keeper. MCP is the nervous system that coordinates them: every handoff, every piece of context, every progress update flows through the same tool surface.</p>
     <div class="flow rv rv-d2">
-      <div class="flow-step"><div class="n">01 · IDENTIFY</div><b>Wake as a role</b><p><span class="mono-s">nexus_wake {agent}</span> — the session records <i>which</i> agent is working. Accountability from call one.</p></div>
-      <div class="flow-step"><div class="n">02 · COMPOSE</div><b>Context on demand</b><p><span class="mono-s">nexus_get_context</span> assembles the plan slice, matching knowledge, and skills <i>for that agent's recipe</i> — one call, one pack.</p></div>
-      <div class="flow-step"><div class="n">03 · ACT</div><b>Validated progress</b><p><span class="mono-s">nexus_plan_tick</span> / <span class="mono-s">note</span> — work state advances through the parser, never hand-edits.</p></div>
+      <div class="flow-step"><div class="n">01 · IDENTIFY</div><b>Wake as a role</b><p><span class="mono-s">nexus_wake {agent}</span>, the session records <i>which</i> agent is working. Accountability from call one.</p></div>
+      <div class="flow-step"><div class="n">02 · COMPOSE</div><b>Context on demand</b><p><span class="mono-s">nexus_get_context</span> assembles the plan slice, matching knowledge, and skills <i>for that agent's recipe</i>, one call, one pack.</p></div>
+      <div class="flow-step"><div class="n">03 · ACT</div><b>Validated progress</b><p><span class="mono-s">nexus_plan_tick</span> / <span class="mono-s">note</span>, work state advances through the parser, never hand-edits.</p></div>
       <div class="flow-step"><div class="n">04 · HAND OFF</div><b>Durable relay</b><p>The next agent wakes, reads the same plan, picks up exactly where the last one stopped. The brain <i>is</i> the baton.</p></div>
     </div>
-    <p class="rv rv-d3" style="margin-top:26px">Because the state lives in markdown and moves through MCP, orchestration survives <b>across sessions, across days, and across different AI products</b> — an implementer in Claude Code can hand off to a reviewer in Cursor without losing a step.</p>
+    <p class="rv rv-d3" style="margin-top:26px">Because the state lives in markdown and moves through MCP, orchestration survives <b>across sessions, across days, and across different AI products</b>, an implementer in Claude Code can hand off to a reviewer in Cursor without losing a step.</p>
   </section>
 
   <!-- ═══ BENEFITS ═══ -->
@@ -233,10 +233,10 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <div class="kicker rv">what you get</div>
     <h2 class="rv rv-d1">Why this beats <em>"please read the docs."</em></h2>
     <div class="cards">
-      <div class="card rv"><div class="ic">⚡</div><b>Faster sessions</b><p>One wake call replaces reading three files in full. No more re-deriving plans every session — the single biggest source of wasted agent work.</p></div>
-      <div class="card rv rv-d1"><div class="ic">🎯</div><b>More accurate work</b><p>Agents decide with the gotchas that matter in context — not buried at line 180 of a file they skimmed.</p></div>
+      <div class="card rv"><div class="ic">⚡</div><b>Faster sessions</b><p>One wake call replaces reading three files in full. No more re-deriving plans every session, the single biggest source of wasted agent work.</p></div>
+      <div class="card rv rv-d1"><div class="ic">🎯</div><b>More accurate work</b><p>Agents decide with the gotchas that matter in context, not buried at line 180 of a file they skimmed.</p></div>
       <div class="card rv rv-d2"><div class="ic">🛡</div><b>Unbreakable brain</b><p>Schema-validated writes ended the entire class of "hand-edited frontmatter corrupted the brain" bugs.</p></div>
-      <div class="card rv rv-d3"><div class="ic">📏</div><b>Compliance is structural</b><p>"READ index.md EVERY TIME" was a rule agents could skip. Tools they naturally reach for can't be skipped — and wake makes skipping visible.</p></div>
+      <div class="card rv rv-d3"><div class="ic">📏</div><b>Compliance is structural</b><p>"READ index.md EVERY TIME" was a rule agents could skip. Tools they naturally reach for can't be skipped, and wake makes skipping visible.</p></div>
     </div>
   </section>
 
@@ -279,7 +279,7 @@ const BAD=[
  {t:1,h:'<span class="out">›</span> "What should I work on? Should I set up the session table?"'},
  {h:'<span class="err">✖</span> re-derives a plan that already exists'},
  {t:1,h:'<span class="out">$</span> vim .nexus/plans/add-auth.md <span class="cm"># hand-edits frontmatter</span>'},
- {h:'<span class="err">✖</span> status: "in-progres" — typo corrupts the plan'},
+ {h:'<span class="err">✖</span> status: "in-progres": typo corrupts the plan'},
  {h:'<span class="err">✖</span> ships cookies without sameSite=lax (the recorded gotcha)'},
  {h:'<span class="cm">// 20 minutes of context-rebuilding. Every. Session.</span>'},
 ];
@@ -292,7 +292,7 @@ const GOOD=[
  {h:'<span class="cm">// …implements step 3 with the gotcha applied…</span>'},
  {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_plan_tick</span> { <span class="k">"id"</span>: <span class="s">"add-auth"</span>, <span class="k">"step"</span>: <span class="num">3</span> }'},
  {h:'<span class="in">←</span> { <span class="k">"checked"</span>: <span class="num">true</span>, <span class="k">"nextStep"</span>: <span class="s">"4. Hand off to test-writer"</span> }'},
- {h:'<span class="ok">✓</span> grounded in 4 calls — <span class="cm">zero guessing, zero corruption</span>'},
+ {h:'<span class="ok">✓</span> grounded in 4 calls. <span class="cm">zero guessing, zero corruption</span>'},
 ];
 const elBad=document.getElementById('demoBad'),elGood=document.getElementById('demoGood');
 let runId=0;

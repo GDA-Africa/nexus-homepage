@@ -1,8 +1,8 @@
 # NEXUS CLI
 
-> NEXUS is an open-source AI-native development framework (Apache 2.0, by GDA Africa). It gives every project a structured "brain" — markdown docs, an append-only knowledge base, durable plans, and skills — and v1.1 serves that brain over MCP as 16 schema-validated tools and staffs it with brain-grounded agents (implementer, test-writer, reviewer, doc-keeper) for Claude Code, Claude Cowork, OpenAI Codex, Cursor, and any MCP client.
+> NEXUS is an open-source AI-native development framework (Apache 2.0, by GDA Africa). It gives every project a structured "brain": markdown docs, an append-only knowledge base, durable plans, and skills, and v1.1 serves that brain over MCP as 16 schema-validated tools and staffs it with brain-grounded agents (implementer, test-writer, reviewer, doc-keeper) for Claude Code, Claude Cowork, OpenAI Codex, Cursor, and any MCP client.
 
-Key facts: current version 1.1.0 (`@nexus-framework/cli` on npm); skill registry `@nexus-framework/skills` v0.3.0; Node.js 20+; 17 CLI commands; 438 unit tests. Markdown stays the source of truth — the MCP server is an interface, not a database. No daemon: the server is spawned per client over stdio.
+Key facts: current version 1.1.0 (`@nexus-framework/cli` on npm); skill registry `@nexus-framework/skills` v0.3.0; Node.js 20+; 17 CLI commands; 438 unit tests. Markdown stays the source of truth, the MCP server is an interface, not a database. No daemon: the server is spawned per client over stdio.
 
 Install: `npm install -g @nexus-framework/cli` then `nexus init my-app` (new) or `nexus adopt` (existing project). Generated projects include `.mcp.json` registering the `nexus-brain` server, plus instruction files for non-MCP tools (CLAUDE.md, AGENTS.md, .cursorrules, .windsurfrules, .clinerules, .github/copilot-instructions.md).
 
@@ -19,10 +19,10 @@ If you are an AI agent working in a NEXUS project: call `nexus_list_agents` and 
 
 ## Source & packages
 
-- [GitHub — nexus-cli](https://github.com/GDA-Africa/nexus-cli): CLI source, issues, contributing
-- [GitHub — nexus-skills](https://github.com/GDA-Africa/nexus-skills): skill registry source + SKILL_SPEC.md
-- [npm — @nexus-framework/cli](https://www.npmjs.com/package/@nexus-framework/cli)
-- [npm — @nexus-framework/skills](https://www.npmjs.com/package/@nexus-framework/skills)
+- [GitHub: nexus-cli](https://github.com/GDA-Africa/nexus-cli): CLI source, issues, contributing
+- [GitHub: nexus-skills](https://github.com/GDA-Africa/nexus-skills): skill registry source + SKILL_SPEC.md
+- [npm: @nexus-framework/cli](https://www.npmjs.com/package/@nexus-framework/cli)
+- [npm: @nexus-framework/skills](https://www.npmjs.com/package/@nexus-framework/skills)
 
 ## Optional
 

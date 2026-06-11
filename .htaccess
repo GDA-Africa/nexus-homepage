@@ -1,6 +1,6 @@
 # ══════════════════════════════════════════════════════════════════
-#  NEXUS CLI — nexus.glenhalton.com
-#  Apache/LiteSpeed .htaccess — conservative shared-hosting build.
+#  NEXUS CLI · nexus.glenhalton.com
+#  Apache/LiteSpeed .htaccess: conservative shared-hosting build.
 #  Every module-dependent block is guarded; no Options overrides that
 #  some cPanel configs reject; no DOCUMENT_ROOT assumptions.
 # ══════════════════════════════════════════════════════════════════
@@ -14,7 +14,7 @@ DirectoryIndex index.html
   RedirectMatch 404 (^|/)\.(?!well-known)
 </IfModule>
 
-# Deploy artifacts, backups, agent/config files — never serve
+# Deploy artifacts, backups, agent/config files: never serve
 <FilesMatch "(?i)\.(sh|zip|tar|gz|bak|old|log|sql|ini|lock|yml|yaml|md)$">
   Require all denied
 </FilesMatch>
@@ -36,7 +36,7 @@ DirectoryIndex index.html
 
   # Strip www (preserve Host). This removes a leading www. while keeping the current Host
   # value (so www.example.com -> https://example.com). Note: some setups prefer a single
-  # canonical host — change if needed.
+  # canonical host, change if needed.
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
