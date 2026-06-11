@@ -12,7 +12,9 @@ If you are an AI agent working in a NEXUS project: call `nexus_list_agents` and 
 
 ## Docs
 
-- [Documentation (all commands, MCP tools, concepts)](https://nexus.glenhalton.com/docs.html): single-page reference for v1.0
+- [Documentation (all commands, MCP tools, concepts)](https://nexus.glenhalton.com/docs.html): single-page reference for v1.1
+- [MCP explained + live demo](https://nexus.glenhalton.com/mcp): what MCP is, the NEXUS brain-server implementation, and how it orchestrates agents
+- [Agents explained + pipeline demo](https://nexus.glenhalton.com/agents): the core four contextualized agents and the D11 verification gate
 - [Full text for LLMs](https://nexus.glenhalton.com/llms-full.txt): complete documentation as plain markdown
 
 ## Source & packages

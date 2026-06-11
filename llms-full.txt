@@ -3,7 +3,7 @@
 > Complete plain-text reference. NEXUS is an open-source AI-native development
 > framework by GDA Africa (Apache 2.0). It gives every project a structured
 > brain and, since v1.0, serves that brain over MCP as schema-validated tools.
-> Canonical URLs: https://nexus.glenhalton.com (home), /docs.html (docs).
+> Canonical URLs: https://nexus.glenhalton.com (home), /docs, /mcp, /agents.
 > Packages: @nexus-framework/cli v1.1.0, @nexus-framework/skills v0.3.0 (npm).
 
 ## What NEXUS is

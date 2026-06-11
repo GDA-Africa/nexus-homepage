@@ -252,10 +252,10 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <div class="nav-in">
     <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></div>
     <div class="nav-links">
-      <a href="#mcp">MCP</a>
+      <a href="/mcp">MCP</a>
+      <a href="/agents">Agents</a>
       <a href="#brain">The Brain</a>
-      <a href="#ci">CI</a>
-      <a href="docs.html">Docs</a>
+      <a href="/docs">Docs</a>
       <a class="nav-cta" href="#quickstart">npm i -g @nexus-framework/cli</a>
     </div>
   </div>
@@ -306,6 +306,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <section id="mcp">
     <div class="kicker rv">why mcp changes everything</div>
     <h2 class="rv rv-d1">Instructions get skipped.<br><em>Tool calls don't.</em></h2>
+    <p class="lead rv rv-d1" style="margin-bottom:0"><a href="/mcp" style="color:var(--mint)">Deep dive: what MCP is &amp; how NEXUS implements it →</a></p>
     <p class="lead rv rv-d2">Every AI-instructions file ever written says "read the docs first." Agents skip it. NEXUS v1.0 makes brain access structural instead of optional.</p>
     <div class="duo">
       <div class="duo-card lose rv">
@@ -347,6 +348,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <section>
     <div class="kicker rv">the alive brain · v1.1</div>
     <h2 class="rv rv-d1">Senses. Tracks. Audits.<br>Speaks. Remembers. <em>Serves.</em></h2>
+    <p class="lead rv rv-d1" style="margin-bottom:0"><a href="/agents" style="color:var(--mint)">Meet the v1.1 agents: the full pipeline, demoed →</a></p>
     <div class="cmds">
       <div class="cmd hl rv"><div class="c-name">nexus mcp<span class="new">NEW</span></div><p>The brain as a stdio MCP server. Registered automatically via generated <span class="mono">.mcp.json</span>.</p></div>
       <div class="cmd v rv rv-d1"><div class="c-name">nexus wake</div><p>Deterministic handshake token. Agents echo it — doctor flags sessions that skip it.</p></div>
@@ -437,7 +439,9 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
     <div class="logo"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></div>
     <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Apache 2.0</span>
     <div class="links">
-      <a href="docs.html">Docs</a>
+      <a href="/mcp">MCP</a>
+      <a href="/agents">Agents</a>
+      <a href="/docs">Docs</a>
       <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
       <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm</a>
       <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">Skills Registry</a>
