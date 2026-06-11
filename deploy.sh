@@ -46,10 +46,16 @@ unzip -o $ZIP_NAME
 rm -f $ZIP_NAME
 # Remove anything a previous deploy may have leaked onto the docroot
 rm -rf .git .nexus .vscode deploy.sh index.html.old index-v0.4-legacy.html docs-v0.3-legacy.html AGENTS.md copilot-instructions.md NEXUS_CLI_README.md .clinerules .cursorrules .windsurfrules
-# Verify the critical files actually landed as regular files
+# Normalize permissions: the zip preserves local file modes, and a 600
+# file is unreadable by the web server process → 403 (the index.html
+# incident, 2026-06-11). Web-served files must be 644, dirs 755.
+find . -type f -not -name "*.sh" -exec chmod 644 {} +
+find . -type d -exec chmod 755 {} +
+# Verify the critical files actually landed as regular, readable files
 for f in index.html docs.html mcp.html agents.html .htaccess; do
   [ -f "\$f" ] || { echo "FATAL: \$f missing after deploy"; exit 1; }
 done
+echo "Permissions normalized (644/755)."
 echo "Deployment complete!"
 SSH_EOF
 
