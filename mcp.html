@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What is MCP? How NEXUS Serves Your Project's Brain to AI Agents</title>
-<meta name="description" content="MCP (Model Context Protocol) explained, and how NEXUS implements it: a brain server with 16 schema-validated tools that lets Claude Code, Codex, and Cursor query and update your project's memory instead of guessing.">
+<meta name="description" content="MCP (Model Context Protocol) explained, and how NEXUS implements it: a brain server with 17 schema-validated tools that lets Claude Code, Codex, and Cursor query and update your project's memory instead of guessing.">
 <link rel="canonical" href="https://nexus.glenhalton.com/mcp">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="article">
@@ -19,10 +19,10 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "What is MCP? How NEXUS serves your project's brain to AI agents",
-  "description": "Model Context Protocol explained, plus the NEXUS implementation: a stdio brain server exposing 16 schema-validated tools to Claude Code, OpenAI Codex, Cursor, and any MCP client.",
+  "description": "Model Context Protocol explained, plus the NEXUS implementation: a stdio brain server exposing 17 schema-validated tools to Claude Code, OpenAI Codex, Cursor, and any MCP client.",
   "url": "https://nexus.glenhalton.com/mcp",
   "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" },
-  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.1.0",
+  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.1.2",
     "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli" }
 }
 </script>
@@ -218,7 +218,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <div class="code rv rv-d2">{ <span class="k">"mcpServers"</span>: { <span class="k">"nexus-brain"</span>: {
     <span class="k">"command"</span>: <span class="s">"npx"</span>, <span class="k">"args"</span>: [<span class="s">"-y"</span>, <span class="s">"@nexus-framework/cli"</span>, <span class="s">"mcp"</span>] } } }</div>
     <div class="cards">
-      <div class="card hl rv"><div class="ic">🧠</div><b>16 schema-validated tools</b><p>13 reads (wake, context, knowledge, plans, sensors, skills, agents) + 3 writes (plan tick/note, knowledge entry). Writes reuse the CLI's own parser, malformed brain state is <b>impossible</b>, not just detectable.</p></div>
+      <div class="card hl rv"><div class="ic">🧠</div><b>17 schema-validated tools</b><p>14 reads (wake, context, knowledge, plans, sensors, skills, agents) + 3 writes (plan tick/note, knowledge entry). Writes reuse the CLI's own parser, malformed brain state is <b>impossible</b>, not just detectable.</p></div>
       <div class="card rv rv-d1"><div class="ic">📄</div><b>Markdown stays the truth</b><p>No database, no daemon. The server is spawned per client over stdio and exits with it. Everything it serves is a file you can read, diff, and version.</p></div>
       <div class="card rv rv-d2"><div class="ic">🪪</div><b>Provable sessions</b><p><span class="mono" style="color:var(--mint2)">nexus_wake</span> issues a deterministic token derived from brain content + date. Agents echo it; <span class="mono">nexus doctor</span> flags sessions that skipped it.</p></div>
       <div class="card rv rv-d3"><div class="ic">🎯</div><b>Targeted, not torrential</b><p><span class="mono" style="color:var(--mint2)">nexus_query_knowledge</span> returns the 2 relevant gotchas, not 200 lines. <span class="mono" style="color:var(--mint2)">nexus_get_context</span> composes one budget-capped pack per task.</p></div>
@@ -302,7 +302,7 @@ const GOOD=[
  {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_wake</span> {}'},
  {h:'<span class="in">←</span> { <span class="k">"token"</span>: <span class="tok">NX-WAKE-7K9F-'+TODAY+'</span>, <span class="k">"activePlan"</span>: <span class="s">"add-auth"</span>,\n   <span class="k">"nextStep"</span>: <span class="s">"3. Write session middleware"</span> }'},
  {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_get_context</span> { <span class="k">"task"</span>: <span class="s">"session middleware"</span> }'},
- {h:'<span class="in">←</span> { <span class="k">"knowledge"</span>: [<span class="s">"[gotcha] Session cookies need sameSite=lax"</span>],\n   <span class="k">"skills"</span>: [<span class="s">"api-design"</span>], <span class="k">"vitals"</span>: { <span class="k">"tests"</span>: <span class="s">"438 passing"</span> } }'},
+ {h:'<span class="in">←</span> { <span class="k">"knowledge"</span>: [<span class="s">"[gotcha] Session cookies need sameSite=lax"</span>],\n   <span class="k">"skills"</span>: [<span class="s">"api-design"</span>], <span class="k">"vitals"</span>: { <span class="k">"tests"</span>: <span class="s">"456 passing"</span> } }'},
  {h:'<span class="cm">// …implements step 3 with the gotcha applied…</span>'},
  {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_plan_tick</span> { <span class="k">"id"</span>: <span class="s">"add-auth"</span>, <span class="k">"step"</span>: <span class="num">3</span> }'},
  {h:'<span class="in">←</span> { <span class="k">"checked"</span>: <span class="num">true</span>, <span class="k">"nextStep"</span>: <span class="s">"4. Hand off to test-writer"</span> }'},

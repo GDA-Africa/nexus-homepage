@@ -4,7 +4,7 @@
 > framework by GDA Africa (Apache 2.0). It gives every project a structured
 > brain and, since v1.0, serves that brain over MCP as schema-validated tools.
 > Canonical URLs: https://nexus.glenhalton.com (home), /docs, /mcp, /agents.
-> Packages: @nexus-framework/cli v1.1.0, @nexus-framework/skills v0.3.0 (npm).
+> Packages: @nexus-framework/cli v1.1.2, @nexus-framework/skills v0.3.0 (npm).
 
 ## What NEXUS is
 
@@ -38,7 +38,7 @@ Claude Code, Claude Cowork, and OpenAI Codex read .mcp.json automatically;
 Cursor users copy the entry to .cursor/mcp.json. The server is spawned per
 client and exits when the client disconnects. stdout carries only protocol.
 
-### Tools (13 read, 3 write)
+### Tools (14 read, 3 write)
 
 nexus_wake (READ): Session handshake. Returns: deterministic token
   "NX-WAKE-XXXX-YYYY-MM-DD" (sha256 of index.md + knowledge.md +
@@ -87,6 +87,11 @@ nexus_list_agents (READ): v1.1. Agent roles in .nexus/agents/ (precedence
 
 nexus_get_agent (READ): v1.1. Args: name. One agent definition: context
   recipe, least-privilege tool allowlist, working agreement.
+
+nexus_get_handoff (READ): v1.1. Args: agent (optional). Returns the agent
+  pipeline (implementer -> test-writer -> reviewer -> doc-keeper, or the
+  project's custom chain) and next: the agent the MAIN THREAD should dispatch
+  after the current one finishes. Subagents cannot call subagents.
 
 nexus_plan_tick (WRITE): Args: id, step (1-based), checked (default true).
   Marks a checklist step; returns nextStep. Out-of-range steps return a clean
@@ -200,7 +205,7 @@ v0.4 (May 2026) Alive Brain: sync, plan, doctor, brief, auto-invoke.
 v1.0 (Jun 2026) MCP: nexus mcp server, wake + consolidate, brain-aware CI,
 generated .mcp.json + CLAUDE.md. v1.1 (Jun 2026) Contextualized Agents:
 .nexus/agents/ core four, nexus_get_context, D11 verification gate, upgrade
-data-loss fix (preserve-by-default + automatic backups), 438 tests.
+data-loss fix (preserve-by-default + automatic backups), 456 tests.
 
 ## Requirements & license
 
