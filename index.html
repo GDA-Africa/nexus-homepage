@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS CLI: Your project has a brain. Agents can call it.</title>
-<meta name="description" content="NEXUS gives every project a structured brain, and v1.1 staffs it with brain-grounded agents over MCP, 17 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client. Open source, Apache 2.0.">
+<meta name="description" content="NEXUS gives every project a structured brain, staffs it with brain-grounded agents over MCP, 17 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client, and in v1.2 delegates UI generation to Chameleon. Open source, Apache 2.0.">
 <link rel="canonical" href="https://nexus.glenhalton.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/">
 <meta property="og:site_name" content="NEXUS CLI">
-<meta property="og:title" content="NEXUS CLI v1.1: The AI-Native Development Framework">
+<meta property="og:title" content="NEXUS CLI v1.2: The AI-Native Development Framework">
 <meta property="og:description" content="The project brain is an MCP server with specialized agents: implementer, test-writer, reviewer, doc-keeper, grounded in your conventions, gated by verification.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NEXUS CLI v1.1: Your project has a brain. Agents can call it.">
+<meta name="twitter:title" content="NEXUS CLI v1.2: Your project has a brain. Agents can call it.">
 <meta name="twitter:description" content="17 schema-validated MCP brain tools for Claude Code, Codex, Cursor & any MCP client. Open source, Apache 2.0.">
 <meta name="keywords" content="MCP server, Model Context Protocol, AI-native development, Claude Code, OpenAI Codex, Cursor, project scaffolding, AI agents, developer tools, open source CLI">
 <script type="application/ld+json">
@@ -23,7 +23,7 @@
   "name": "NEXUS CLI",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows (Node.js 20+)",
-  "softwareVersion": "1.1.2",
+  "softwareVersion": "1.2.0",
   "description": "Open-source AI-native development framework. Gives every project a structured brain and serves it over MCP as 17 schema-validated tools and staffs it with brain-grounded agents for Claude Code, Codex, Cursor, and any MCP client.",
   "url": "https://nexus.glenhalton.com",
   "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli",
@@ -119,7 +119,17 @@ h1 em{font-style:normal;color:var(--mint)}
 .btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
 .stats{display:flex;gap:30px;flex-wrap:wrap}
 .stat .n{font-family:var(--mono);font-size:21px;font-weight:700;color:var(--ink)}
-.stat .l{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--faint);text-transform:uppercase}
+.stat .l{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--faint);text-transform:uppercase;display:flex;align-items:center;gap:5px}
+/* live data indicator: these numbers are fetched, not typed into the HTML */
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--mint);flex:none;animation:pulse 1.6s infinite}
+@media (prefers-reduced-motion:reduce){.live-dot{animation:none}}
+/* NOT flex: gap would insert a space between the text and its punctuation
+   ("published today ."), since bare text nodes become anonymous flex items. */
+.live-note{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:20px;line-height:1.8;max-width:480px}
+.live-note .live-dot{display:inline-block;margin-right:6px;vertical-align:middle}
+.live-note b{color:var(--mint2);font-weight:500}
+.live-note a{color:var(--mut);text-decoration:none;border-bottom:1px solid var(--line2)}
+.live-note a:hover{color:var(--mint)}
 
 /* ── protocol terminal (the centerpiece) ── */
 .term{background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 0 1px rgba(52,211,153,.06);position:relative}
@@ -226,6 +236,8 @@ h2 em{font-style:normal;color:var(--mint)}
 @media(max-width:480px){.tree{font-size:10.5px;padding:14px}}
 .tree .d{color:var(--vio2)}.tree .f{color:var(--mut)}.tree .hot{color:var(--mint2)}
 .tree .note{color:var(--faint);font-size:10.5px}
+.chm{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;margin-top:44px;align-items:start}
+@media(max-width:840px){.chm{grid-template-columns:1fr}}
 .an-points{display:flex;flex-direction:column;gap:18px}
 .an-pt{padding-left:18px;border-left:2px solid var(--line)}
 .an-pt.on{border-color:var(--mint)}
@@ -277,18 +289,23 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ HERO ═══ -->
   <div class="hero">
     <div>
-      <div class="tag rv">v1.1.2 · CONTEXTUALIZED AGENTS</div>
+      <div class="tag rv"><span data-live="versionTag">v1.2.0</span> · CHAMELEON DELEGATION</div>
       <h1 class="rv rv-d1">Your project has a brain.<br>Now agents can <em>call it</em>.</h1>
-      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain, docs, knowledge, plans. <b>v1.1 staffs it:</b> specialized, brain-grounded agents, implementer, test-writer, reviewer, doc-keeper, calling 17 schema-validated MCP tools instead of being told to read files.</p>
+      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain, docs, knowledge, plans. <b>v1.1 staffed it</b> with brain-grounded agents calling <span data-live="tools">17</span> schema-validated MCP tools instead of being told to read files. <b>v1.2 delegates the parts it shouldn't own:</b> <a href="#chameleon" style="color:var(--mint)">UI generation goes to Chameleon</a>, opt-in, capability-gated, and never a hard dependency.</p>
       <div class="cta-row rv rv-d3">
         <button class="btn btn-solid" onclick="document.getElementById('quickstart').scrollIntoView({behavior:'smooth'})">Get started</button>
         <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank"><button class="btn btn-ghost">GitHub →</button></a>
       </div>
       <div class="stats rv rv-d4">
-        <div class="stat"><div class="n" data-count="17">0</div><div class="l">MCP tools</div></div>
-        <div class="stat"><div class="n" data-count="456">0</div><div class="l">tests</div></div>
-        <div class="stat"><div class="n" data-count="17">0</div><div class="l">commands</div></div>
-        <div class="stat"><div class="n">Apache&nbsp;2.0</div><div class="l">license</div></div>
+        <div class="stat"><div class="n" data-live="tools" data-live-animate>17</div><div class="l">MCP tools</div></div>
+        <div class="stat"><div class="n" data-live="tests" data-live-animate>546</div><div class="l">tests</div></div>
+        <div class="stat"><div class="n" data-live="commands" data-live-animate>18</div><div class="l">commands</div></div>
+        <div class="stat"><div class="n" data-live="downloads" data-live-animate>1926</div><div class="l"><span class="live-dot"></span>npm downloads</div></div>
+      </div>
+      <div class="live-note rv rv-d4">
+        <span class="live-dot"></span>Live from the npm registry &amp; the CLI package, not hand-written:
+        <b data-live="version">1.2.0</b> on npm, <span data-live="published">published today</span>.
+        <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">verify →</a>
       </div>
     </div>
     <div class="rv rv-d2">
@@ -341,7 +358,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
     </div>
   </section>
 
-  <!-- ═══ 13 TOOLS ═══ -->
+  <!-- ═══ MCP TOOL SURFACE ═══ -->
   <section>
     <div class="kicker rv">the tool surface</div>
     <h2 class="rv rv-d1">17 tools. <em>One brain.</em></h2>
@@ -357,18 +374,67 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 
   <!-- ═══ ALIVE BRAIN COMMANDS ═══ -->
   <section>
-    <div class="kicker rv">the alive brain · v1.1</div>
+    <div class="kicker rv">the alive brain · <span data-live="commands">18</span> commands</div>
     <h2 class="rv rv-d1">Senses. Tracks. Audits.<br>Speaks. Remembers. <em>Serves.</em></h2>
     <p class="lead rv rv-d1" style="margin-bottom:0"><a href="/agents" style="color:var(--mint)">Meet the v1.1 agents: the full pipeline, demoed →</a></p>
     <div class="cmds">
-      <div class="cmd hl rv"><div class="c-name">nexus mcp<span class="new">NEW</span></div><p>The brain as a stdio MCP server. Registered automatically via generated <span class="mono">.mcp.json</span>.</p></div>
-      <div class="cmd v rv rv-d1"><div class="c-name">nexus wake</div><p>Deterministic handshake token. Agents echo it, doctor flags sessions that skip it.</p></div>
-      <div class="cmd v rv rv-d2"><div class="c-name">nexus sync</div><p>Repo sensors → Vital Signs block. Git, tests, files, packages. Idempotent, CI-safe.</p></div>
-      <div class="cmd v rv rv-d3"><div class="c-name">nexus plan</div><p>Durable multi-step work in <span class="mono">.nexus/plans/</span>. Survives sessions, diffs cleanly.</p></div>
-      <div class="cmd rv rv-d1"><div class="c-name">nexus doctor</div><p>10 drift checks: stale docs, orphan plans, knowledge bloat, missed handshakes.</p></div>
+      <div class="cmd hl rv"><div class="c-name">nexus use<span class="new">v1.2</span></div><p>Set the UI generator NEXUS delegates to. <span class="mono">--global</span> for every project, <span class="mono">--explain</span> names the file it resolved from.</p></div>
+      <div class="cmd rv rv-d1"><div class="c-name">nexus mcp</div><p>The brain as a stdio MCP server. Registered automatically via generated <span class="mono">.mcp.json</span>.</p></div>
+      <div class="cmd v rv rv-d2"><div class="c-name">nexus wake</div><p>Deterministic handshake token. Agents echo it, doctor flags sessions that skip it.</p></div>
+      <div class="cmd v rv rv-d3"><div class="c-name">nexus sync</div><p>Repo sensors → Vital Signs block. Git, tests, files, packages. Idempotent, CI-safe.</p></div>
+      <div class="cmd v rv rv-d1"><div class="c-name">nexus plan</div><p>Durable multi-step work in <span class="mono">.nexus/plans/</span>. Survives sessions, diffs cleanly.</p></div>
+      <div class="cmd rv rv-d2"><div class="c-name">nexus doctor</div><p><span data-live="checks">12</span> drift checks: stale docs, orphan plans, knowledge bloat, missed handshakes, a clobbered Chameleon block.</p></div>
       <div class="cmd rv rv-d2"><div class="c-name">nexus brief</div><p>Status digest for humans, and for the brain-aware CI comment on every PR.</p></div>
       <div class="cmd rv rv-d3"><div class="c-name">nexus consolidate</div><p>Memory hygiene. Rolls knowledge into a summary; append-only stays append-only.</p></div>
       <div class="cmd rv rv-d4"><div class="c-name">nexus brain</div><p>Health dashboard + auto-invoke: the brain detects when it needs updating.</p></div>
+    </div>
+  </section>
+
+  <!-- ═══ CHAMELEON DELEGATION · v1.2 ═══ -->
+  <section id="chameleon">
+    <div class="kicker rv">new in v1.2 · delegation</div>
+    <h2 class="rv rv-d1">NEXUS runs the interview.<br><em>Chameleon builds the UI.</em></h2>
+    <p class="lead rv rv-d2">Scaffolding a good UI is a different problem from running a project brain, so v1.2 stops pretending otherwise. <span class="mono" style="color:var(--mint2)">nexus init</span> resolves what you want into an AppSpec, hands it to <a href="https://chameleon.glenhalton.com" target="_blank" style="color:var(--mint)">Chameleon</a>, and overlays the brain, tooling, CI, and tests around what comes back.</p>
+
+    <div class="chm rv rv-d2">
+      <div class="qs">
+        <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">opt in once · remembered after that</span></div>
+        <div class="qs-body">
+<div><span class="p">$</span> <span class="c">nexus use chameleon --global</span></div>
+<div class="o">  ✓ UI generator set to chameleon for every project</div>
+<div><span class="p">$</span> <span class="c">nexus init my-app</span></div>
+<div class="o">  › UI generator: chameleon <span style="color:var(--faint)">(from ~/.config/nexus/config.json)</span></div>
+<div class="o">  ✓ AppSpec validated · chameleon new --validate-only</div>
+<div class="o">  ✓ 13 files from Chameleon · brain + CI + tests overlaid</div>
+<div class="o">  ✓ evidence written to .nexus/state/chameleon.json</div>
+<div><span class="p">$</span> <span class="c">nexus init my-api --ui none</span>  <span class="o"># always one keystroke away</span></div>
+        </div>
+      </div>
+      <div class="an-points">
+        <div class="an-pt on rv rv-d1"><b>Opt-in, never required</b><p>Default is <span class="mono">none</span>. Resolution runs <span class="mono">--ui</span> flag → project config → global config → none. A saved preference is <em>stated</em> during init, never asked about again.</p></div>
+        <div class="an-pt rv rv-d2"><b>Not a dependency</b><p>Chameleon is resolved from your environment at generation time. Absent, older, or broken: generation falls back to NEXUS and prints the reason. Every project still builds with <span class="mono">--ui none</span>.</p></div>
+        <div class="an-pt rv rv-d3"><b>Capability-gated, not version-gated</b><p>NEXUS asks what your Chameleon can do and disables the paths that aren't there, so new Chameleon releases light up new paths without waiting for a NEXUS release.</p></div>
+      </div>
+    </div>
+
+    <div class="duo rv rv-d2">
+      <div class="duo-card win">
+        <div class="duo-h">Verified, not assumed <span class="pill pill-new">EVIDENCE</span></div>
+        <ul>
+          <li><b>Validated twice</b> before anything is written, locally, then via <span class="mono">chameleon new --validate-only</span></li>
+          <li><b>Recorded, not claimed</b>, every <span class="mono">--json</span> envelope lands in <span class="mono">.nexus/state/chameleon.json</span></li>
+          <li><b>Toolchain merged</b>, NEXUS folds its scripts and devDependencies in, which is what makes the generated <span class="mono">lint</span> script actually runnable</li>
+          <li><b>Native is skipped deliberately</b>, Chameleon's tree is DOM-bound, so an Expo target opts out and says why</li>
+        </ul>
+      </div>
+      <div class="duo-card win">
+        <div class="duo-h">Fixed in v1.2 <span class="pill pill-new">D12</span></div>
+        <ul>
+          <li><span class="mono">CLAUDE.md</span> and <span class="mono">AGENTS.md</span> were in the always-replace set, so every <b>upgrade wiped the block</b> <span class="mono">chameleon agents init</span> splices between its markers</li>
+          <li>NEXUS now <b>captures that block before regenerating</b> and restores it after, across <span class="mono">init</span>, <span class="mono">upgrade</span>, and <span class="mono">repair</span></li>
+          <li>New <b>doctor check D12</b> flags any project where it went missing, <span data-live="checks">12</span> checks total</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -383,7 +449,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <h4>🧠 NEXUS Brain Brief</h4>
         <div class="pr-row"><span class="ok">✓</span> Shipped (7d): feat: oauth provider · fix: session ttl</div>
         <div class="pr-row"><span class="ok">→</span> Active plan: add-user-authentication (step 3/5)</div>
-        <div class="pr-row"><span class="ok">✓</span> Vital signs: 456 tests · branch clean · synced 4 min ago</div>
+        <div class="pr-row"><span class="ok">✓</span> Vital signs: 546 tests · branch clean · synced 4 min ago</div>
         <div class="pr-row"><span class="warn">⚠</span> Doctor: D05, 1 knowledge entry references a moved file</div>
         <div class="pr-row"><span class="ok">＋</span> Knowledge: [gotcha] Session cookies need sameSite=lax</div>
       </div>
@@ -403,6 +469,8 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 ├─ <span class="d">plans/</span>          <span class="note">← durable multi-step work</span>
 ├─ <span class="d">skills/</span>         <span class="note">← how YOUR project does things</span>
 ├─ <span class="d">state/</span>          <span class="note">← session tokens · sensor cache</span>
+│  └─ <span class="hot">chameleon.json</span> <span class="note">← generation evidence (v1.2)</span>
+├─ <span class="f">config.json</span>     <span class="note">← UI generator preference (v1.2)</span>
 └─ <span class="d">ai/</span>             <span class="note">← instructions for every agent</span>
 <span class="f">.mcp.json</span>          <span class="note">← auto-registers nexus-brain</span></div>
       <div class="an-points">
@@ -416,14 +484,15 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ TIMELINE ═══ -->
   <section>
     <div class="kicker rv">built in the open</div>
-    <h2 class="rv rv-d1">Six releases to a <em>staffed brain.</em></h2>
+    <h2 class="rv rv-d1">Seven releases to a <em>staffed brain.</em></h2>
     <div class="tl">
       <div class="tl-c rv"><div class="v">v0.1. FEB 2026</div><div class="t">Genesis</div><p>init · adopt · 6 frameworks · full toolchain</p></div>
       <div class="tl-c rv rv-d1"><div class="v">v0.2. FEB 2026</div><div class="t">Intelligence</div><p>8 structured docs · project brain · agent personas</p></div>
       <div class="tl-c rv rv-d2"><div class="v">v0.3. MAR 2026</div><div class="t">Skills</div><p>Live skill registry · custom/core/community</p></div>
       <div class="tl-c rv rv-d3"><div class="v">v0.4. MAY 2026</div><div class="t">Alive Brain</div><p>sync · plan · doctor · brief · auto-invoke</p></div>
       <div class="tl-c rv rv-d4"><div class="v">v1.0. JUN 2026</div><div class="t">MCP</div><p>13 brain tools · wake &amp; consolidate · brain-aware CI</p></div>
-      <div class="tl-c now rv rv-d4"><div class="v">v1.1. JUN 2026</div><div class="t">Agents</div><p>Core four brain-grounded agents · get_context · D11 verification gate · 456 tests</p></div>
+      <div class="tl-c rv rv-d4"><div class="v">v1.1. JUN 2026</div><div class="t">Agents</div><p>Core four brain-grounded agents · get_context · D11 verification gate</p></div>
+      <div class="tl-c now rv rv-d4"><div class="v">v1.2. AUG 2026</div><div class="t">Delegation</div><p>Chameleon UI delegation · <span class="mono">nexus use</span> · D12 block preservation · <span data-live="tests">546</span> tests</p></div>
     </div>
   </section>
 
@@ -435,7 +504,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">terminal</span></div>
       <div class="qs-body">
 <div><span class="p">$</span> <span class="c">npm install -g @nexus-framework/cli</span></div>
-<div><span class="p">$</span> <span class="c">nexus init my-app</span></div>
+<div><span class="p">$</span> <span class="c">nexus init my-app</span>  <span class="o"># add --ui chameleon to delegate the UI</span></div>
 <div class="o">  ✓ brain scaffolded · skills installed · .mcp.json registered</div>
 <div><span class="p">$</span> <span class="c">cd my-app && claude</span>  <span class="o"># or codex / cursor</span></div>
 <div class="o">  › agent calls nexus_wake → NX-WAKE-7K9F-2026-06-10</div>
@@ -571,5 +640,6 @@ const tio=new IntersectionObserver(es=>{if(es[0].isIntersecting&&!RM){tio.discon
   cycleTimer=setInterval(()=>{if(pinned>=0)return;cycle=(cycle+1)%TOOLS.length;showTool(cycle)},2600);}},{threshold:.3});
 tio.observe(grid);
 </script>
+<script src="/npm-live.js" defer></script>
 </body>
 </html>

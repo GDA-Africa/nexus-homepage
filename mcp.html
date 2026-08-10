@@ -22,7 +22,7 @@
   "description": "Model Context Protocol explained, plus the NEXUS implementation: a stdio brain server exposing 17 schema-validated tools to Claude Code, OpenAI Codex, Cursor, and any MCP client.",
   "url": "https://nexus.glenhalton.com/mcp",
   "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" },
-  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.1.2",
+  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.2.0",
     "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli" }
 }
 </script>
@@ -302,7 +302,7 @@ const GOOD=[
  {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_wake</span> {}'},
  {h:'<span class="in">←</span> { <span class="k">"token"</span>: <span class="tok">NX-WAKE-7K9F-'+TODAY+'</span>, <span class="k">"activePlan"</span>: <span class="s">"add-auth"</span>,\n   <span class="k">"nextStep"</span>: <span class="s">"3. Write session middleware"</span> }'},
  {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_get_context</span> { <span class="k">"task"</span>: <span class="s">"session middleware"</span> }'},
- {h:'<span class="in">←</span> { <span class="k">"knowledge"</span>: [<span class="s">"[gotcha] Session cookies need sameSite=lax"</span>],\n   <span class="k">"skills"</span>: [<span class="s">"api-design"</span>], <span class="k">"vitals"</span>: { <span class="k">"tests"</span>: <span class="s">"456 passing"</span> } }'},
+ {h:'<span class="in">←</span> { <span class="k">"knowledge"</span>: [<span class="s">"[gotcha] Session cookies need sameSite=lax"</span>],\n   <span class="k">"skills"</span>: [<span class="s">"api-design"</span>], <span class="k">"vitals"</span>: { <span class="k">"tests"</span>: <span class="s">"546 passing"</span> } }'},
  {h:'<span class="cm">// …implements step 3 with the gotcha applied…</span>'},
  {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_plan_tick</span> { <span class="k">"id"</span>: <span class="s">"add-auth"</span>, <span class="k">"step"</span>: <span class="num">3</span> }'},
  {h:'<span class="in">←</span> { <span class="k">"checked"</span>: <span class="num">true</span>, <span class="k">"nextStep"</span>: <span class="s">"4. Hand off to test-writer"</span> }'},
@@ -345,5 +345,6 @@ function restartDemo(){runDemo()}
 const pio=new IntersectionObserver(es=>{if(es[0].isIntersecting){pio.disconnect();runDemo()}},{threshold:.25});
 pio.observe(elGood);
 </script>
+<script src="/npm-live.js" defer></script>
 </body>
 </html>

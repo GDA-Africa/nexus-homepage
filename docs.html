@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS CLI Documentation: Commands, MCP Tools, Brain & Skills</title>
-<meta name="description" content="Complete NEXUS CLI v1.1 documentation: all 17 commands, the 16 MCP brain tools, the agents system, the .nexus brain anatomy, skills system, brain-aware CI, and upgrade guide.">
+<meta name="description" content="Complete NEXUS CLI v1.2 documentation: all 18 commands, the 17 MCP brain tools, Chameleon UI delegation, the agents system, the .nexus brain anatomy, skills system, brain-aware CI, and upgrade guide.">
 <link rel="canonical" href="https://nexus.glenhalton.com/docs.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/docs.html">
 <meta property="og:title" content="NEXUS CLI Documentation">
-<meta property="og:description" content="All 17 commands, 16 MCP brain tools, agents, skills, and brain-aware CI, the complete v1.1 reference.">
+<meta property="og:description" content="All 18 commands, 17 MCP brain tools, Chameleon delegation, agents, skills, and brain-aware CI, the complete v1.2 reference.">
 <meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -104,7 +104,7 @@ footer a{color:var(--mut)}
 <nav class="top">
   <div class="top-in">
     <a class="logo" href="index.html"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
-    <span class="crumb">/ docs / v1.1.0</span>
+    <span class="crumb">/ docs / v1.2.0</span>
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="top-links">
       <a href="index.html">Home</a>
@@ -123,7 +123,7 @@ footer a{color:var(--mut)}
   <a href="#quickstart">Quick start</a>
   <div class="side-sec">MCP Server</div>
   <a href="#mcp">nexus mcp</a>
-  <a href="#mcp-tools">The 17 tools</a>
+  <a href="#mcp-tools">The <span data-live="tools">17</span> tools</a>
   <a href="#mcp-clients">Client setup</a>
   <div class="side-sec">Commands</div>
   <a href="#cmd-project">Project setup</a>
@@ -136,6 +136,7 @@ footer a{color:var(--mut)}
   <a href="#knowledge">Knowledge base</a>
   <a href="#skills">Skills system</a>
   <a href="#agents">Agents (v1.1)</a>
+  <a href="#chameleon">Chameleon (v1.2)</a>
   <a href="#ci">Brain-aware CI</a>
   <div class="side-sec">More</div>
   <a href="#upgrade">Upgrading to v1.x</a>
@@ -143,8 +144,8 @@ footer a{color:var(--mut)}
 </aside>
 
 <article>
-  <h1>NEXUS CLI <em>v1.1</em> documentation</h1>
-  <p class="intro">Everything in one page: the MCP server, the agents system, all 17 commands, and the concepts behind the project brain. <span class="mono" style="font-size:12px;color:var(--faint)">⌘F is your friend.</span></p>
+  <h1>NEXUS CLI <em>v1.2</em> documentation</h1>
+  <p class="intro">Everything in one page: the MCP server, the agents system, Chameleon delegation, all <span data-live="commands">18</span> commands, and the concepts behind the project brain. <span class="mono" style="font-size:12px;color:var(--faint)">⌘F is your friend.</span></p>
 
   <!-- ════ START ════ -->
   <section id="install">
@@ -167,7 +168,7 @@ footer a{color:var(--mut)}
   <!-- ════ MCP ════ -->
   <section id="mcp">
     <h2>nexus mcp <span class="chip">v1.0 HEADLINE</span></h2>
-    <p>Starts the <b>brain MCP server</b> on stdio. Any MCP client gets the project brain as 13 schema-validated tools instead of files it's told to read. Generated projects include this <span class="mono">.mcp.json</span>, so Claude Code and Codex connect automatically:</p>
+    <p>Starts the <b>brain MCP server</b> on stdio. Any MCP client gets the project brain as <span data-live="tools">17</span> schema-validated tools instead of files it's told to read. Generated projects include this <span class="mono">.mcp.json</span>, so Claude Code and Codex connect automatically:</p>
     <div class="code">{ <span class="k">"mcpServers"</span>: {
     <span class="k">"nexus-brain"</span>: { <span class="k">"command"</span>: <span class="s">"npx"</span>, <span class="k">"args"</span>: [<span class="s">"-y"</span>, <span class="s">"@nexus-framework/cli"</span>, <span class="s">"mcp"</span>] }
 } }</div>
@@ -179,7 +180,7 @@ footer a{color:var(--mut)}
   </section>
 
   <section id="mcp-tools">
-    <h2>The 17 tools</h2>
+    <h2>The <span data-live="tools">17</span> tools</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Tool</th><th></th><th>What it does</th></tr>
       <tr><td>nexus_wake</td><td><span class="r">READ</span></td><td>Session handshake: deterministic <span class="mono">NX-WAKE-…</span> token + active plan + next step + doctor warn/error counts, in one call. Echo the token in your first response.</td></tr>
@@ -187,7 +188,7 @@ footer a{color:var(--mut)}
       <tr><td>nexus_query_knowledge</td><td><span class="r">READ</span></td><td>Targeted retrieval over <span class="mono">knowledge.md</span>, keyword + category filters, newest first. The 2 relevant gotchas, not 200 lines.</td></tr>
       <tr><td>nexus_get_vital_signs</td><td><span class="r">READ</span></td><td>Live repo sensors: git (branch, dirty, last commit), files, tests, packages. Fresher than the cached block in index.md.</td></tr>
       <tr><td>nexus_brief</td><td><span class="r">READ</span></td><td>Markdown status digest, same output as <span class="mono">nexus brief --md</span>.</td></tr>
-      <tr><td>nexus_doctor</td><td><span class="r">READ</span></td><td>D01–D11 drift report with severity filter.</td></tr>
+      <tr><td>nexus_doctor</td><td><span class="r">READ</span></td><td>D01–D12 drift report with severity filter.</td></tr>
       <tr><td>nexus_list_plans</td><td><span class="r">READ</span></td><td>All plans with status, owner, phase; optional status filter.</td></tr>
       <tr><td>nexus_get_plan</td><td><span class="r">READ</span></td><td>Full markdown of one plan by id.</td></tr>
       <tr><td>nexus_list_skills</td><td><span class="r">READ</span></td><td>Installed skills across custom/core/community with triggers, match your task before significant work.</td></tr>
@@ -218,10 +219,11 @@ footer a{color:var(--mut)}
     <h2>Commands, project setup</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
-      <tr><td>nexus init [name]</td><td>Scaffold a new project: interactive strategy questions, framework templates, full <span class="mono">.nexus/</span> brain, skills, <span class="mono">.mcp.json</span>, CI workflow, agent instruction files. <span class="mono">--local</span> keeps .nexus out of git; <span class="mono">--adopt</span> is shorthand for adopt.</td></tr>
+      <tr><td>nexus init [name]</td><td>Scaffold a new project: interactive strategy questions, framework templates, full <span class="mono">.nexus/</span> brain, skills, <span class="mono">.mcp.json</span>, CI workflow, agent instruction files. <span class="mono">--local</span> keeps .nexus out of git; <span class="mono">--adopt</span> is shorthand for adopt. <b>v1.2:</b> <span class="mono">--ui chameleon|none</span> picks the UI generator for this run, see <a href="#chameleon">Chameleon delegation</a>.</td></tr>
       <tr><td>nexus adopt [path]</td><td>Add the brain + AI config + skills to an <b>existing</b> project. Never touches source code. <span class="mono">--force</span> skips project detection.</td></tr>
       <tr><td>nexus upgrade [path]</td><td>Regenerate templates with the smart file strategy: docs with <span class="mono">status: populated</span> frontmatter are preserved, template-state files are refreshed. Plans and state always survive.</td></tr>
       <tr><td>nexus repair [path]</td><td>Fix missing or corrupted .nexus files without replacing anything valid.</td></tr>
+      <tr><td>nexus use [chameleon|none]</td><td>Show or set the UI generator NEXUS delegates to. <span class="mono">--global</span> writes it for every project, <span class="mono">--explain</span> names the config file it came from. Opt-in; default is <span class="mono">none</span>.</td></tr>
     </table></div>
   </section>
 
@@ -234,7 +236,7 @@ footer a{color:var(--mut)}
       <tr><td>nexus wake [--quiet]</td><td>Issue the session handshake token (<span class="mono">NX-WAKE-XXXX-date</span>, derived from brain content + date). Recorded in <span class="mono">.nexus/state/session.json</span>; doctor D09 flags sessions without one. <span class="mono">--quiet</span> prints only the token, <span class="mono">--no-active-plan</span> for CI.</td></tr>
       <tr><td>nexus sync [--dry-run|--json]</td><td>Run repo sensors and write the Vital Signs block into <span class="mono">index.md</span>. Idempotent, safe to run in CI before doctor/brief. <span class="mono">--scope git|files|tests|packages</span> limits JSON output.</td></tr>
       <tr><td>nexus plan &lt;sub&gt;</td><td>Durable multi-step work: <span class="mono">new</span> (with --type feature|bug|refactor|spike|chore), <span class="mono">list</span>, <span class="mono">show</span>, <span class="mono">start</span>, <span class="mono">tick &lt;id&gt; &lt;step&gt;</span>, <span class="mono">note</span>, <span class="mono">done</span> (auto-appends to the Progress Log). Lifecycle: draft → approved → in_progress → blocked|done|abandoned.</td></tr>
-      <tr><td>nexus doctor [--severity] [--fix]</td><td>11 drift checks (D01–D11): unresolved placeholders, stale phase, progress gaps, knowledge bloat &amp; staleness, stale/orphan plans, missing vital signs, missed handshakes, skills drift. CI-friendly exit codes.</td></tr>
+      <tr><td>nexus doctor [--severity] [--fix]</td><td><span data-live="checks">12</span> drift checks (D01–D12): unresolved placeholders, stale phase, progress gaps, knowledge bloat &amp; staleness, stale/orphan plans, missing vital signs, missed handshakes, skills drift, unverified done (D11), and a clobbered Chameleon agent block (D12). CI-friendly exit codes.</td></tr>
       <tr><td>nexus brief [--md] [--since]</td><td>~30-line status digest: vital signs, drift, plans, shipped commits, suggested next actions. <span class="mono">--md</span> powers the CI PR comment.</td></tr>
       <tr><td>nexus consolidate [--check|--archive]</td><td>Memory hygiene: generates <span class="mono">knowledge-summary.md</span> grouped by category. <span class="mono">--check</span> is a CI gate; <span class="mono">--archive</span> moves year-old entries aside. Deterministic, no LLM.</td></tr>
       <tr><td>nexus brain &lt;status|check&gt;</td><td>Health dashboard + on-demand drift detection. The auto-invoke layer uses the same detector to prompt you when the brain needs attention.</td></tr>
@@ -275,6 +277,8 @@ footer a{color:var(--mut)}
 ├─ <span class="k">plans/</span>           <span class="cm"># durable multi-step work (+ _active.json pointer)</span>
 ├─ <span class="k">skills/</span>          <span class="cm"># core/ custom/ community/, how YOUR project does things</span>
 ├─ <span class="k">state/</span>           <span class="cm"># session tokens, sensor cache (gitignored)</span>
+│  └─ <span class="s">chameleon.json</span><span class="cm"># v1.2, generation evidence from the UI handoff</span>
+├─ <span class="s">config.json</span>      <span class="cm"># v1.2, project UI generator preference</span>
 └─ <span class="k">ai/</span>              <span class="cm"># master instructions every agent file embeds</span></div>
     <p>The numbered docs (01_vision → 08_deployment) use YAML frontmatter with a <span class="mono">status</span> field. <span class="mono">template</span> vs <span class="mono">populated</span>, which is how <span class="mono">nexus upgrade</span> knows what to refresh and what to preserve.</p>
   </section>
@@ -323,6 +327,32 @@ footer a{color:var(--mut)}
 <span class="p">$</span> <span class="c">nexus agent sync</span>                    <span class="o"># regenerate .claude/agents/ + Agent Roles blocks</span></div>
   </section>
 
+  <section id="chameleon">
+    <h2>Chameleon delegation <span class="chip">v1.2 HEADLINE</span></h2>
+    <p><span class="mono">nexus init</span> is the interview; <a href="https://chameleon.glenhalton.com" target="_blank">Chameleon</a> (<span class="mono">@chameleon-ui-lib/react</span>) is the UI generator. NEXUS resolves your answers into an <b>AppSpec</b>, hands it over, then overlays the brain, tooling, CI, and tests around what Chameleon writes. It is <b>opt-in and never a hard dependency</b>, every project must still build with <span class="mono">--ui none</span>.</p>
+
+    <h3>Turning it on</h3>
+    <div class="code"><span class="p">$</span> <span class="c">nexus use chameleon</span>            <span class="o"># this project</span>
+<span class="p">$</span> <span class="c">nexus use chameleon --global</span>   <span class="o"># every project</span>
+<span class="p">$</span> <span class="c">nexus use none</span>                 <span class="o"># opt back out</span>
+<span class="p">$</span> <span class="c">nexus use --explain</span>            <span class="o"># what's active, and which file said so</span>
+<span class="p">$</span> <span class="c">nexus init my-app --ui none</span>    <span class="o"># override for one run</span></div>
+    <p><b>Resolution order:</b> <span class="mono">--ui</span> flag → project <span class="mono">.nexus/config.json</span> → global <span class="mono">~/.config/nexus/config.json</span> → <span class="mono">none</span>. A saved preference is <i>stated</i> during <span class="mono">init</span>, never asked about again.</p>
+
+    <h3>How the handoff works</h3>
+    <ul class="plain">
+      <li><b>Resolved from your environment, not bundled:</b> <span class="mono">NEXUS_CHAMELEON_BIN</span> → project <span class="mono">node_modules/.bin</span> → <span class="mono">npx --no-install</span>. Absent, older, or broken, generation falls back to NEXUS and prints the reason.</li>
+      <li><b>Capability-gated, not version-gated:</b> NEXUS asks Chameleon what it supports and disables unavailable paths, so new Chameleon releases light up new paths without a NEXUS release.</li>
+      <li><b>Validated before it runs:</b> the AppSpec is checked locally, then again via <span class="mono">chameleon new --validate-only</span>, before anything is written.</li>
+      <li><b>Recorded, not claimed:</b> every <span class="mono">--json</span> envelope is written to <span class="mono">.nexus/state/chameleon.json</span> as generation evidence.</li>
+      <li><b>Toolchain merged:</b> NEXUS folds its scripts and devDependencies into Chameleon's <span class="mono">package.json</span>, which is what makes the generated <span class="mono">lint</span> script actually runnable.</li>
+    </ul>
+    <div class="callout warn"><b>Native targets skip Chameleon deliberately.</b> Its component tree is DOM-bound (Radix, MUI, react-router, Tailwind v4), so an Expo target opts out and says why, regardless of a saved preference. A remembered choice must never produce a project that cannot boot.</div>
+
+    <h3>Agent block preservation (D12)</h3>
+    <p><span class="mono">CLAUDE.md</span> and <span class="mono">AGENTS.md</span> are in the always-replace set, so every <span class="mono">init</span> / <span class="mono">upgrade</span> / <span class="mono">repair</span> rewrote them wholesale, silently deleting the block <span class="mono">chameleon agents init</span> splices between its <span class="mono">&lt;!-- chameleon:start --&gt;</span> markers. NEXUS now captures that block before regenerating and restores it after; doctor check <b>D12</b> flags any project where it went missing.</p>
+  </section>
+
   <section id="ci">
     <h2>Brain-aware CI</h2>
     <p>Generated workflows include a deterministic brain layer, no LLM anywhere:</p>
@@ -342,7 +372,10 @@ footer a{color:var(--mut)}
       <li>Adds <span class="mono">.nexus/state/</span>, <span class="mono">.mcp.json</span>, and the MCP + handshake sections to your instruction files.</li>
       <li><b>Nothing is lost:</b> populated docs, knowledge, plans, and session state are always preserved.</li>
       <li>New commands are no-ops until you use them, v0.3.x/v0.4.x projects keep working as-is.</li>
+      <li><b>v1.1.3:</b> <span class="mono">upgrade</span> and <span class="mono">repair</span> now normalize partial manifests first. Projects created by older CLIs, or adopted as backend-only (no frontend framework), no longer render the literal string <span class="mono">undefined</span> into generated docs and AI config. If a past upgrade wrote <span class="mono">undefined</span> into yours, re-run <span class="mono">nexus upgrade</span> to regenerate.</li>
+      <li><b>v1.2.0:</b> adds <span class="mono">nexus use</span> and <span class="mono">init --ui</span> (<a href="#chameleon">Chameleon delegation</a>), plus doctor check <b>D12</b>. <span class="mono">upgrade</span> and <span class="mono">repair</span> now preserve Chameleon's agent block instead of overwriting it. Nothing here activates on its own, an upgraded project keeps generating exactly as before until you run <span class="mono">nexus use chameleon</span>.</li>
     </ul>
+    <div class="callout warn"><b>On v1.1.3 vs v1.2.0.</b> The published 1.1.3 tarball already contained the Chameleon work, it was cut while that work sat under an <span class="mono">[Unreleased]</span> heading, so 1.1.3 shipped a feature set its own changelog did not describe. <b>1.2.0 is the same code under the version it should have carried.</b> Upgrading from 1.1.3 to 1.2.0 changes only the version number.</div>
   </section>
 
   <section id="frameworks">
@@ -377,5 +410,6 @@ secs.forEach(s=>sio.observe(s));
 /* mobile menu */
 document.querySelectorAll('.top-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
 </script>
+<script src="/npm-live.js" defer></script>
 </body>
 </html>

@@ -75,7 +75,12 @@ DirectoryIndex index.html
   ExpiresByType image/svg+xml          "access plus 30 days"
   ExpiresByType image/x-icon           "access plus 30 days"
   ExpiresByType text/css               "access plus 7 days"
-  ExpiresByType application/javascript "access plus 7 days"
+  # npm-live.js is the only external script; a 7-day cache would mean a week
+  # before a fix to it reaches returning visitors.
+  ExpiresByType application/javascript "access plus 1 day"
+  # stats.json carries the release-coupled counts (tests/commands/tools/checks).
+  # It changes on release, so it must not sit in a browser cache for days.
+  ExpiresByType application/json       "access plus 1 hour"
 </IfModule>
 
 # ── Security headers ────────────────────────────────────────────────
