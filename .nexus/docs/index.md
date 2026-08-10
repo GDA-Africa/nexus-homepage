@@ -1,203 +1,157 @@
+---
+nexus_doc: true
+id: "project_index"
+title: "Project Index — AI Agent Brain"
+status: template
+confidence: low
+last_updated: "2026-08-10"
+---
+
 # NEXUS CLI — Project Index
 
-**Project:** NEXUS CLI (`@nexus-framework/cli`)  
-**Status:** 🟢 LIVE ON NPM — v0.2.0 | � v0.3.0 SKILLS SYSTEM — BUILT, READY TO PUBLISH  
-**Last Updated:** March 6, 2026  
-**Version:** 0.2.0 (next: 0.3.0)  
-**Coverage:** Unit: 222/222 passing | Integration: Pending | E2E: Pending
+> **🧠 THIS IS THE AI AGENT'S BRAIN.**
+> This is NOT just another doc to fill in. This is the living project tracker.
+> AI agents MUST read this file before every task and update it after every task.
+
+**Project:** NEXUS CLI
+**Framework:** None (no frontend)
+**Data Strategy:** local-only
+**Created:** 2026-08-10
+**Status:** 🟡 Scaffolded — Awaiting vision + first feature
+
+---
+
+<!-- NEXUS:VITAL_SIGNS:START — managed by `nexus sync` -->
+## 🩺 Vital Signs (auto)
+
+_Last sync: not yet synced_
+
+| Sensor | Reading |
+|--------|---------|
+| Last commit | not available |
+| Tests | not yet measured |
+| Coverage | not collected · M1 sensor adds `vitest --coverage` parsing |
+| Stale folders | not measured |
+| Packages | not yet measured |
+<!-- NEXUS:VITAL_SIGNS:END -->
 
 ---
 
 ## 🎯 Current Objective
 
-**Phase 1–6:** ✅ COMPLETE  
-**Phase 7: Polish & Distribution** — 🟡 IN PROGRESS (published, iterating)  
-**Phase 8: Skills System** — ✅ BUILT & TESTED — ready to bump to v0.3.0 and publish  
-**Next Focus:** Bump `package.json` to v0.3.0, update `README.md` with Skills System docs, publish to npm
+<!-- AI: This section must ALWAYS reflect what you're working on RIGHT NOW.
+     Update it at the start of every task. -->
+
+**Current Phase:** Phase 1 — Foundation
+**Active Task:** Populate NEXUS docs from user's project vision
+**Blocked:** None
+**Next Up:** See "What's Next" section below
 
 ---
 
 ## 📊 Project Status Matrix
 
-| Phase | Status | Notes |
-|-------|--------|-------|
-| 📝 Documentation | ✅ Complete | Vision, implementation, README, contributing guide |
-| 🏗️ Phase 1: Core Infrastructure | ✅ Complete | CLI entry point, Commander.js, bin executable |
-| 🎨 Phase 2: Prompts & Templates | ✅ Complete | 7 interactive prompt modules (including persona) |
-| 📚 Phase 3: Documentation System | ✅ Complete | 8-file doc generator + brain + knowledge system |
-| 🧪 Phase 4: Testing & CI/CD | ✅ Complete | 190 unit tests, GitHub Actions CI/CD on Node 20/22, auto-publish to npm |
-| 🔮 Phase 5: Landing Pages | ✅ Complete | Branded pages for all 6 frameworks + favicon |
-| 🛡️ Phase 6: Repo Governance | ✅ Complete | CODEOWNERS, PR template, issue templates, commitlint |
-| ✨ Phase 7: Polish & Distribution | 🟡 75% | Published to npm, upgrade/repair built, persona system shipped, E2E tests remaining |
-| 🧠 Phase 8: Skills System | ✅ Complete | `nexus skill` command (5 subcommands), skills generator (6 frameworks), skills protocol in all AI files, 33 unit tests — ready to ship as v0.3.0 |
+<!-- AI: Update these statuses as you complete work. This is how you track progress. -->
+
+| Area | Status | Notes |
+|------|--------|-------|
+| 📋 Vision & Requirements | 🔴 Template | Needs user input → `.nexus/docs/01_vision.md` |
+| 🏗️ Architecture | 🔴 Template | Auto-fill from codebase → `.nexus/docs/02_architecture.md` |
+| 📊 Data Contracts | 🔴 Template | Define from code → `.nexus/docs/03_data_contracts.md` |
+| 🔌 API Contracts | 🔴 Template | Define from code → `.nexus/docs/04_api_contracts.md` |
+| 📐 Business Logic | 🔴 Template | Needs user input → `.nexus/docs/05_business_logic.md` |
+| 🧪 Test Strategy | 🔴 Template | Auto-fill from code → `.nexus/docs/06_test_strategy.md` |
+| 🔨 Implementation Plan | 🔴 Template | Build from vision → `.nexus/docs/07_implementation.md` |
+| 🚀 Deployment | 🔴 Template | Auto-fill from code → `.nexus/docs/08_deployment.md` |
+| 🏠 Core Features | 🔴 Not started | See feature backlog below |
+| 🧪 Tests | 🔴 Not started | — |
+
+---
+
+## 🗂️ Feature Backlog
+
+<!-- AI: After populating 01_vision.md, copy EVERY Core Feature into this table.
+     Assign each a priority and phase. This is the ONLY list you work from. -->
+
+| # | Feature | Priority | Status | Phase | Notes |
+|---|---------|----------|--------|-------|-------|
 
 ---
 
 ## 📁 What Has Been Built
 
-### CLI Commands
+<!-- AI: Update this as you create files. Track every module, component, and test.
+     This is how you know what exists and what doesn't. -->
 
-| Command | File | Description |
-|---------|------|-------------|
-| `nexus init [name]` | `src/commands/init.ts` | Scaffold a new project from scratch with interactive prompts |
-| `nexus adopt [path]` | `src/commands/adopt.ts` | Add `.nexus/` docs + AI config to an existing project |
-| `nexus upgrade [path]` | `src/commands/upgrade.ts` | Regenerate `.nexus/` with latest templates (smart file strategy) |
-| `nexus repair [path]` | `src/commands/repair.ts` | Fix missing/corrupted `.nexus/` files without replacing valid ones |
+### Source Files
 
-### Source Modules (src/)
-
-| Module | Files | Description |
-|--------|-------|-------------|
-| **Entry Points** | `cli.ts`, `index.ts`, `version.ts` | Commander.js CLI, public API, version 0.2.0 |
-| **Commands** | `commands/init.ts`, `adopt.ts`, `upgrade.ts`, `repair.ts`, `skill.ts`, `pack.ts`, `update.ts` | 7 CLI commands (+ 5 skill subcommands) |
-| **Prompts** | `prompts/index.ts` + 7 modules | Project type, data strategy, patterns, frameworks, features, persona, skill-config |
-| **Generators** | `generators/index.ts` + 8 modules | Structure, docs, config, tests, CI/CD, landing page, AI config, skills |
-| **Types** | `types/config.ts` + 3 modules | NexusConfig (+ enableSkills), NexusManifest, NexusPersona, GeneratedFile, TemplateContext |
-| **Utils** | `utils/index.ts` + 7 modules | Logger, validator, package-manager, git, file-system, project-detector, update-check |
-
-### Generator Modules (src/generators/)
-
-| File | What It Generates |
-|------|-------------------|
-| `structure.ts` | Directories, package.json, .gitignore, README |
-| `docs.ts` | 8 NEXUS docs + index.md brain + knowledge.md + .nexus/index.md + manifest.json |
-| `config.ts` | tsconfig.json, .eslintrc.cjs, .prettierrc, .editorconfig |
-| `tests.ts` | vitest.config.ts, example unit test, test helpers |
-| `ci-cd.ts` | .github/workflows/ci.yml |
-| `landing-page.ts` | Framework-specific homepage + nexus-logo.svg + favicon.svg |
-| `ai-config.ts` | `.nexus/ai/instructions.md` + root pointer files + onboarding protocol |
-| `index.ts` | Orchestrator: generateProject(), adoptProject(), upgradeProject(), repairProject() |
-| `skills.ts` ⬅ **NEW v0.3.0** | `.nexus/skills/` — core + custom dirs, README index, framework-matched skill files |
-
-### Prompt Modules (src/prompts/)
-
-| File | What It Asks |
-|------|--------------|
-| `index.ts` | Orchestrates full prompt flow |
-| `project-type.ts` | Project type selection |
-| `frameworks.ts` | Framework selection |
-| `features.ts` | Feature selection |
-| `patterns.ts` | App pattern selection |
-| `data-strategy.ts` | Data strategy selection |
-| `persona.ts` | Agent persona configuration (tone, verbosity, identity) |
-| `skill-config.ts` ⬅ **NEW v0.3.0** | Enable skills? Install framework skills? |
-
-### CLI Commands
-
-| Command | File | Description |
-|---------|------|-------------|
-| `nexus init [name]` | `src/commands/init.ts` | Scaffold a new project from scratch with interactive prompts |
-| `nexus adopt [path]` | `src/commands/adopt.ts` | Add `.nexus/` docs + AI config to an existing project |
-| `nexus upgrade [path]` | `src/commands/upgrade.ts` | Regenerate `.nexus/` with latest templates (smart file strategy) |
-| `nexus repair [path]` | `src/commands/repair.ts` | Fix missing/corrupted .nexus/ files without replacing valid ones |
-| `nexus skill new [name]` | `src/commands/skill.ts` | Scaffold a new custom skill interactively |
-| `nexus skill list` | `src/commands/skill.ts` | List all installed skills (core / custom / community) with status |
-| `nexus skill install <pkg>` | `src/commands/skill.ts` | Install a community skill pack from the registry |
-| `nexus skill remove <name>` | `src/commands/skill.ts` | Remove a community skill (refuses core/custom) |
-| `nexus skill status` | `src/commands/skill.ts` | Health-check all skills — flags deprecated or invalid frontmatter |
-| `nexus pack [path]` | `src/commands/pack.ts` | Zip `.nexus/` into a portable `nexus-backup-<timestamp>.zip` |
-| `nexus unpack [path]` | `src/commands/pack.ts` | Extract a backup zip and verify the restored `.nexus/` structure |
-| `nexus update` | `src/commands/update.ts` | Check npm registry and auto-install the latest NEXUS CLI version |
-
-| System | Description |
-|--------|-------------|
-| **Smart File Strategy** | Upgrade/repair reads YAML frontmatter (`status: template` vs `populated`) to decide replace vs preserve |
-| **Corruption Detection** | `isCorrupted()` detects empty files, missing frontmatter, invalid JSON |
-| **Progressive Knowledge** | `knowledge.md` — append-only log AI agents scan before tasks and write to after |
-| **Token-Efficient Templates** | Doc templates slimmed ~40%, tool files ~60 lines (not 150) |
-| **Pattern-Aware Docs** | Business logic doc includes conditional sections based on selected app patterns |
-| **Agent Persona** | Configurable AI agent personality (tone, verbosity, identity, custom directive) — embedded in all instruction files |
-| **Skills System** ⬅ **NEW v0.3.0** | `.nexus/skills/` — pre-read instruction files telling agents *how* to execute tasks in this project. Sourced from `@nexus-framework/skills`. Three dirs: `core/` (framework-matched, replaceable on upgrade), `custom/` (user-created, **sacred — never touched**), `community/` (installed via `nexus skill install`). Skills Protocol embedded in all AI instruction files. Precedence: custom > core > community. |
-
-### Skills System — `.nexus/skills/` Directory Layout
-
-```
-.nexus/skills/
-  README.md            ← agent-readable index of all installed skills (auto-generated)
-  core/                ← generated at init, regenerated on upgrade — framework-matched
-  custom/              ← user-created via `nexus skill new`, NEVER touched by NEXUS
-    README.md          ← placeholder with instructions on creating custom skills
-  community/           ← installed via `nexus skill install <pkg>`, reinstallable
-```
+| Module | Files | Status | Description |
+|--------|-------|--------|-------------|
+| Project scaffold | `package.json`, `tsconfig.json`, configs | ✅ | Generated by NEXUS CLI |
+| Landing page | `src/` (framework-specific) | ✅ | NEXUS branded starter page |
+| NEXUS docs | `.nexus/docs/` (8 files + index) | 🟡 Template | Awaiting population |
+| AI config | `.nexus/ai/` + root files | ✅ | AI agent instructions |
+| CI/CD | `.github/workflows/ci.yml` | ✅ | Lint + typecheck + test + build |
 
 ### Tests
 
-| File | Count | Covers |
+| File | Tests | Covers |
 |------|-------|--------|
-| `tests/unit/validator.test.ts` | 29 | Name validation, sanitization, empty input |
-| `tests/unit/generators.test.ts` | 95 | Structure, packages, landing pages, AI config, docs, knowledge, patterns, persona |
-| `tests/unit/adopt.test.ts` | 28 | Project detection, frontmatter, AI onboarding |
-| `tests/unit/upgrade.test.ts` | 38 | isPopulated, isCorrupted, upgrade strategy, repair mode |
-| `tests/unit/skills.test.ts` ⬅ **NEW v0.3.0** | 33 | skills generator (all 6 frameworks), getCoreSkillSlugs, content/frontmatter validation, README index, custom/README, upgrade count tests |
-| **Total** | **222** | **All passing ✅** |
+| TODO | TODO | TODO |
 
 ---
 
-## 🗺️ Document Map
+## 🔄 Progress Log
 
-| Document | Purpose |
-|----------|---------|
-| `.nexus/docs/index.md` | **THIS FILE** — project brain, status, module map |
-| `.nexus/docs/01_vision.md` | Product vision, user stories, success metrics |
-| `.nexus/docs/07_implementation.md` | Technical architecture, build phases, file-by-file plan |
-| `.nexus/docs/knowledge.md` | Progressive knowledge base — decisions, gotchas, patterns |
-| `.nexus/ai/instructions.md` | Master AI agent instructions |
-| `.github/copilot-instructions.md` | GitHub Copilot-specific pointer (embeds key rules) |
-| `AGENTS.md` | Claude/Codex pointer to `.nexus/ai/instructions.md` |
-| `CONTRIBUTING.md` | Contributor standards, PR process |
-| `README.md` | Public-facing project overview |
-| `SKILL_SYSTEM.md` ⬅ **NEW** | Full Skills System feature spec — read before implementing Phase 8 |
-| `SKILLS_CHAT.md` ⬅ **NEW** | Architecture chat — delivery map, phased plan, key insights |
+<!-- AI: Add an entry here every time you complete meaningful work.
+     This is the project's changelog and your memory across sessions. -->
+
+### 2026-08-10 — Project Created
+- ✅ Scaffolded with NEXUS CLI (None (no frontend), local-only)
+- ✅ Generated project structure, configs, landing page, CI/CD
+- ✅ Generated NEXUS documentation system (8 template docs)
+- ⏳ Docs need to be populated with project-specific content
 
 ---
 
-## 🔄 Release History
+## 🎯 What's Next (Prioritized)
 
-| Version | Date | Highlights |
-|---------|------|------------|
-| 0.1.0 | Feb 7, 2026 | Initial release: init, adopt, 5 frameworks, AI config, 73 tests |
-| 0.1.1 | Feb 8, 2026 | Bug fixes, test improvements |
-| 0.1.2 | Feb 8, 2026 | Sample project generation, README updates |
-| 0.1.3 | Feb 8, 2026 | Knowledge system, upgrade/repair commands, token optimization, 179 tests |
-| 0.1.4 | Feb 9, 2026 | Full AI instructions in all tool files, CD pipeline with auto-publish |
-| 0.2.0 | Feb 9, 2026 | Agent Persona system, Knowledge Base Protocol in shipped instructions, README rewrite — NEXUS is now an AI-native development framework |
-| **0.3.0** | **TBD** | **Skills System — `nexus skill` command (5 subcommands), skills generator (6 frameworks, 2 shared skills), Skills Protocol in all AI files, `enableSkills` prompt, 33 new unit tests (222 total)** |
+<!-- AI: THIS IS YOUR TODO LIST. Work through it top to bottom.
+     After completing an item, move it to the Progress Log and update the status matrix.
+     Add new items as they emerge. -->
+
+### 🔴 Do First (Before Any Feature Work)
+1. **Populate NEXUS docs** — Read the codebase + ask the user about their vision, then fill in all 8 docs (see onboarding protocol in AI instructions)
+2. **Build the implementation plan** — Turn features from `01_vision.md` into concrete build phases in `07_implementation.md` with a file-by-file plan
+3. **Update this index** — Fill in the feature backlog, status matrix, and "What Has Been Built" sections
+
+### 🟡 Then Build (Phase 1 — Foundation)
+4. **Core data models / types** — Define from `03_data_contracts.md`
+5. **Basic layout / navigation** — Main app shell, routing
+6. **Database / storage setup** — Match data strategy: local-only
+
+### 🟢 Then Build (Phase 2 — Core Features)
+7. **Feature 1** — TODO (derive from vision)
+8. **Feature 2** — TODO (derive from vision)
+9. **Feature 3** — TODO (derive from vision)
 
 ---
 
-## ⏭️ What's Next
+## ⚠️ AI Agent Operating Rules
 
-### � Ship v0.3.0 — Skills System (READY TO PUBLISH)
+**YOU MUST FOLLOW THESE RULES. They are not suggestions.**
 
-> All code is built and tested (222/222). These are the remaining pre-publish steps:
+1. **READ this file before EVERY task** — it tells you what to do next
+2. **UPDATE this file after EVERY task** — move completed items to Progress Log, update status matrix
+3. **DON'T ask "what enhancements would you like?"** — check the "What's Next" section instead
+4. **DON'T treat docs as one-time fill-ins** — they are living documents, update them as the project evolves
+5. **The feature backlog is your roadmap** — suggest the next item from it, don't invent random features
+6. **The implementation plan (`07_implementation.md`) tells you WHAT CODE to write** — check it before every feature
+7. **The progress log is your memory** — add entries so you (or the next agent) know what happened
+8. **If the user asks for a feature, check if it's already in the backlog** — if yes, just build it; if no, add it first
+9. **After every session, ensure this file reflects reality** — statuses, progress, blockers, next steps
+10. **Learn as you go** — when you discover something non-obvious (bug pattern, architecture insight, package quirk), append it to `.nexus/docs/knowledge.md`. Scan that file before making big decisions.
 
-| Step | Task | Status |
-|------|------|--------|
-| 1 | Bump `package.json` version to `0.3.0` | ⬜ |
-| 2 | Update `README.md` — document `nexus skill` command and Skills System | ⬜ |
-| 3 | Update `src/version.ts` to `0.3.0` | ⬜ |
-| 4 | Commit: `feat(skills): implement Skills System v0.3.0` | ⬜ |
-| 5 | Push to main → GitHub Actions auto-publishes to npm | ⬜ |
+---
 
-### Immediate (v0.3.x — after Skills MVP)
-- [ ] E2E tests — generate a project, run its build, verify all files
-- [ ] `nexus skill status` — live check of core/community skills against `@nexus-framework/skills` package versions (when registry exists)
-- [ ] Framework-specific template content (not just landing pages)
-- [ ] `nexus add <feature>` command for incremental additions
-- [ ] Strategy pattern generators (PWA service workers, i18n setup, theming engine)
-
-### Near-term
-- [ ] `nexus skill generate` (v0.4.0) — scan codebase, auto-draft custom skills from patterns
-- [ ] `@nexus-framework/skills` npm package — central registry of community skill packs
-- [ ] `@nexus-framework/skills-integrations` — Supabase, Stripe, Prisma skill packs
-- [ ] Plugin system for custom generators
-- [ ] Template marketplace / community templates
-- [ ] Web-based project configurator
-- [ ] Persona presets — share your persona config as a shareable JSON
-
-### Backlog
-- [ ] `nexus eject` — remove NEXUS, keep code
-- [ ] `nexus validate` — check project against NEXUS standards
-- [ ] `nexus migrate` — migrate from CRA, etc.
-- [ ] GitLab CI, Bitbucket Pipelines templates
-- [ ] Pro tier features (paid AI-powered code generation)
+*Generated by [NEXUS CLI](https://github.com/GDA-Africa/nexus-cli) v1.2.0 — AI-native project scaffolding by [GDA Africa](https://github.com/GDA-Africa)*
