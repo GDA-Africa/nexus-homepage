@@ -1,10 +1,13 @@
-# NEXUS CLI v1.2. Full Documentation for LLMs and AI Agents
+# NEXUS CLI v1.3. Full Documentation for LLMs and AI Agents
 
 > Complete plain-text reference. NEXUS is an open-source AI-native development
 > framework by GDA Africa (Apache 2.0). It gives every project a structured
 > brain and, since v1.0, serves that brain over MCP as schema-validated tools.
-> Canonical URLs: https://nexus.glenhalton.com (home), /docs, /mcp, /agents.
-> Packages: @nexus-framework/cli v1.2.0, @nexus-framework/skills v0.3.0 (npm).
+> Canonical URLs: https://nexus.glenhalton.com (home), /docs, /mcp, /agents,
+> /skills (browsable registry).
+> Packages: @nexus-framework/cli v1.3.0, @nexus-framework/skills v0.4.0 (npm).
+> Latest release: v1.3 "Skills II" — SKILL_SPEC v2, the alignment gate, and the
+> context-load budget. See "Skills registry" and "The alignment gate" below.
 
 ## What NEXUS is
 
@@ -65,7 +68,7 @@ nexus_brief (READ): Args: since (git date expr, default "7 days ago").
   Returns the markdown status digest (same as `nexus brief --md`).
 
 nexus_doctor (READ): Args: minSeverity (info|warn|error). Returns findings
-  [{id: D01–D10, severity, description, fixHint}] + summary counts.
+  [{id: D01–D14, severity, description, fixHint}] + summary counts.
 
 nexus_list_plans (READ): Args: status filter
   (draft|approved|in_progress|blocked|done|abandoned). Returns plan summaries.
@@ -74,15 +77,22 @@ nexus_get_plan (READ): Args: id. Returns full plan markdown.
 
 nexus_list_skills (READ): Installed skills across custom/core/community
   (deduped by precedence custom > core > community) with name, source, title,
-  description, triggers. Match your task against triggers before significant work.
+  description, triggers, and (v1.3) category, invocation and gate. Match your
+  task against triggers before significant work — or just call
+  nexus_get_context, which does the matching for you.
 
 nexus_get_skill (READ): Args: name. Returns the skill markdown from the
   highest-precedence directory containing it.
 
 nexus_get_context (READ): v1.1 keystone. Args: task, agent?, maxChars?.
-  Composes ONE scoped pack: active plan slice, top-5 matching knowledge
-  entries, trigger-matched skills, vitals digest, and (when agent named)
-  the docs from its context recipe. Deterministic, budget-capped.
+  Composes ONE scoped pack: the alignment gate (v1.3), active plan slice,
+  top-5 matching knowledge entries, skills ranked by trigger relevance,
+  vitals digest, and (when agent named) the docs from its context recipe.
+  Deterministic, budget-capped. The `gate` section is composed before every
+  budget-consuming section and is never dropped; when gate.required is true
+  the gated skill is injected into `skills` with matchedTrigger "<gate>"
+  regardless of whether its triggers match. RUN IT AND RECORD THE OUTCOME
+  BEFORE WRITING CODE.
 
 nexus_list_agents (READ): v1.1. Agent roles in .nexus/agents/ (precedence
   custom > core > community) with role, status, triggers.
@@ -199,7 +209,7 @@ Alive brain:
   draft → approved → in_progress → blocked|done|abandoned; `done` auto-appends
   to the index Progress Log. Templates: feature|bug|refactor|spike|chore.
 - nexus agent list|new|install|remove|status|sync: v1.1 agent management.
-- nexus doctor [--severity] [--fix]: 12 drift checks D01–D12 (placeholders,
+- nexus doctor [--severity] [--fix] [--strict]: 14 drift checks D01–D14 (placeholders,
   stale phase, progress gap, knowledge bloat/staleness, stale/orphan plans,
   missing vital signs, missed handshake, skills drift, unverified done D11,
   clobbered Chameleon agent block D12). CI exit codes.
@@ -230,16 +240,98 @@ Generated GitHub Actions workflows include:
   errors; warnings never block.
 No LLM dependency anywhere in this tier.
 
-## Skills registry (@nexus-framework/skills v0.2.0)
+## Skills registry (@nexus-framework/skills v0.4.0)
 
 Skills are markdown files with YAML frontmatter (skill, version, framework,
-category, triggers[], status) and fixed sections: When to Read This, Context,
-Steps, Patterns We Use, Anti-Patterns, Example, Validation. New in v0.2.0:
-nexus-mcp-usage, nexus-plans-workflow, brain-aware-ci (shared). Coverage:
-20 shared skills; next.js (8) and react-vite (12) complete; sveltekit/nuxt/
+category, invocation, triggers[], status, optional gate) and fixed sections:
+When to Read This, Context, Steps, Patterns We Use, Anti-Patterns, then either
+Example (reference skills) or Completion Criteria (procedure skills), plus
+optional Validation and Notes. Coverage: 49 skills across 10 framework sets,
+22 of them shared; next.js (8) and react-vite (12) complete; sveltekit/nuxt/
 astro/remix/go/python/rust have starter sets. Programmatic API:
 getSkillPath/getSkillContent/listSkills/listFrameworks. The registry is
 directory-driven; publishing to npm ships skills to all projects immediately.
+Full browsable list: https://nexus.glenhalton.com/skills
+
+SKILL_SPEC v2 (v1.3) — two additions, both fully additive:
+
+1. The invocation axis. `invocation: model | user` decides who may invoke a
+   skill. It defaults to `model` when absent, so every pre-v2 skill remains
+   valid and behaves exactly as before. `model` skills are reachable by the
+   agent or the human and hold reusable discipline; `user` skills are
+   reachable only by the human and orchestrate. The invariant: a user skill
+   may invoke model skills, a model skill may invoke model skills, and
+   NOTHING may invoke a user skill except the human. This keeps the call
+   graph a DAG rooted at the human.
+2. The `procedure` and `integration` categories. Until v2 every skill was
+   reference, consulted
+   before an artifact is produced. A procedure skill is a discipline the
+   agent RUNS to completion: an interview, a diagnosis loop, a review pass.
+   It takes `## Completion Criteria` in place of `## Example`, because its
+   output is a changed state of understanding, not a file. A reference skill
+   can be skimmed and partially applied with no harm; a procedure skill that
+   is half-run has not been run.
+
+Trigger matching is deterministic token-overlap scoring with ranked
+admission. Write triggers 2-4 words, task-level, one per distinct case. A
+long descriptive phrase ("creating a reusable React component") is valid but
+will not match a real task string.
+
+## The alignment gate (v1.3)
+
+The most expensive failure in a project is well-built code that answered the
+wrong question. The gate makes alignment a precondition for feature work.
+
+A `model`-invoked skill may declare `gate: { plan_types: [...], record: "##
+Grilling" }`. The `grilling` skill declares one over feature, refactor and
+spike plans. A bug plan opts in at creation with `nexus plan new --major`,
+which writes `major: true` to the plan frontmatter — plan type alone cannot
+distinguish a data-loss regression from a typo fix, and only the human
+creating the plan knows which it is. Chore plans are never gated.
+
+The gate keys off STRUCTURAL FACTS — the plan's `type` field and whether its
+`## Grilling` section is filled — and never off the wording of the task.
+A prose classifier for "is this complex?" would repeat the D11 v1 defect:
+a keyword sniff over agent-written text, gameable by exactly the agent it
+targets. A gated plan is scaffolded with the record pre-seeded and marked
+pending, so an untouched template never satisfies the gate.
+
+Surfaces: `nexus plan new` warns and scaffolds; `nexus plan start` warns then
+proceeds; `nexus wake` prints the gate in the handshake; `nexus_get_context`
+returns a `gate` section (composed before every budget-consuming section,
+bounded by construction, never dropped) and injects the gated skill into
+`skills` with `matchedTrigger: "<gate>"` regardless of trigger match; doctor
+check D13 flags a started plan with no record, `warn` by default and `error`
+under `--strict`.
+
+Nothing hard-blocks, deliberately. An MCP tool cannot compel an agent, and
+refusing to start a plan would push the work outside the plan where nothing
+can see it. Same posture as the wake handshake: visible, not impossible.
+
+## Context load (D14, v1.3)
+
+Every generated instruction file is context load: bytes in the agent's window
+on every turn, spent whether or not they are relevant. D14 measures it PER
+FILE, not per project — six harnesses load six different files (Cursor reads
+.cursorrules, Claude reads CLAUDE.md), so a session pays for one, not the sum.
+Warns above 10KB, errors above 16KB or under --strict, and reports
+near-identical files as info.
+
+Applied to NEXUS itself: the generated CLAUDE.md was 13.4KB, with the docs
+table stated twice, "orient first" stated in three places, and a Workflow
+section telling the agent to read four files by hand immediately after telling
+it to prefer one nexus_get_context call. It is 7.9KB in v1.3 — reference
+material (knowledge entry format, category table, docs table) moved behind a
+pointer into .nexus/ai/instructions.md, critical behaviour (the onboarding
+protocol, the STOP gate on template docs, the workflow rules) still inline.
+A generator test holds it under 8KB so NEXUS cannot trip its own check.
+
+Also fixed in the same pass: the generated instructions documented the
+knowledge entry format as `## [YYYY-MM-DD] category — title`, which
+parseKnowledge cannot parse (it requires `### [category] Title` with a
+`**YYYY-MM-DD**` date line). Entries written by hand to the documented format
+were invisible to nexus_query_knowledge, to the knowledge section of
+nexus_get_context, and to nexus consolidate.
 
 ## Versions & history
 
@@ -256,7 +348,15 @@ v1.1.3 (Aug 2026) patch: upgrade/repair normalize partial manifests before
 generation, so older or backend-only (framework null) manifests no longer
 render the literal string "undefined" into generated docs and AI config.
 v1.2.0 (Aug 2026) Delegation: opt-in Chameleon UI delegation (`nexus use`,
-`init --ui`), D12 agent-block preservation, 18 commands, 546 tests.
+`init --ui`), D12 agent-block preservation, 18 commands.
+v1.3.0 (Aug 2026) Skills II / Alignment: SKILL_SPEC v2 (invocation axis,
+`procedure` category, `gate` block), the `grilling` skill, the alignment gate
+in `nexus_get_context` and `nexus wake`, doctor check D13, `doctor --strict`,
+`plan new --major`, token-overlap trigger matching, the D14 context-load check,
+a ~41% cut to generated instruction files, and the fix for the `nexus upgrade`
+data-loss bug (isTemplate/isPopulated scanned the whole document, so any doc
+containing a `---` rule plus the words "status: template" was overwritten).
+659 tests.
 
 Note on 1.1.3 vs 1.2.0: the published 1.1.3 tarball already contained the
 Chameleon work. It was cut while that work sat under an [Unreleased] heading,

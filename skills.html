@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS Skills Registry: Every Skill, Category, and Trigger</title>
+<meta name="description" content="Browse the @nexus-framework/skills registry: 49 skills across 10 framework sets. Reference skills teach agents how your project does things; procedure skills are disciplines the agent runs.">
+<link rel="canonical" href="https://nexus.glenhalton.com/skills">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://nexus.glenhalton.com/skills">
+<meta property="og:site_name" content="NEXUS CLI">
+<meta property="og:title" content="The NEXUS skills registry">
+<meta property="og:description" content="49 skills across 10 framework sets. Two kinds: reference the agent reads, and procedure the agent runs.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NEXUS Skills Registry">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "The NEXUS skills registry",
+  "description": "Every skill in @nexus-framework/skills, with its category, invocation, and triggers. Reference skills teach agents project conventions; procedure skills are disciplines the agent runs to completion.",
+  "url": "https://nexus.glenhalton.com/skills",
+  "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" },
+  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.3.0",
+    "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli" }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d12; --panel:#0e1319; --panel2:#11161d;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --vio:#8b7cf6; --vio2:#b4a7fb; --amber:#fbbf24; --red:#f87171; --cyan:#67e8f9;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(52,211,153,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes blink{50%{opacity:0}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(10,13,18,.78);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px}
+.logo-mark{width:22px;height:22px;border:1.5px solid var(--mint);border-radius:6px;position:relative;flex-shrink:0}
+.logo-mark::after{content:'';position:absolute;inset:4px;background:var(--mint);border-radius:2px;animation:pulse 2.4s infinite}
+.logo span{color:var(--mint)}
+.nav-links{display:flex;gap:22px;margin-left:auto;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--mut);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.here{color:var(--mint)}
+.nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px;border:1px solid var(--mint);border-radius:8px;color:var(--mint)!important}
+.nav-cta:hover{background:var(--mintbg)}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
+.menu-btn:hover{border-color:var(--mint);color:var(--mint)}
+@media(max-width:720px){
+  .menu-btn{display:block}
+  .nav-links{display:none;position:fixed;top:57px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 24px 18px;background:rgba(10,13,18,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  body.nav-open .nav-links{display:flex}
+  .nav-links a{display:block!important;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
+  .nav-links a:last-child{border-bottom:none}
+  .nav-links a.nav-cta{border:1px solid var(--mint);padding:10px 14px;text-align:center;margin-top:8px}
+}
+
+
+/* full-screen hero demo */
+.stage{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:110px 0 60px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mint);margin-bottom:14px}
+h1{font-size:clamp(32px,4.4vw,54px);line-height:1.08;font-weight:700;letter-spacing:-1.2px;margin-bottom:18px}
+h1 em{font-style:normal;color:var(--mint)}
+h1 .vio{color:var(--vio2)}
+.lead{color:var(--mut);font-size:17px;max-width:660px;margin-bottom:34px}
+.lead b{color:var(--ink)}
+h2{font-size:clamp(24px,3.2vw,38px);font-weight:700;letter-spacing:-.7px;line-height:1.15;margin-bottom:14px}
+h2 em{font-style:normal;color:var(--mint)}
+section{padding:88px 0}
+p{color:var(--mut);font-size:15px;margin-bottom:12px;max-width:700px}
+p b{color:var(--ink)}
+
+/* two worlds demo */
+.duo-demo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+@media(max-width:880px){.duo-demo{grid-template-columns:1fr}}
+.term{background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.term.bad{border-color:rgba(248,113,113,.25)}
+.term.good{border-color:rgba(52,211,153,.35);box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 40px rgba(52,211,153,.06)}
+.term-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.dot{width:10px;height:10px;border-radius:50%;background:#2a3340}
+.term-title{font-family:var(--mono);font-size:11px;color:var(--mut);margin-left:6px}
+.badge{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;padding:3px 9px;border-radius:99px}
+.badge.b-bad{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.25)}
+.badge.b-good{background:var(--mintbg);color:var(--mint);border:1px solid rgba(52,211,153,.35)}
+.term-body{font-family:var(--mono);font-size:11.5px;line-height:1.8;padding:16px;height:340px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+@media(max-width:480px){.term-body{height:300px;font-size:10.5px}}
+.pl{white-space:pre-wrap;word-break:break-word;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.pl.show{opacity:1;transform:none}
+.pl .out{color:var(--vio2)}.pl .in{color:var(--mint)}.pl .meth{color:var(--cyan)}
+.pl .k{color:var(--vio2)}.pl .s{color:var(--mint2)}.pl .num{color:var(--amber)}
+.pl .cm{color:var(--faint)}.pl .err{color:var(--red)}.pl .ok{color:var(--mint)}
+.pl .tok{background:var(--mintbg);border:1px solid rgba(52,211,153,.3);border-radius:4px;padding:0 5px;color:var(--mint2)}
+.caret{display:inline-block;width:7px;height:13px;background:var(--mint);vertical-align:-2px;animation:blink .9s steps(1) infinite}
+.demo-foot{display:flex;align-items:center;gap:12px;margin-top:14px}
+.replay{font-family:var(--mono);font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:8px;padding:6px 14px;cursor:pointer;background:transparent;transition:all .2s}
+.replay:hover{color:var(--mint);border-color:var(--mint)}
+.demo-hint{font-family:var(--mono);font-size:10px;color:var(--faint)}
+
+/* explainer cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:36px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+.card .ic{font-size:20px;margin-bottom:10px}
+.card b{display:block;margin-bottom:6px;font-size:15px;color:var(--ink)}
+.card p{font-size:13.5px;margin:0}
+.card.hl{border-color:rgba(52,211,153,.4);background:linear-gradient(180deg,rgba(52,211,153,.06),var(--panel) 60%)}
+
+/* pipeline diagram */
+.flow{display:flex;align-items:stretch;gap:0;margin-top:36px;flex-wrap:wrap}
+.flow-step{flex:1;min-width:170px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;position:relative}
+.flow-step+.flow-step{margin-left:26px}
+.flow-step+.flow-step::before{content:'→';position:absolute;left:-22px;top:50%;transform:translateY(-50%);color:var(--mint);font-family:var(--mono);font-size:16px}
+@media(max-width:760px){.flow{flex-direction:column}.flow-step+.flow-step{margin-left:0;margin-top:26px}.flow-step+.flow-step::before{content:'↓';left:50%;top:-24px;transform:translateX(-50%)}}
+.flow-step .n{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--faint);margin-bottom:6px}
+.flow-step b{font-size:14px}
+.flow-step p{font-size:12.5px;margin:6px 0 0}
+.flow-step .mono-s{font-family:var(--mono);font-size:11px;color:var(--mint2)}
+
+/* code block */
+.code{background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:16px;font-family:var(--mono);font-size:12.5px;line-height:1.8;margin:18px 0;overflow-x:auto;white-space:pre}
+.code .p{color:var(--mint)}.code .c{color:var(--ink)}.code .o{color:var(--faint)}
+.code .k{color:var(--vio2)}.code .s{color:var(--mint2)}
+
+/* CTA */
+.cta{border:1px solid rgba(52,211,153,.35);background:linear-gradient(180deg,rgba(52,211,153,.07),var(--panel));border-radius:16px;padding:40px;text-align:center;margin:20px 0 60px}
+.btn{font-family:var(--mono);font-size:13px;padding:12px 20px;border-radius:10px;border:1px solid var(--line2);cursor:pointer;background:transparent;color:var(--ink);transition:all .2s}
+.btn-solid{background:var(--mint);border-color:var(--mint);color:#06281c;font-weight:700}
+.btn-solid:hover{background:var(--mint2);transform:translateY(-1px)}
+.btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
+
+footer{border-top:1px solid var(--line);padding:36px 0}
+.foot{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.foot .links{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.foot a{font-size:13px;color:var(--mut)}
+.foot a:hover{color:var(--mint)}
+.foot .gda{font-size:12.5px;color:var(--faint)}
+</style>
+<style>
+/* ── skills registry ─────────────────────────────────────────────────── */
+.sk-hero{padding:120px 0 40px}
+.sk-hero h1{font-size:clamp(34px,5vw,52px);font-weight:700;letter-spacing:-.02em;line-height:1.08;margin-bottom:16px}
+.sk-hero h1 em{font-style:normal;color:var(--mint)}
+.sk-hero .lead{color:var(--mut);font-size:16.5px;max-width:760px}
+.sk-kinds{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:32px 0 8px}
+.sk-kind{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.sk-kind.p{border-color:rgba(139,124,246,.4)}
+.sk-kind b{display:block;font-size:14px;margin-bottom:6px}
+.sk-kind.p b{color:var(--vio2)}
+.sk-kind.r b{color:var(--mint2)}
+.sk-kind p{color:var(--mut);font-size:13.5px;line-height:1.65}
+.sk-jump{display:flex;flex-wrap:wrap;gap:8px;margin:30px 0 10px}
+.sk-jump a{font-family:var(--mono);font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:6px 13px;transition:.2s}
+.sk-jump a:hover{color:var(--ink);border-color:var(--line2)}
+.sk-jump a span{color:var(--faint);margin-left:5px}
+/* the site-wide section padding (88px) is far too much between these tables */
+.sk-sec{padding:0}
+.sk-head{display:flex;align-items:baseline;gap:12px;margin:54px 0 6px}
+.sk-head h2{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.sk-count{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.sk-note{color:var(--mut);font-size:13.5px;margin-bottom:16px}
+.tbl{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.tbl table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px}
+.tbl th{text-align:left;padding:12px 16px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--line);font-weight:600}
+.tbl td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.sk-when{color:var(--mut);font-size:12.5px;margin-top:5px;max-width:46ch;line-height:1.55}
+.sk-cat{font-family:var(--mono);font-size:12px;color:var(--mut);white-space:nowrap}
+.sk-trig code{display:inline-block;font-family:var(--mono);font-size:11.5px;color:var(--mint2);background:var(--mintbg);border-radius:5px;padding:2px 7px;margin:0 4px 4px 0}
+.sk-b{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:2px 6px;margin-left:7px;vertical-align:middle}
+.sk-b.proc{color:var(--vio2);background:rgba(139,124,246,.12)}
+.sk-b.gate{color:var(--amber);background:rgba(251,191,36,.12)}
+.sk-b.user{color:var(--cyan);background:rgba(103,232,249,.1)}
+.sk-b.draft{color:var(--faint);background:rgba(255,255,255,.05)}
+.sk-cta{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin:56px 0 20px}
+.sk-cta h3{font-size:18px;margin-bottom:8px}
+.sk-cta p{color:var(--mut);font-size:14px;margin-bottom:14px;max-width:70ch}
+.sk-code{font-family:var(--mono);font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:14px 16px;overflow-x:auto;line-height:1.85;white-space:pre}
+.sk-code .p{color:var(--mint)}.sk-code .c{color:var(--ink)}.sk-code .o{color:var(--faint)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
+    <div class="nav-links">
+      <a href="/mcp">MCP</a>
+      <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
+      <a href="/docs">Docs</a>
+      <a class="nav-cta" href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">npm: skills registry</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+  <div class="sk-hero">
+    <div class="kicker rv">@nexus-framework/skills · v<span data-live="skillsVersion">0.3.0</span></div>
+    <h1 class="rv rv-d1">Every skill in <em>the registry.</em></h1>
+    <p class="lead rv rv-d2"><span data-live="totalSkills">49</span> skills across <span data-live="frameworks">10</span> framework sets. A skill is a markdown file that answers the question every agent gets wrong on its own: <b>how do we do things <i>here</i>?</b> They install into <span class="mono">.nexus/skills/</span> as plain files, readable by any tool, and agents reach them through <span class="mono">nexus_list_skills</span> → <span class="mono">nexus_get_skill</span>.</p>
+
+    <div class="sk-kinds">
+      <div class="sk-kind r rv rv-d2"><b>Reference, what the agent reads</b><p>Consulted before an artifact is produced. Patterns, anti-patterns, a worked example. Can be skimmed and partially applied with no harm.</p></div>
+      <div class="sk-kind p rv rv-d3"><b>Procedure, what the agent runs</b><p>A discipline with a start, an end, and a completion criterion: an interview, a diagnosis loop, a review pass. A procedure that is half-run has not been run. New in <a href="/docs#skills" style="color:var(--vio2)">SKILL_SPEC v2</a>.</p></div>
+    </div>
+
+    <div class="sk-jump rv rv-d3">
+      <a href="#fw-shared">Shared <span>22</span></a>
+      <a href="#fw-astro">Astro <span>1</span></a>
+      <a href="#fw-go">Go <span>1</span></a>
+      <a href="#fw-nextjs">Next.js <span>8</span></a>
+      <a href="#fw-nuxt">Nuxt <span>1</span></a>
+      <a href="#fw-python">Python <span>1</span></a>
+      <a href="#fw-react-vite">React + Vite <span>12</span></a>
+      <a href="#fw-remix">Remix <span>1</span></a>
+      <a href="#fw-rust">Rust <span>1</span></a>
+      <a href="#fw-sveltekit">SvelteKit <span>1</span></a>
+    </div>
+  </div>
+
+  <section class="sk-sec" id="fw-shared">
+    <div class="sk-head rv">
+      <h2>Shared</h2><span class="sk-count">22 skills</span>
+    </div>
+    <p class="sk-note rv">Framework-agnostic. Installed into every project regardless of stack.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">accessibility</b><div class="sk-when">Read this skill when designing or implementing user interfaces, forms, navigation, or any interactive elements.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>accessibility</code> <code>a11y</code> <code>WCAG</code> <code>screen reader</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">api-design</b><div class="sk-when">Read this skill when designing, implementing, or modifying APIs (REST, GraphQL, or other API types).</div></td>
+        <td class="sk-cat">api</td>
+        <td class="sk-trig"><code>API design</code> <code>REST API</code> <code>GraphQL</code> <code>API conventions</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">brain-aware-ci</b><div class="sk-when">Read this skill before modifying CI workflows in a NEXUS project, or when asked to surface brain state (briefs, drift, plans) in pull requests.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>ci</code> <code>continuous integration</code> <code>github actions</code> <code>pull request</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">code-review</b><div class="sk-when">Read this skill before reviewing pull requests or when your code is being reviewed.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>code review</code> <code>reviewing code</code> <code>pull request review</code> <code>review feedback</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">database-patterns</b><div class="sk-when">Read this skill when designing database schemas, writing queries, implementing migrations, or optimizing database performance.</div></td>
+        <td class="sk-cat">data</td>
+        <td class="sk-trig"><code>database patterns</code> <code>database design</code> <code>migrations</code> <code>query optimization</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">debugging</b><div class="sk-when">Read this skill when investigating bugs, errors, or unexpected behavior in the codebase.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>debugging</code> <code>debug issue</code> <code>troubleshooting</code> <code>bug fix</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">dependency-management</b><div class="sk-when">Read this skill when adding new dependencies, updating existing packages, or managing project dependencies.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>dependency management</code> <code>package management</code> <code>versioning</code> <code>security scanning</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">deployment</b><div class="sk-when">Read this skill when setting up deployment pipelines, configuring environments, or deploying applications to production.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>deployment</code> <code>CI/CD</code> <code>environment management</code> <code>deployment strategies</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">documentation</b><div class="sk-when">Read this skill when writing or updating documentation, code comments, or README files in this project.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>documentation</code> <code>writing docs</code> <code>API documentation</code> <code>code comments</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">git-workflow</b><div class="sk-when">Read this skill before creating branches, making commits, or submitting pull requests in this project.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>git workflow</code> <code>git commit</code> <code>pull request</code> <code>branching strategy</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">grilling</b><span class="sk-b proc">procedure</span><span class="sk-b gate">gate</span><span class="sk-b draft">draft</span><div class="sk-when">Read this skill before starting any new feature, any major fix, any refactor, or any task you would describe as complex — and before writing the first line of a plan for one. If you are about to start building and you cannot state what "done" looks like in one sentence, you are in scope.</div></td>
+        <td class="sk-cat">procedure</td>
+        <td class="sk-trig"><code>new feature</code> <code>grill</code> <code>major fix</code> <code>refactor</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">internationalization</b><div class="sk-when">Read this skill when implementing multi-language support, handling date/number formatting, or designing for global audiences.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>internationalization</code> <code>i18n</code> <code>localization</code> <code>l10n</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">knowledge-logging</b><div class="sk-when">Read this skill when documenting project decisions, lessons learned, or important context that should be preserved for future reference.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>knowledge logging</code> <code>knowledge.md</code> <code>project knowledge</code> <code>decision log</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">mapbox-integration</b><div class="sk-when">Read this skill when adding Mapbox maps to any application — whether initializing the SDK for the first time, building geospatial features, optimizing tile costs, implementing offline-first behaviour, or designing map UX. Read it before writing a single line of Mapbox code.</div></td>
+        <td class="sk-cat">integration</td>
+        <td class="sk-trig"><code>mapbox</code> <code>map integration</code> <code>mapbox GL</code> <code>mapbox-gl-js</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">monitoring-observability</b><div class="sk-when">Read this skill when setting up monitoring, implementing logging, or configuring observability for applications and infrastructure.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>monitoring</code> <code>observability</code> <code>logging</code> <code>metrics</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">nexus-agent-authoring</b><div class="sk-when">Read this before creating or editing an agent definition in `.nexus/agents/` (v1.1+ projects).</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>create agent</code> <code>custom agent</code> <code>agent definition</code> <code>nexus agent new</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">nexus-mcp-usage</b><div class="sk-when">Read this skill at the start of every session in a project that has a `.mcp.json` registering the `nexus-brain` server, and whenever you are unsure whether to read brain files directly or call MCP tools.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>mcp</code> <code>nexus mcp</code> <code>brain tools</code> <code>session start</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">nexus-plans-workflow</b><div class="sk-when">Read this skill before starting any task with three or more steps, any task that may span sessions, or whenever you are tempted to keep a plan only in conversation memory.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>plan</code> <code>multi-step</code> <code>task tracking</code> <code>nexus plan</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">performance-optimization</b><div class="sk-when">Read this skill when experiencing slow application performance, high response times, or when building performance-critical features.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>performance optimization</code> <code>performance patterns</code> <code>caching</code> <code>optimization strategies</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">security-best-practices</b><div class="sk-when">Read this skill before implementing authentication, handling user input, working with APIs, or deploying applications.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>security best practices</code> <code>security guidelines</code> <code>input validation</code> <code>authentication</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">skill-authoring</b><div class="sk-when">Read this skill before creating any new `.md` skill file — whether it goes in `packages/core/shared/`, a framework subfolder, or a project's `custom/` directory. A poorly written skill is worse than no skill at all, because it gives an AI agent false confidence.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>add a new skill</code> <code>create a skill</code> <code>write a skill</code> <code>new skill file</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">testing-strategy</b><div class="sk-when">Read this skill when setting up testing infrastructure, writing tests, or determining the appropriate testing approach for a feature.</div></td>
+        <td class="sk-cat">testing</td>
+        <td class="sk-trig"><code>testing strategy</code> <code>testing pyramid</code> <code>unit tests</code> <code>integration tests</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-astro">
+    <div class="sk-head rv">
+      <h2>Astro</h2><span class="sk-count">1 skill</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects Astro.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new Astro components, designing component architecture, or establishing component patterns in an Astro application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>Astro components</code> <code>Astro patterns</code> <code>component architecture</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-go">
+    <div class="sk-head rv">
+      <h2>Go</h2><span class="sk-count">1 skill</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects Go.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new Go components, designing component architecture, or establishing component patterns in a Go application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>Go components</code> <code>Go patterns</code> <code>component architecture</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-nextjs">
+    <div class="sk-head rv">
+      <h2>Next.js</h2><span class="sk-count">8 skills</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects Next.js.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">api-routes</b><div class="sk-when">Read this skill before creating any new API route or server action in this project.</div></td>
+        <td class="sk-cat">api</td>
+        <td class="sk-trig"><code>creating an API route</code> <code>adding an endpoint</code> <code>new API endpoint</code> <code>server action</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill before creating any new React component in this project.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>creating a new component</code> <code>adding a React component</code> <code>building a UI element</code> <code>new component</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">data-fetching</b><div class="sk-when">Read this skill before implementing data fetching in any component or route in this project.</div></td>
+        <td class="sk-cat">data</td>
+        <td class="sk-trig"><code>fetching data</code> <code>data fetching</code> <code>API calls</code> <code>server-side data</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">error-handling</b><div class="sk-when">Read this skill before implementing error handling in components, API routes, or server actions in this project.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>error handling</code> <code>error boundary</code> <code>error management</code> <code>handling errors</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">middleware</b><div class="sk-when">Read this skill before creating or modifying middleware for request handling, authentication, or route protection in this project.</div></td>
+        <td class="sk-cat">api</td>
+        <td class="sk-trig"><code>middleware</code> <code>app middleware</code> <code>route middleware</code> <code>request handling</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">routing</b><div class="sk-when">Read this skill before creating any new route or page in this project.</div></td>
+        <td class="sk-cat">routing</td>
+        <td class="sk-trig"><code>adding a route</code> <code>creating a new page</code> <code>adding navigation</code> <code>new page</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">styling</b><div class="sk-when">Read this skill before adding any styles to components or creating new styling files in this project.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>styling component</code> <code>adding styles</code> <code>CSS</code> <code>Tailwind</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">testing</b><div class="sk-when">Read this skill before writing any tests for components, pages, API routes, or utilities in this project.</div></td>
+        <td class="sk-cat">testing</td>
+        <td class="sk-trig"><code>writing tests</code> <code>adding tests</code> <code>test file</code> <code>Jest</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-nuxt">
+    <div class="sk-head rv">
+      <h2>Nuxt</h2><span class="sk-count">1 skill</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects Nuxt.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new Vue components, designing component architecture, or establishing component patterns in a Nuxt application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>Vue components</code> <code>Nuxt components</code> <code>component architecture</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-python">
+    <div class="sk-head rv">
+      <h2>Python</h2><span class="sk-count">1 skill</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects Python.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new Python components, designing component architecture, or establishing component patterns in a Python application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>Python components</code> <code>Python patterns</code> <code>component architecture</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-react-vite">
+    <div class="sk-head rv">
+      <h2>React + Vite</h2><span class="sk-count">12 skills</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects React + Vite.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">accessibility</b><div class="sk-when">Read this skill when designing or implementing user interfaces, forms, navigation, or any interactive elements in React components.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>accessibility</code> <code>a11y</code> <code>WCAG</code> <code>screen reader</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">api-design</b><div class="sk-when">Read this skill when designing, implementing, or consuming APIs (REST, GraphQL, or other API types) in a React + Vite application.</div></td>
+        <td class="sk-cat">api</td>
+        <td class="sk-trig"><code>API design</code> <code>REST API</code> <code>GraphQL</code> <code>API conventions</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">api-routes</b><div class="sk-when">Read this skill when implementing API endpoints, server-side routes, or backend functionality in a React + Vite application.</div></td>
+        <td class="sk-cat">api</td>
+        <td class="sk-trig"><code>API routes</code> <code>server endpoints</code> <code>API development</code> <code>REST endpoints</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new React components, designing component architecture, or establishing component patterns in a React + Vite application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>React components</code> <code>component patterns</code> <code>component architecture</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">data-fetching</b><div class="sk-when">Read this skill when implementing API calls, data loading, caching, or state management for remote data in a React + Vite application.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>data fetching</code> <code>API calls</code> <code>HTTP requests</code> <code>data loading</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">error-handling</b><div class="sk-when">Read this skill when implementing error handling for components, API calls, or user interactions in a React + Vite application.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>error handling</code> <code>error boundaries</code> <code>error management</code> <code>React errors</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">internationalization</b><div class="sk-when">Read this skill when implementing multi-language support, handling date/number formatting, or designing for global audiences in a React + Vite application.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>internationalization</code> <code>i18n</code> <code>localization</code> <code>l10n</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">performance-optimization</b><div class="sk-when">Read this skill when experiencing slow render times, large bundle sizes, or when optimizing application performance in a React + Vite project.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>performance optimization</code> <code>React performance</code> <code>render optimization</code> <code>bundle optimization</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">routing</b><div class="sk-when">Read this skill when implementing navigation, URL routing, or page transitions in a React + Vite application.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>routing</code> <code>React Router</code> <code>navigation</code> <code>URL parameters</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">state-management</b><div class="sk-when">Read this skill when implementing state management for application data, user preferences, or complex state logic in a React + Vite application.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>state management</code> <code>global state</code> <code>zustand</code> <code>redux</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">styling</b><div class="sk-when">Read this skill when implementing styles, creating components, or working with CSS in a React + Vite application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>styling</code> <code>CSS</code> <code>SCSS</code> <code>styled-components</code></td>
+      </tr>
+      <tr>
+        <td><b class="mono">testing</b><div class="sk-when">Read this skill when setting up testing infrastructure, writing tests, or establishing testing conventions for a React + Vite application.</div></td>
+        <td class="sk-cat">workflow</td>
+        <td class="sk-trig"><code>testing</code> <code>unit testing</code> <code>integration testing</code> <code>e2e testing</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-remix">
+    <div class="sk-head rv">
+      <h2>Remix</h2><span class="sk-count">1 skill</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects Remix.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new React components, designing component architecture, or establishing component patterns in a Remix application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>Remix components</code> <code>Remix patterns</code> <code>component architecture</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-rust">
+    <div class="sk-head rv">
+      <h2>Rust</h2><span class="sk-count">1 skill</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects Rust.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new Rust components, designing component architecture, or establishing component patterns in a Rust application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>Rust components</code> <code>Rust patterns</code> <code>component architecture</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="sk-sec" id="fw-sveltekit">
+    <div class="sk-head rv">
+      <h2>SvelteKit</h2><span class="sk-count">1 skill</span>
+    </div>
+    <p class="sk-note rv">Installed when <span class="mono">nexus init</span> detects SvelteKit.</p>
+    <div class="tbl rv">
+      <table>
+      <tr><th>Skill</th><th>Category</th><th>Triggers</th></tr>
+      <tr>
+        <td><b class="mono">component-creation</b><div class="sk-when">Read this skill when creating new Svelte components, designing component architecture, or establishing component patterns in a SvelteKit application.</div></td>
+        <td class="sk-cat">ui</td>
+        <td class="sk-trig"><code>component creation</code> <code>Svelte components</code> <code>Svelte patterns</code> <code>component architecture</code></td>
+      </tr>
+      </table>
+    </div>
+  </section>
+
+  <div class="sk-cta rv">
+    <h3>Write your own</h3>
+    <p>Registry skills are a starting point. The ones that pay off most are the ones only your team can write, the convention no config file confesses, the gotcha that cost someone a day. Custom skills live in <span class="mono">.nexus/skills/custom/</span> and are <b>never</b> touched by an upgrade.</p>
+    <div class="sk-code"><span class="p">$</span> <span class="c">nexus skill new deploying-a-worker</span>
+<span class="o">  Category:    procedure</span>
+<span class="o">  Invocation:  model</span>
+<span class="o">  ✓ .nexus/skills/custom/deploying-a-worker.md  (status: draft)</span>
+<span class="p">$</span> <span class="c">nexus skill status</span>   <span class="o"># validates every skill against SKILL_SPEC v2</span></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Apache 2.0</span>
+    <div class="links">
+      <a href="/mcp">MCP</a>
+      <a href="/agents">Agents</a>
+      <a href="/docs">Docs</a>
+      <a href="https://github.com/GDA-Africa/nexus-skills" target="_blank">GitHub</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">npm</a>
+    </div>
+  </div>
+</footer>
+</main>
+
+<script src="/npm-live.js" defer></script>
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
+</script>
+</body>
+</html>

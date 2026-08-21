@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS CLI: Your project has a brain. Agents can call it.</title>
-<meta name="description" content="NEXUS gives every project a structured brain, staffs it with brain-grounded agents over MCP, 17 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client, and in v1.2 delegates UI generation to Chameleon. Open source, Apache 2.0.">
+<meta name="description" content="NEXUS gives every project a structured brain, staffs it with brain-grounded agents over MCP, 17 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client, and in v1.3 makes alignment a precondition for feature work. Open source, Apache 2.0.">
 <link rel="canonical" href="https://nexus.glenhalton.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/">
 <meta property="og:site_name" content="NEXUS CLI">
-<meta property="og:title" content="NEXUS CLI v1.2: The AI-Native Development Framework">
+<meta property="og:title" content="NEXUS CLI v1.3: The AI-Native Development Framework">
 <meta property="og:description" content="The project brain is an MCP server with specialized agents: implementer, test-writer, reviewer, doc-keeper, grounded in your conventions, gated by verification.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NEXUS CLI v1.2: Your project has a brain. Agents can call it.">
+<meta name="twitter:title" content="NEXUS CLI v1.3: Your project has a brain. Agents can call it.">
 <meta name="twitter:description" content="17 schema-validated MCP brain tools for Claude Code, Codex, Cursor & any MCP client. Open source, Apache 2.0.">
 <meta name="keywords" content="MCP server, Model Context Protocol, AI-native development, Claude Code, OpenAI Codex, Cursor, project scaffolding, AI agents, developer tools, open source CLI">
 <script type="application/ld+json">
@@ -23,7 +23,7 @@
   "name": "NEXUS CLI",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows (Node.js 20+)",
-  "softwareVersion": "1.2.0",
+  "softwareVersion": "1.3.0",
   "description": "Open-source AI-native development framework. Gives every project a structured brain and serves it over MCP as 17 schema-validated tools and staffs it with brain-grounded agents for Claude Code, Codex, Cursor, and any MCP client.",
   "url": "https://nexus.glenhalton.com",
   "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli",
@@ -277,6 +277,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
     <div class="nav-links">
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
       <a href="#brain">The Brain</a>
       <a href="/docs">Docs</a>
       <a class="nav-cta" href="#quickstart">npm i -g @nexus-framework/cli</a>
@@ -289,22 +290,22 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ HERO ═══ -->
   <div class="hero">
     <div>
-      <div class="tag rv"><span data-live="versionTag">v1.2.0</span> · CHAMELEON DELEGATION</div>
+      <div class="tag rv"><span data-live="versionTag">v1.3.0</span> · THE ALIGNMENT GATE</div>
       <h1 class="rv rv-d1">Your project has a brain.<br>Now agents can <em>call it</em>.</h1>
-      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain, docs, knowledge, plans. <b>v1.1 staffed it</b> with brain-grounded agents calling <span data-live="tools">17</span> schema-validated MCP tools instead of being told to read files. <b>v1.2 delegates the parts it shouldn't own:</b> <a href="#chameleon" style="color:var(--mint)">UI generation goes to Chameleon</a>, opt-in, capability-gated, and never a hard dependency.</p>
+      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain, docs, knowledge, plans. <b>v1.1 staffed it</b> with brain-grounded agents calling <span data-live="tools">17</span> schema-validated MCP tools instead of being told to read files. <b>v1.2 delegated the parts it shouldn't own</b> — <a href="#chameleon" style="color:var(--mint)">UI generation goes to Chameleon</a>. <b>v1.3 closes the gap before the code:</b> <a href="#gate" style="color:var(--mint)">a recorded interview is a precondition</a> for feature work, and the brain says so when it is missing.</p>
       <div class="cta-row rv rv-d3">
         <button class="btn btn-solid" onclick="document.getElementById('quickstart').scrollIntoView({behavior:'smooth'})">Get started</button>
         <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank"><button class="btn btn-ghost">GitHub →</button></a>
       </div>
       <div class="stats rv rv-d4">
         <div class="stat"><div class="n" data-live="tools" data-live-animate>17</div><div class="l">MCP tools</div></div>
-        <div class="stat"><div class="n" data-live="tests" data-live-animate>546</div><div class="l">tests</div></div>
+        <div class="stat"><div class="n" data-live="tests" data-live-animate>659</div><div class="l">tests</div></div>
         <div class="stat"><div class="n" data-live="commands" data-live-animate>18</div><div class="l">commands</div></div>
         <div class="stat"><div class="n" data-live="downloads" data-live-animate>1926</div><div class="l"><span class="live-dot"></span>npm downloads</div></div>
       </div>
       <div class="live-note rv rv-d4">
         <span class="live-dot"></span>Live from the npm registry &amp; the CLI package, not hand-written:
-        <b data-live="version">1.2.0</b> on npm, <span data-live="published">published today</span>.
+        <b data-live="version">1.3.0</b> on npm, <span data-live="published">published today</span>.
         <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">verify →</a>
       </div>
     </div>
@@ -383,7 +384,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="cmd v rv rv-d2"><div class="c-name">nexus wake</div><p>Deterministic handshake token. Agents echo it, doctor flags sessions that skip it.</p></div>
       <div class="cmd v rv rv-d3"><div class="c-name">nexus sync</div><p>Repo sensors → Vital Signs block. Git, tests, files, packages. Idempotent, CI-safe.</p></div>
       <div class="cmd v rv rv-d1"><div class="c-name">nexus plan</div><p>Durable multi-step work in <span class="mono">.nexus/plans/</span>. Survives sessions, diffs cleanly.</p></div>
-      <div class="cmd rv rv-d2"><div class="c-name">nexus doctor</div><p><span data-live="checks">12</span> drift checks: stale docs, orphan plans, knowledge bloat, missed handshakes, a clobbered Chameleon block.</p></div>
+      <div class="cmd rv rv-d2"><div class="c-name">nexus doctor</div><p><span data-live="checks">14</span> drift checks: stale docs, orphan plans, knowledge bloat, missed handshakes, a clobbered Chameleon block, a gated plan with no alignment record, an over-budget instruction file.</p></div>
       <div class="cmd rv rv-d2"><div class="c-name">nexus brief</div><p>Status digest for humans, and for the brain-aware CI comment on every PR.</p></div>
       <div class="cmd rv rv-d3"><div class="c-name">nexus consolidate</div><p>Memory hygiene. Rolls knowledge into a summary; append-only stays append-only.</p></div>
       <div class="cmd rv rv-d4"><div class="c-name">nexus brain</div><p>Health dashboard + auto-invoke: the brain detects when it needs updating.</p></div>
@@ -432,10 +433,41 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <ul>
           <li><span class="mono">CLAUDE.md</span> and <span class="mono">AGENTS.md</span> were in the always-replace set, so every <b>upgrade wiped the block</b> <span class="mono">chameleon agents init</span> splices between its markers</li>
           <li>NEXUS now <b>captures that block before regenerating</b> and restores it after, across <span class="mono">init</span>, <span class="mono">upgrade</span>, and <span class="mono">repair</span></li>
-          <li>New <b>doctor check D12</b> flags any project where it went missing, <span data-live="checks">12</span> checks total</li>
+          <li>New <b>doctor check D12</b> flags any project where it went missing, <span data-live="checks">14</span> checks total</li>
         </ul>
       </div>
     </div>
+  </section>
+
+  <!-- ═══ ALIGNMENT GATE (v1.3) ═══ -->
+  <section id="gate">
+    <div class="kicker rv">alignment gate · new in v1.3</div>
+    <h2 class="rv rv-d1">The most expensive bug is<br><em>building the wrong thing.</em></h2>
+    <p class="lead rv rv-d2">Not bad code, well-built code that answered the wrong question. v1.3 makes alignment a <b>precondition</b> for feature work instead of a line in a rules file: a gated plan carries a recorded interview, or the brain says so.</p>
+
+    <div class="qs rv rv-d2">
+      <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">the gate, at handshake</span></div>
+      <div class="qs-body">
+<div><span class="p">$</span> <span class="c">nexus plan new "Add user authentication" --type=feature</span></div>
+<div class="o">  ✓ Plan created: .nexus/plans/add-user-authentication.md</div>
+<div class="o">  ⚠ This is a feature plan, it needs a "## Grilling" record before implementation.</div>
+<div><span class="p">$</span> <span class="c">nexus wake</span></div>
+<div class="o">  Active plan: add-user-authentication (in_progress)</div>
+<div class="o">  ⚠ ALIGNMENT GATE, plan is type=feature with no ## Grilling record</div>
+<div class="o">     Run the `grilling` skill and record the outcome before implementing.</div>
+<div><span class="p">$</span> <span class="c">nexus doctor</span></div>
+<div class="o">  ⚠ [D13] Plan "add-user-authentication" (feature, in_progress) has no</div>
+<div class="o">     ## Grilling record, implementation started without recorded alignment.</div>
+      </div>
+    </div>
+
+    <div class="an-points" style="margin-top:26px">
+      <div class="an-pt on rv rv-d1"><b>Structural, not a keyword sniff</b><p>The gate reads the plan's <span class="mono">type</span> and whether its record section is filled. It never classifies your prose, because the agent that would skip alignment is the agent that rephrases the task to dodge a prose classifier.</p></div>
+      <div class="an-pt rv rv-d2"><b>Visible, not impossible</b><p>Nothing refuses. <span class="mono">nexus_get_context</span> returns the gate, <span class="mono">D13</span> records a miss, and <span class="mono">--strict</span> turns it into a CI failure for teams that want the wall.</p></div>
+      <div class="an-pt rv rv-d3"><b>You decide what is major</b><p><span class="mono">feature</span>, <span class="mono">refactor</span> and <span class="mono">spike</span> gate on type. A bug plan opts in with <span class="mono">--major</span>, because only you can tell a data-loss regression from a typo.</p></div>
+    </div>
+
+    <p class="lead rv rv-d3" style="margin-top:30px">v1.3 also puts a number on the other cost nobody was measuring: <b>context load</b>, the bytes every agent carries on every turn before it reads a line of your code. Our own generated <span class="mono">CLAUDE.md</span> had reached 13.4&nbsp;KB, with the docs table stated twice and a Workflow section that told the agent to read four files by hand right after telling it to prefer one call. It is <b>7.9&nbsp;KB</b> now, and <span class="mono">D14</span> measures it so it cannot drift back.</p>
   </section>
 
   <!-- ═══ BRAIN-AWARE CI ═══ -->
@@ -449,7 +481,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <h4>🧠 NEXUS Brain Brief</h4>
         <div class="pr-row"><span class="ok">✓</span> Shipped (7d): feat: oauth provider · fix: session ttl</div>
         <div class="pr-row"><span class="ok">→</span> Active plan: add-user-authentication (step 3/5)</div>
-        <div class="pr-row"><span class="ok">✓</span> Vital signs: 546 tests · branch clean · synced 4 min ago</div>
+        <div class="pr-row"><span class="ok">✓</span> Vital signs: 659 tests · branch clean · synced 4 min ago</div>
         <div class="pr-row"><span class="warn">⚠</span> Doctor: D05, 1 knowledge entry references a moved file</div>
         <div class="pr-row"><span class="ok">＋</span> Knowledge: [gotcha] Session cookies need sameSite=lax</div>
       </div>
@@ -484,7 +516,8 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ TIMELINE ═══ -->
   <section>
     <div class="kicker rv">built in the open</div>
-    <h2 class="rv rv-d1">Seven releases to a <em>staffed brain.</em></h2>
+    <h2 class="rv rv-d1">Eight releases to an <em>aligned brain.</em></h2>
+    <p class="lead rv rv-d2">In v1.3 skills stop being only reference the agent reads and gain procedures it runs.</p>
     <div class="tl">
       <div class="tl-c rv"><div class="v">v0.1. FEB 2026</div><div class="t">Genesis</div><p>init · adopt · 6 frameworks · full toolchain</p></div>
       <div class="tl-c rv rv-d1"><div class="v">v0.2. FEB 2026</div><div class="t">Intelligence</div><p>8 structured docs · project brain · agent personas</p></div>
@@ -492,7 +525,8 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="tl-c rv rv-d3"><div class="v">v0.4. MAY 2026</div><div class="t">Alive Brain</div><p>sync · plan · doctor · brief · auto-invoke</p></div>
       <div class="tl-c rv rv-d4"><div class="v">v1.0. JUN 2026</div><div class="t">MCP</div><p>13 brain tools · wake &amp; consolidate · brain-aware CI</p></div>
       <div class="tl-c rv rv-d4"><div class="v">v1.1. JUN 2026</div><div class="t">Agents</div><p>Core four brain-grounded agents · get_context · D11 verification gate</p></div>
-      <div class="tl-c now rv rv-d4"><div class="v">v1.2. AUG 2026</div><div class="t">Delegation</div><p>Chameleon UI delegation · <span class="mono">nexus use</span> · D12 block preservation · <span data-live="tests">546</span> tests</p></div>
+      <div class="tl-c rv rv-d4"><div class="v">v1.2. AUG 2026</div><div class="t">Delegation</div><p>Chameleon UI delegation · <span class="mono">nexus use</span> · D12 block preservation</p></div>
+      <div class="tl-c now rv rv-d4"><div class="v">v1.3. AUG 2026</div><div class="t">Alignment</div><p>Invocation axis · <a href="#gate" style="color:var(--mint)">grilling gate</a> · D13 + D14 · <span data-live="tests">659</span> tests</p></div>
     </div>
   </section>
 
@@ -521,6 +555,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
     <div class="links">
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
       <a href="/docs">Docs</a>
       <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
       <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm</a>

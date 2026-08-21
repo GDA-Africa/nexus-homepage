@@ -33,6 +33,7 @@ const value = (name, fallback) => {
 };
 
 const CLI = resolve(SITE, value('--cli', '../../nexus-cli'));
+const SKILLS = resolve(SITE, value('--skills', '../../nexus-skills'));
 
 if (!existsSync(join(CLI, 'package.json'))) {
   console.error(`✖ No CLI package found at ${CLI}`);
@@ -74,6 +75,47 @@ const checks = readdirSync(join(CLI, 'src/utils/doctor/checks'))
   .map((f) => f.match(/^(D\d+)\.ts$/)?.[1])
   .filter(Boolean);
 
+/* ── skills registry: version + shared-skill count, from the checkout ─────── */
+// This was hardcoded to '0.3.0' below, which is exactly the drift this script
+// exists to stop. Read it from the registry, or fall back to the recorded value.
+const prevStats = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
+
+// The registry's package.json lives at packages/core/, not the repo root.
+const SKILLS_PKG = join(SKILLS, 'packages/core');
+
+let skillsVersion = prevStats.skillsVersion ?? null;
+if (existsSync(join(SKILLS_PKG, 'package.json'))) {
+  skillsVersion = JSON.parse(readFileSync(join(SKILLS_PKG, 'package.json'), 'utf8')).version ?? skillsVersion;
+} else {
+  // Reuse the recorded value rather than inventing one — an unpublished version
+  // number on the homepage is worse than a stale one.
+  console.log(`• skills: no package.json at ${SKILLS_PKG}, reusing recorded ${skillsVersion}`);
+}
+
+// Skill counts, by framework directory. These drift exactly like the CLI
+// counts did, so they come from the tree rather than from prose.
+let sharedSkills = prevStats.sharedSkills ?? null;
+let totalSkills = prevStats.totalSkills ?? null;
+let frameworks = prevStats.frameworks ?? null;
+if (existsSync(SKILLS_PKG)) {
+  const isSkill = (f) => f.endsWith('.md') && f.toLowerCase() !== 'readme.md';
+  const dirs = readdirSync(SKILLS_PKG, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name);
+
+  const counts = Object.fromEntries(
+    dirs.map((d) => [d, readdirSync(join(SKILLS_PKG, d)).filter(isSkill).length]),
+  );
+
+  // `agents/` holds agent definitions, not skills — excluded from both counts,
+  // so stats.json agrees with what the skills page actually lists.
+  const skillDirs = dirs.filter((d) => d !== 'agents');
+  sharedSkills = counts.shared ?? sharedSkills;
+  totalSkills = skillDirs.reduce((sum, d) => sum + counts[d], 0);
+  frameworks = skillDirs.length;
+  console.log(`• skills: ${JSON.stringify(counts)}`);
+}
+
 /* ── tests: the only number that needs the suite to actually run ──────────── */
 let tests = null;
 if (flag('--no-tests') && existsSync(OUT)) {
@@ -103,7 +145,10 @@ const stats = {
   commands: commands.length,
   tools: tools.length,
   checks: checks.length,
-  skillsVersion: '0.3.0',
+  skillsVersion,
+  sharedSkills,
+  totalSkills,
+  frameworks,
 };
 
 writeFileSync(OUT, JSON.stringify(stats, null, 2) + '\n');

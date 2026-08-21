@@ -44,7 +44,7 @@ cd "$REMOTE_PATH"
 # Self-heal: a DIRECTORY occupying a page filename blocks unzip -o from
 # replacing it (unzip warns and skips, the page 404s forever). Nuke any
 # directory that collides with a file we ship.
-for f in index.html docs.html mcp.html agents.html 404.html .htaccess robots.txt sitemap.xml llms.txt llms-full.txt favicon.svg npm-live.js stats.json; do
+for f in index.html docs.html mcp.html agents.html skills.html 404.html .htaccess robots.txt sitemap.xml llms.txt llms-full.txt favicon.svg npm-live.js stats.json; do
   if [ -d "\$f" ]; then echo "⚠ \$f was a DIRECTORY - removing"; rm -rf "\$f"; fi
 done
 unzip -o $ZIP_NAME
@@ -60,7 +60,7 @@ find . -type d -exec chmod 755 {} +
 # npm-live.js + stats.json are included: if either is missing the pages still
 # render, but every number silently freezes at its hardcoded fallback, which
 # is exactly the drift this setup exists to prevent.
-for f in index.html docs.html mcp.html agents.html .htaccess npm-live.js stats.json; do
+for f in index.html docs.html mcp.html agents.html skills.html .htaccess npm-live.js stats.json; do
   [ -f "\$f" ] || { echo "FATAL: \$f missing after deploy"; exit 1; }
 done
 echo "Permissions normalized (644/755)."
