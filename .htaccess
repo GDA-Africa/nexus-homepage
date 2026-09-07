@@ -45,6 +45,7 @@ DirectoryIndex index.html
   RewriteRule ^mcp/?$ mcp.html [L]
   RewriteRule ^agents/?$ agents.html [L]
   RewriteRule ^skills/?$ skills.html [L]
+  RewriteRule ^harness/?$ harness.html [L]
 
   # Extensionless pages: /<page> → <page>.html when it exists.
   # REQUEST_FILENAME resolves correctly per-directory on cPanel

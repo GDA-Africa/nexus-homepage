@@ -21,7 +21,7 @@ zip -r "$ZIP_NAME" . \
   -x "AGENTS.md" -x "copilot-instructions.md" -x "NEXUS_CLI_README.md" \
   -x "CLAUDE.md" -x ".claude/*" -x ".mcp.json" \
   -x "deploy.sh" \
-  -x "scripts/*" \
+  -x "scripts/build-stats.mjs" \
   -x "*.zip" \
   -x "index.html.old" -x "*-legacy.html"
 # NOTE: scripts/ is build tooling (build-stats.mjs), not a public asset — it
@@ -44,13 +44,13 @@ cd "$REMOTE_PATH"
 # Self-heal: a DIRECTORY occupying a page filename blocks unzip -o from
 # replacing it (unzip warns and skips, the page 404s forever). Nuke any
 # directory that collides with a file we ship.
-for f in index.html docs.html mcp.html agents.html skills.html 404.html .htaccess robots.txt sitemap.xml llms.txt llms-full.txt favicon.svg npm-live.js stats.json; do
+for f in index.html docs.html mcp.html agents.html skills.html harness.html 404.html .htaccess robots.txt sitemap.xml llms.txt llms-full.txt favicon.svg npm-live.js stats.json; do
   if [ -d "\$f" ]; then echo "⚠ \$f was a DIRECTORY - removing"; rm -rf "\$f"; fi
 done
 unzip -o $ZIP_NAME
 rm -f $ZIP_NAME
 # Remove anything a previous deploy may have leaked onto the docroot
-rm -rf .git .nexus .vscode .claude .mcp.json CLAUDE.md scripts deploy.sh index.html.old index-v0.4-legacy.html docs-v0.3-legacy.html AGENTS.md copilot-instructions.md NEXUS_CLI_README.md .clinerules .cursorrules .windsurfrules
+rm -rf .git .nexus .vscode .claude .mcp.json CLAUDE.md scripts/build-stats.mjs deploy.sh index.html.old index-v0.4-legacy.html docs-v0.3-legacy.html AGENTS.md copilot-instructions.md NEXUS_CLI_README.md .clinerules .cursorrules .windsurfrules
 # Normalize permissions: the zip preserves local file modes, and a 600
 # file is unreadable by the web server process → 403 (the index.html
 # incident, 2026-06-11). Web-served files must be 644, dirs 755.
@@ -60,7 +60,7 @@ find . -type d -exec chmod 755 {} +
 # npm-live.js + stats.json are included: if either is missing the pages still
 # render, but every number silently freezes at its hardcoded fallback, which
 # is exactly the drift this setup exists to prevent.
-for f in index.html docs.html mcp.html agents.html skills.html .htaccess npm-live.js stats.json; do
+for f in index.html docs.html mcp.html agents.html skills.html harness.html .htaccess npm-live.js stats.json; do
   [ -f "\$f" ] || { echo "FATAL: \$f missing after deploy"; exit 1; }
 done
 echo "Permissions normalized (644/755)."
