@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What is MCP? How NEXUS Serves Your Project's Brain to AI Agents</title>
-<meta name="description" content="MCP (Model Context Protocol) explained, and how NEXUS implements it: a brain server with 17 schema-validated tools that lets Claude Code, Codex, and Cursor query and update your project's memory instead of guessing.">
+<meta name="description" content="MCP (Model Context Protocol) explained, and how NEXUS implements it: a brain server with 19 schema-validated tools that lets Claude Code, Codex, and Cursor query and update your project's memory instead of guessing. In NEXUS 2.0 the same handlers also run in-process inside the Nexus Harness.">
 <link rel="canonical" href="https://nexus.glenhalton.com/mcp">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="article">
@@ -19,10 +19,10 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "What is MCP? How NEXUS serves your project's brain to AI agents",
-  "description": "Model Context Protocol explained, plus the NEXUS implementation: a stdio brain server exposing 17 schema-validated tools to Claude Code, OpenAI Codex, Cursor, and any MCP client.",
+  "description": "Model Context Protocol explained, plus the NEXUS implementation: a stdio brain server exposing 19 schema-validated tools to Claude Code, OpenAI Codex, Cursor, and any MCP client, with the same handlers mounted in-process inside the Nexus Harness.",
   "url": "https://nexus.glenhalton.com/mcp",
   "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" },
-  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.5.0",
+  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "2.0.0",
     "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli" }
 }
 </script>
@@ -165,10 +165,12 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="nav-links">
+      <a href="/harness">Harness</a>
       <a href="/mcp" class="here">MCP</a>
       <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
       <a href="/docs">Docs</a>
-      <a class="nav-cta" href="/#quickstart">Get started</a>
+      <a class="nav-cta" href="/#quickstart">npm i -g @nexus-framework/cli</a>
     </div>
   </div>
 </nav>
@@ -177,7 +179,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <div class="wrap">
   <!-- ═══ FULL-SCREEN DEMO STAGE ═══ -->
   <div class="stage">
-    <div class="kicker rv">model context protocol · explained &amp; demoed</div>
+    <div class="kicker rv">model context protocol · explained &amp; demoed · nexus 2.0</div>
     <h1 class="rv rv-d1">Same agent. Same task.<br><em>One of them has a brain server.</em></h1>
     <p class="lead rv rv-d2">Watch both sessions run. Left: an agent guessing its way through your repo. Right: the same agent connected to the <b>NEXUS brain over MCP</b>, querying project memory and updating plans through validated tool calls.</p>
 
@@ -218,18 +220,31 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <div class="code rv rv-d2">{ <span class="k">"mcpServers"</span>: { <span class="k">"nexus-brain"</span>: {
     <span class="k">"command"</span>: <span class="s">"npx"</span>, <span class="k">"args"</span>: [<span class="s">"-y"</span>, <span class="s">"@nexus-framework/cli"</span>, <span class="s">"mcp"</span>] } } }</div>
     <div class="cards">
-      <div class="card hl rv"><div class="ic">🧠</div><b>17 schema-validated tools</b><p>14 reads (wake, context, knowledge, plans, sensors, skills, agents) + 3 writes (plan tick/note, knowledge entry). Writes reuse the CLI's own parser, malformed brain state is <b>impossible</b>, not just detectable.</p></div>
+      <div class="card hl rv"><div class="ic">🧠</div><b><span data-live="tools">19</span> schema-validated tools</b><p>15 reads (wake, context, knowledge, plans, sensors, skills, agents, and the derived project graph via <span class="mono" style="color:var(--mint2)">nexus_project_graph</span>) + 4 writes (plan tick/note, knowledge entry, and <span class="mono" style="color:var(--mint2)">nexus_plan_verify</span>, which records machine evidence that a plan is done). Writes reuse the CLI's own parser, malformed brain state is <b>impossible</b>, not just detectable.</p></div>
       <div class="card rv rv-d1"><div class="ic">📄</div><b>Markdown stays the truth</b><p>No database, no daemon. The server is spawned per client over stdio and exits with it. Everything it serves is a file you can read, diff, and version.</p></div>
       <div class="card rv rv-d2"><div class="ic">🪪</div><b>Provable sessions</b><p><span class="mono" style="color:var(--mint2)">nexus_wake</span> issues a deterministic token derived from brain content + date. Agents echo it; <span class="mono">nexus doctor</span> flags sessions that skipped it.</p></div>
       <div class="card rv rv-d3"><div class="ic">🎯</div><b>Targeted, not torrential</b><p><span class="mono" style="color:var(--mint2)">nexus_query_knowledge</span> returns the 2 relevant gotchas, not 200 lines. <span class="mono" style="color:var(--mint2)">nexus_get_context</span> composes one budget-capped pack per task.</p></div>
     </div>
   </section>
 
+  <!-- ═══ TWO TRANSPORTS ═══ -->
+  <section id="transports">
+    <div class="kicker rv">nexus 2.0 · one brain, two ways in</div>
+    <h2 class="rv rv-d1">Same brain, <em>two transports.</em></h2>
+    <p class="rv rv-d2">NEXUS 2.0 adds a second way to reach the brain without changing the first. The tool handlers are the same code either way; what differs is how the agent's calls get to them.</p>
+    <div class="cards">
+      <div class="card rv"><div class="ic">🔌</div><b>Over stdio: <span class="mono" style="color:var(--mint2)">nexus mcp</span></b><p>Claude Code, Codex, Cursor, and Cowork keep working exactly as before. The client spawns <span class="mono">nexus mcp</span>, discovers all <span data-live="tools">19</span> tools, and calls them over stdio. Agents orient with one <span class="mono" style="color:var(--mint2)">nexus_get_context</span> call.</p></div>
+      <div class="card hl rv rv-d1"><div class="ic">⚙️</div><b>In-process: the Nexus Harness</b><p>Inside the <a href="/harness" style="color:var(--mint)">Nexus Harness</a>, 16 <span class="mono">nexus_*</span> tools are mounted natively on the harness tool registry. No separate server process, no stdio hop: every call lands in the harness's own append-only session log and token accounting.</p></div>
+      <div class="card rv rv-d2"><div class="ic">🌱</div><b>Context arrives ambiently</b><p>In the harness the agent does not ask for context. At step 1 of every turn it is handed the active plan, next unchecked step, rules, matching lessons, and a vitals snapshot. Zero tool calls spent getting oriented, so the in-process set of 16 leaves out <span class="mono">nexus_get_context</span>, along with <span class="mono">nexus_project_graph</span> and <span class="mono">nexus_plan_verify</span>.</p></div>
+    </div>
+    <p class="rv rv-d3" style="margin-top:26px"><b>The seam is a public export.</b> Since 1.4 the CLI ships its brain handlers as an importable <span class="mono">./mcp</span> subpath, and that is exactly what the harness imports. The CLI keeps zero dependency on the harness engine, markdown stays the source of truth, and the harness is an additional way to run, not a replacement. <a href="/harness" style="color:var(--mint)">See the harness →</a></p>
+  </section>
+
   <!-- ═══ ORCHESTRATION ═══ -->
   <section id="orchestration">
     <div class="kicker rv">mcp × agents</div>
     <h2 class="rv rv-d1">The protocol is how NEXUS <em>orchestrates agents.</em></h2>
-    <p class="rv rv-d2">In v1.1, NEXUS defines <a href="/agents" style="color:var(--mint)">specialized agents</a>, implementer, test-writer, reviewer, doc-keeper. MCP is the nervous system that coordinates them: every handoff, every piece of context, every progress update flows through the same tool surface.</p>
+    <p class="rv rv-d2">Since v1.1, NEXUS defines <a href="/agents" style="color:var(--mint)">specialized agents</a>, implementer, test-writer, reviewer, doc-keeper. MCP is the nervous system that coordinates them: every handoff, every piece of context, every progress update flows through the same tool surface.</p>
     <div class="flow rv rv-d2">
       <div class="flow-step"><div class="n">01 · IDENTIFY</div><b>Wake as a role</b><p><span class="mono-s">nexus_wake {agent}</span>, the session records <i>which</i> agent is working. Accountability from call one.</p></div>
       <div class="flow-step"><div class="n">02 · COMPOSE</div><b>Context on demand</b><p><span class="mono-s">nexus_get_context</span> assembles the plan slice, matching knowledge, and skills <i>for that agent's recipe</i>, one call, one pack.</p></div>
@@ -264,13 +279,17 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <footer>
   <div class="wrap foot">
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
-    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Apache 2.0</span>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · CLI Apache 2.0 · Harness proprietary</span>
     <div class="links">
+      <a href="/harness">Harness</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
       <a href="/docs">Docs</a>
       <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
-      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm CLI</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/harness" target="_blank">npm Harness</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">Skills Registry</a>
     </div>
   </div>
 </footer>

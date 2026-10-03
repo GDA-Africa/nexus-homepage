@@ -22,7 +22,7 @@
   "description": "Every skill in @nexus-framework/skills, with its category, invocation, and triggers. Reference skills teach agents project conventions; procedure skills are disciplines the agent runs to completion.",
   "url": "https://nexus.glenhalton.com/skills",
   "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" },
-  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.5.0",
+  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "2.0.0",
     "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli" }
 }
 </script>
@@ -207,9 +207,10 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="nav-links">
+      <a href="/harness">Harness</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
-      <a href="/skills">Skills</a>
+      <a class="here" href="/skills">Skills</a>
       <a href="/docs">Docs</a>
       <a class="nav-cta" href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">npm: skills registry</a>
     </div>
@@ -607,6 +608,16 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     </div>
   </section>
 
+  <div class="sk-cta rv" id="install">
+    <h3>Install skills from anywhere</h3>
+    <p>Since 1.5.2, <span class="mono">nexus skill install &lt;source&gt;</span> takes more than the registry: an npm package, a GitHub <span class="mono">owner/repo</span>, a Git URL, or a local path. Pick one skill with <span class="mono">--skill</span>, narrow a multi-framework source with <span class="mono">--framework</span>, and overwrite an installed copy with <span class="mono">--force</span>. Installed skills land in <span class="mono">.nexus/skills/community/</span>.</p>
+    <div class="sk-code"><span class="p">$</span> <span class="c">nexus skill install GDA-Africa/nexus-skills --skill git-workflow</span>
+<span class="o">  ✓ Installed .nexus/skills/community/git-workflow.md</span>
+<span class="p">$</span> <span class="c">nexus skill install ./team-skills --force</span>   <span class="o"># local path, overwrite existing</span>
+<span class="p">$</span> <span class="c">nexus skill install @nexus-framework/skills --skill routing --framework nextjs</span></div>
+    <p style="margin:14px 0 0">Skills ground more than your editor. In a <a href="/harness" style="color:var(--mint)">Nexus Harness</a> session or a headless <span class="mono">nexus agent "&lt;task&gt;"</span> run, the skills whose triggers match the task ride in the ambient brain context the agent receives at step 1.</p>
+  </div>
+
   <div class="sk-cta rv">
     <h3>Write your own</h3>
     <p>Registry skills are a starting point. The ones that pay off most are the ones only your team can write, the convention no config file confesses, the gotcha that cost someone a day. Custom skills live in <span class="mono">.nexus/skills/custom/</span> and are <b>never</b> touched by an upgrade.</p>
@@ -621,13 +632,17 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <footer>
   <div class="wrap foot">
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
-    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Apache 2.0</span>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · CLI Apache 2.0 · Harness proprietary</span>
     <div class="links">
+      <a href="/harness">Harness</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
       <a href="/docs">Docs</a>
-      <a href="https://github.com/GDA-Africa/nexus-skills" target="_blank">GitHub</a>
-      <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">npm</a>
+      <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm CLI</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/harness" target="_blank">npm Harness</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">Skills Registry</a>
     </div>
   </div>
 </footer>

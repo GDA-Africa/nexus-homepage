@@ -1,15 +1,20 @@
-# NEXUS CLI v1.5. Full Documentation for LLMs and AI Agents
+# NEXUS CLI v2.0. Full Documentation for LLMs and AI Agents
 
-> Complete plain-text reference. NEXUS is an open-source AI-native development
-> framework by GDA Africa (Apache 2.0). It gives every project a structured
-> brain and, since v1.0, serves that brain over MCP as schema-validated tools.
-> Canonical URLs: https://nexus.glenhalton.com (home), /docs, /mcp, /agents,
-> /skills (browsable registry).
-> Packages: @nexus-framework/cli v1.5.0, @nexus-framework/skills v0.4.0 (npm).
-> Latest release: v1.5 "Self-Check": three new doctor checks (D14-D16) that
-> catch a project's own docs drifting from its code, and support for sizing
-> and verifying delivery to a locally-run AI model. See "Release history"
-> below.
+> Complete plain-text reference. NEXUS is an AI-native development framework
+> by GDA Africa. The CLI is open source (Apache 2.0). It gives every project a
+> structured brain and, since v1.0, serves that brain over MCP as
+> schema-validated tools. NEXUS 1.x gave every project a brain; NEXUS 2.0
+> gives that brain A Harness: the Nexus Harness, an execution harness that runs
+> agents already grounded in your plan, rules and lessons, and shows you
+> exactly what they knew and did.
+> Canonical URLs: https://nexus.glenhalton.com (home), /harness, /docs, /mcp,
+> /agents, /skills (browsable registry).
+> Packages: @nexus-framework/cli v2.0.0 (Apache 2.0),
+> @nexus-framework/harness v1.0.0 (proprietary license),
+> @nexus-framework/skills v0.4.0 (npm).
+> Latest release: v2.0 "Execution": the Nexus Harness, `nexus harness`, and
+> `nexus agent "<task>"`. 850 tests, 24 commands, 19 MCP tools, 16 doctor
+> checks. See "Versions & history" below.
 
 ## What NEXUS is
 
@@ -45,7 +50,15 @@ Claude Code, Claude Cowork, and OpenAI Codex read .mcp.json automatically;
 Cursor users copy the entry to .cursor/mcp.json. The server is spawned per
 client and exits when the client disconnects. stdout carries only protocol.
 
-### Tools (14 read, 3 write)
+### Tools (19: 15 read, 4 write)
+
+Read (15): nexus_wake, nexus_get_context, nexus_get_active_plan,
+nexus_list_plans, nexus_get_plan, nexus_query_knowledge,
+nexus_get_vital_signs, nexus_brief, nexus_doctor, nexus_list_skills,
+nexus_get_skill, nexus_list_agents, nexus_get_agent, nexus_get_handoff,
+nexus_project_graph.
+Write (4): nexus_plan_tick, nexus_plan_note, nexus_add_knowledge_entry,
+nexus_plan_verify.
 
 nexus_wake (READ): Session handshake. Returns: deterministic token
   "NX-WAKE-XXXX-YYYY-MM-DD" (sha256 of index.md + knowledge.md +
@@ -88,7 +101,8 @@ nexus_get_skill (READ): Args: name. Returns the skill markdown from the
 
 nexus_get_context (READ): v1.1 keystone. Args: task, agent?, maxChars?.
   Composes ONE scoped pack: the alignment gate (v1.3), active plan slice,
-  top-5 matching knowledge entries, skills ranked by trigger relevance,
+  top-5 knowledge entries ranked by task relevance (v1.5.1; previously
+  recency), skills ranked by trigger relevance,
   vitals digest, and (when agent named) the docs from its context recipe.
   Deterministic, budget-capped. The `gate` section is composed before every
   budget-consuming section and is never dropped; when gate.required is true
@@ -107,12 +121,22 @@ nexus_get_handoff (READ): v1.1. Args: agent (optional). Returns the agent
   project's custom chain) and next: the agent the MAIN THREAD should dispatch
   after the current one finishes. Subagents cannot call subagents.
 
+nexus_project_graph (READ): v1.6. Args: root (optional). Parses the project
+  into the derived typed graph Requirement → Feature → Task → Evidence and
+  returns JSON plus a markdown digest: which requirements are unimplemented,
+  which tests prove a feature, what evidence backs a task. A spike.
+
 nexus_plan_tick (WRITE): Args: id, step (1-based), checked (default true).
   Marks a checklist step; returns nextStep. Out-of-range steps return a clean
   error. Never hand-edit plan checklists when this tool is available.
 
 nexus_plan_note (WRITE): Args: id, message. Appends a timestamped note to the
   plan's Notes section.
+
+nexus_plan_verify (WRITE): v1.6, "Provable Done". Args: id, waiver
+  (optional), timeoutMs (optional). Runs the checks declared in
+  .nexus/verify.json and records machine evidence in the plan's Evidence
+  section; a waiver records an explicit reason instead. Feeds D11 v2.
 
 nexus_add_knowledge_entry (WRITE): Args: category (enum above), title, body
   (1–3 sentences), optional why, howToApply. Appends a formatted entry before
@@ -128,6 +152,80 @@ nexus_add_knowledge_entry (WRITE): Args: category (enum above), title, body
 5. After non-obvious discoveries: nexus_add_knowledge_entry.
 6. Without MCP: read .nexus/docs/index.md and .nexus/docs/knowledge.md before
    every task; update them after; never delete knowledge entries (append-only).
+
+## The Nexus Harness (v2.0 headline)
+
+NEXUS 2.0 turns the project brain into an execution platform. The Nexus
+Harness (`@nexus-framework/harness` 1.0.0) is the execution engine. Its
+license is proprietary ("SEE LICENSE IN LICENSE"); it is NOT open source.
+It is built on DeepSeek Harness (open source, MIT): Nexus kept that engine,
+the Cordis plugin kernel and the append-only session log, and added project
+memory, visibility and polish. The upstream MIT base and its copyright notice
+are preserved. Upstream v0.1.7 is merged with every Nexus addition kept.
+
+Architecture: the NEXUS CLI (brain: .nexus/ markdown, the 19-tool MCP server,
+the public ./mcp export) → `nexus harness` / `nexus agent` write a patch file
+(.nexus/state/nexus-brain.patch.yml) → the harness loads two Nexus plugins,
+`nexus-brain-context` (ambient context at step 1) and `tool-nexus-brain` (16
+in-process tools) → agents run, every event lands in the append-only session
+log → the web GUI shows the brain chip, grounding inspector, plan checklist
+and subagent inspector. The CLI keeps zero dependency on the harness engine;
+the harness imports the brain via the CLI's public ./mcp subpath (v1.4).
+
+What the harness adds over upstream (finished):
+1. Ambient brain context: at step 1 of every turn the agent is handed the
+   active plan, next unchecked step, rules and conventions, matching lessons
+   from knowledge, and a vitals snapshot, as <system-reminder> blocks. Zero
+   tool calls spent getting oriented.
+2. In-process brain tools: 16 nexus_* tools registered natively on the
+   harness tool registry. No separate MCP process, no stdio hop; every call
+   lands in the harness's own session log and token accounting. The agent
+   can read and update the plan, tick steps, query past decisions, run
+   doctor. (nexus_get_context, nexus_project_graph and nexus_plan_verify are
+   not in the in-process set; context arrives ambiently.)
+3. See what the agent knows: a header brain status chip (grounded? which
+   plan?), a per-turn grounding inspector drawer (exactly which plan steps,
+   rules and notes were injected), and a plan checklist in the side panel
+   (steps turn green live, or tick manually).
+4. Subagent inspector: a side-by-side live view of a delegated helper agent's
+   transcript, tool calls and status next to the parent.
+5. Local models in one click: an Ollama quick-add card in Settings → Models;
+   local models run with no account or key.
+6. Clearer errors and control: nested vendor error payloads unwrapped into
+   plain, actionable messages; per-model on/off toggles; reasoning depth
+   defaults to medium for predictable cost and speed.
+7. Nexus Glass: frosted-glass panels, an ambient animated background, Nexus
+   marks throughout; the default theme on first launch.
+8. One install: packaged as @nexus-framework/harness 1.0.0 with automated
+   build and release checks.
+9. Stays current with upstream (merged v0.1.7).
+
+Early stage (preview, not finished): grill mode (`dsh-grill-mode`), where the
+harness interviews the developer on decisions, trade-offs and edge cases
+before code. The foundation and tests exist. This is distinct from the CLI's
+alignment gate and `grilling` skill (v1.3), which are shipped.
+
+The three v2 launch commands (part of @nexus-framework/cli):
+- nexus harness: opens the full web GUI. Auto-detects .nexus/, writes
+  .nexus/state/nexus-brain.patch.yml, wires the brain into the harness, and
+  serves at http://localhost:3080. Flags: --port <n> (default 3080),
+  --no-open, --desktop (packaged desktop app). Prints a banner with project,
+  active plan and mode. Falls back to `npx -y @nexus-framework/harness` when
+  there is no local checkout. `nexus harness verify <profile>` (since 1.5)
+  live-probes a local Ollama-compatible endpoint.
+- nexus agent "<task>": one-shot, headless, unattended. Runs the harness
+  `headless` profile with the brain patch: ambient brain context injected at
+  step 1, the 16 in-process tools mounted; runs to completion, streams
+  reasoning to stderr, prints the final result to stdout, exits. With no task
+  it prints usage. `nexus agent list|new|install|remove|status|sync` still
+  manage brain-grounded agents as in v1.1.
+- nexus code: RESERVED for NEXUS v3, a planned interactive terminal REPL
+  (streaming, approval prompts, slash commands). Today it only opens a
+  preview of the terminal profile. Not shipped.
+
+The harness is an additional way to run, not a replacement. Markdown is
+still the source of truth, and Claude Code, Codex, Antigravity IDE and Cursor keep working
+exactly as before via `nexus mcp`.
 
 ## Agents (v1.1 headline)
 
@@ -186,7 +284,11 @@ silently delete the block `chameleon agents init` splices between its
 regenerating and restores it after; doctor check D12 flags a project where it
 went missing.
 
-## CLI commands (18)
+## CLI commands (24)
+
+Top level: adopt agent brain brief code consolidate context doctor graph
+harness init log mcp note pack plan repair skill sync unpack update upgrade
+use wake.
 
 Project setup:
 - nexus init [name]: interactive scaffold: strategy questions (project type,
@@ -207,14 +309,29 @@ Alive brain:
   .nexus/state/session.json.
 - nexus sync [--dry-run] [--json] [--scope]: run sensors, write the Vital
   Signs block (idempotent, fenced by NEXUS:VITAL_SIGNS comments).
-- nexus plan new|list|show|start|tick|note|done: durable plans; lifecycle
-  draft → approved → in_progress → blocked|done|abandoned; `done` auto-appends
-  to the index Progress Log. Templates: feature|bug|refactor|spike|chore.
+- nexus plan new|list|show|start|tick|note|verify|done: durable plans;
+  lifecycle draft → approved → in_progress → blocked|done|abandoned; `done`
+  auto-appends to the index Progress Log. Templates:
+  feature|bug|refactor|spike|chore. `plan verify <id>` (v1.6, Provable Done)
+  runs the checks in .nexus/verify.json and records machine evidence;
+  `--waiver <reason>` records an explicit waiver instead.
+- nexus log (v1.6): append a Progress Log entry (--message, --status,
+  --scope, --date).
+- nexus note (v1.6): append a validated Knowledge entry (--category, --title,
+  --body, --why, --how-to-apply, --scope).
+- nexus graph (v1.6, spike): derived ProjectGraph Requirement → Feature →
+  Task → Evidence as a digest, or --json; -f <file>.
 - nexus agent list|new|install|remove|status|sync: v1.1 agent management.
+- nexus agent "<task>" (v2.0): one-shot headless brain-grounded run.
+- nexus harness [--port <n>] [--no-open] [--desktop] (v2.0): open the Nexus
+  Harness web GUI with the brain wired in.
+- nexus code (v2.0 reservation): placeholder for the NEXUS v3 terminal REPL;
+  opens a preview only.
 - nexus context "<task>" [--json]: prints the composed context pack
   nexus_get_context returns over MCP, without an MCP server running.
-- nexus harness verify [--config]: checks whether a local AI setup described
-  in .nexus/harnesses.yml is actually receiving what NEXUS sent it.
+- nexus harness verify <profile> [--config]: checks whether a local AI setup
+  described in .nexus/harnesses.yml is actually receiving what NEXUS sent it
+  (live-probes a local Ollama-compatible endpoint).
 - nexus doctor [--severity] [--fix] [--strict]: 16 drift checks D01–D16 (placeholders,
   stale phase, progress gap, knowledge bloat/staleness, stale/orphan plans,
   missing vital signs, missed handshake, skills drift, unverified done D11,
@@ -229,8 +346,10 @@ Alive brain:
   the brain needs sync/doctor.
 
 Skills:
-- nexus skill list | registry [--framework] | new [name] | install <pkg> |
-  remove <name> | status. Directories: custom/ (sacred, never touched),
+- nexus skill list | registry [--framework] | new [name] | install <source> |
+  remove <name> | status. Since v1.5.2, `install` takes an npm package, a
+  GitHub owner/repo, a Git URL, or a local path, with --skill <slug>,
+  --framework <fw> and --force. Directories: custom/ (sacred, never touched),
   core/ (framework-matched, refreshed on upgrade), community/ (installed).
   Precedence: custom > core > community. Registry fetched live from npm.
 
@@ -260,6 +379,8 @@ astro/remix/go/python/rust have starter sets. Programmatic API:
 getSkillPath/getSkillContent/listSkills/listFrameworks. The registry is
 directory-driven; publishing to npm ships skills to all projects immediately.
 Full browsable list: https://nexus.glenhalton.com/skills
+Skills also ground harness and headless `nexus agent` runs: the skills whose
+triggers match the task ride in the ambient brain context.
 
 SKILL_SPEC v2 (v1.3), two additions, both fully additive:
 
@@ -364,7 +485,7 @@ in `nexus_get_context` and `nexus wake`, doctor check D13, `doctor --strict`,
 a ~41% cut to generated instruction files, and the fix for the `nexus upgrade`
 data-loss bug (isTemplate/isPopulated scanned the whole document, so any doc
 containing a `---` rule plus the words "status: template" was overwritten).
-v1.4.0 (Aug 2026) Open Surface: the 17 brain tools behind `nexus mcp` are
+v1.4.0 (Aug 2026) Open Surface: the brain tools behind `nexus mcp` are
 importable directly from `@nexus-framework/cli`'s new `./mcp` subpath as
 native TypeScript. Any embedding host can call a tool handler directly and
 get a real object back instead of the MCP text-content envelope. Additive
@@ -380,6 +501,21 @@ checks, for real, whether a local setup is receiving what NEXUS sent it.
 server returns, without needing a server running. `contract_version` on the
 context pack is now documented. 807 tests, 20 commands, 16 doctor checks.
 
+v1.5.1 (Aug 2026): knowledge entries in the context pack are ranked by task
+relevance instead of recency.
+v1.5.2 (Aug 2026): `nexus skill install <source>` installs from an npm
+package, GitHub owner/repo, Git URL, or local path (--skill, --framework,
+--force).
+v1.6.0 (Sep 2026) Provable Done ("Capture, verify, and see the graph"):
+`nexus log` and `nexus note` capture commands, `nexus plan verify` with
+.nexus/verify.json machine evidence and D11 v2, the `nexus graph`
+project-graph spike, a D01 fix. MCP surface grew to 19 tools (15 read, 4
+write) with nexus_project_graph and nexus_plan_verify.
+v2.0.0 (Oct 2026) Execution: the Nexus Harness (@nexus-framework/harness
+1.0.0, proprietary, built on DeepSeek Harness), `nexus harness`,
+`nexus agent "<task>"`, and the `nexus code` reservation for v3. 850 tests,
+24 commands, 19 MCP tools, 16 doctor checks.
+
 Note on 1.1.3 vs 1.2.0: the published 1.1.3 tarball already contained the
 Chameleon work. It was cut while that work sat under an [Unreleased] heading,
 so 1.1.3 shipped a feature set its own changelog did not describe. 1.2.0 is
@@ -388,6 +524,8 @@ to 1.2.0 changes only the version number.
 
 ## Requirements & license
 
-Node.js >= 20. TypeScript strict, ESM only. Apache 2.0. By GDA Africa
-(https://gdaafrica.org). Source: https://github.com/GDA-Africa/nexus-cli and
+Node.js >= 20. TypeScript strict, ESM only. CLI: Apache 2.0, open source.
+Nexus Harness (@nexus-framework/harness): proprietary license; the upstream
+DeepSeek Harness base stays MIT with its copyright notice preserved. By GDA
+Africa (https://gdaafrica.org). Source: https://github.com/GDA-Africa/nexus-cli and
 https://github.com/GDA-Africa/nexus-skills.

@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS CLI Documentation: Commands, MCP Tools, Brain & Skills</title>
-<meta name="description" content="Complete NEXUS CLI v1.5 documentation: all 20 commands, the 17 MCP brain tools, Chameleon UI delegation, the agents system, the .nexus brain anatomy, skills system, brain-aware CI, harness verification for local AI models, and upgrade guide.">
+<title>NEXUS 2.0 Documentation: Harness, Agent, Commands, MCP Tools, Brain & Skills</title>
+<meta name="description" content="Complete NEXUS CLI 2.0 documentation: the Nexus Harness (nexus harness), headless runs with nexus agent, all 24 commands, the 19 MCP brain tools, Provable Done, Chameleon UI delegation, the .nexus brain, skills, brain-aware CI, and the upgrade guide.">
 <link rel="canonical" href="https://nexus.glenhalton.com/docs.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/docs.html">
-<meta property="og:title" content="NEXUS CLI Documentation">
-<meta property="og:description" content="All 20 commands, 17 MCP brain tools, Chameleon delegation, agents, skills, brain-aware CI, and local-model harness verification, the complete v1.5 reference.">
+<meta property="og:title" content="NEXUS 2.0 Documentation: Harness, Agent and the Brain">
+<meta property="og:description" content="The complete NEXUS 2.0 reference: nexus harness, nexus agent, 24 commands, 19 MCP brain tools, Provable Done, agents, skills, and brain-aware CI.">
 <meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -43,6 +43,10 @@ nav.top{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px
 .top-links{margin-left:auto;display:flex;gap:18px}
 .top-links a{font-size:13px;color:var(--mut)}
 .top-links a:hover{color:var(--ink);text-decoration:none}
+.top-links{align-items:center}
+.top-links a.here{color:var(--mint)}
+.top-links a.nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px;border:1px solid var(--mint);border-radius:8px;color:var(--mint)}
+.top-links a.nav-cta:hover{background:var(--mintbg)}
 .menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
 .menu-btn:hover{border-color:var(--mint);color:var(--mint)}
 @media(max-width:720px){
@@ -51,11 +55,12 @@ nav.top{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px
   body.nav-open .top-links{display:flex}
   .top-links a{display:block;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
   .top-links a:last-child{border-bottom:none}
+  .top-links a.nav-cta{border:1px solid var(--mint);padding:10px 14px;text-align:center;margin-top:8px}
 }
 
 
 .layout{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;padding:96px 24px 80px}
-@media(max-width:880px){.layout{grid-template-columns:1fr;padding-top:84px}}
+@media(max-width:880px){.layout{grid-template-columns:minmax(0,1fr);padding-top:84px}article,aside{min-width:0}article table{display:block;overflow-x:auto}article pre{overflow-x:auto}}
 
 aside{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 100px);overflow-y:auto}
 @media(max-width:880px){aside{position:static;max-height:none;border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel)}}
@@ -104,15 +109,15 @@ footer a{color:var(--mut)}
 <nav class="top">
   <div class="top-in">
     <a class="logo" href="index.html"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
-    <span class="crumb">/ docs / v1.5.0</span>
+    <span class="crumb">/ docs / v2.0.0</span>
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="top-links">
-      <a href="index.html">Home</a>
+      <a href="/harness">Harness</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
       <a href="/skills">Skills</a>
-      <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
-      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm</a>
+      <a href="/docs" class="here" aria-current="page">Docs</a>
+      <a href="/#quickstart" class="nav-cta">npm i -g @nexus-framework/cli</a>
     </div>
   </div>
 </nav>
@@ -122,9 +127,11 @@ footer a{color:var(--mut)}
   <div class="side-sec">Start</div>
   <a href="#install">Installation</a>
   <a href="#quickstart">Quick start</a>
+  <div class="side-sec">Execution</div>
+  <a href="#harness">Harness &amp; Agent (v2.0)</a>
   <div class="side-sec">MCP Server</div>
   <a href="#mcp">nexus mcp</a>
-  <a href="#mcp-tools">The <span data-live="tools">17</span> tools</a>
+  <a href="#mcp-tools">The <span data-live="tools">19</span> tools</a>
   <a href="#mcp-clients">Client setup</a>
   <div class="side-sec">Commands</div>
   <a href="#cmd-project">Project setup</a>
@@ -141,13 +148,13 @@ footer a{color:var(--mut)}
   <a href="#gate">Alignment gate (v1.3)</a>
   <a href="#ci">Brain-aware CI</a>
   <div class="side-sec">More</div>
-  <a href="#upgrade">Upgrading to v1.x</a>
+  <a href="#upgrade">Upgrading</a>
   <a href="#frameworks">Frameworks</a>
 </aside>
 
 <article>
-  <h1>NEXUS CLI <em>v1.3</em> documentation</h1>
-  <p class="intro">Everything in one page: the MCP server, the agents system, Chameleon delegation, the v1.3 alignment gate, all <span data-live="commands">18</span> commands, and the concepts behind the project brain. <span class="mono" style="font-size:12px;color:var(--faint)">⌘F is your friend.</span></p>
+  <h1>NEXUS <em>2.0</em> documentation</h1>
+  <p class="intro">Everything in one page: the v2.0 execution harness and headless agent, the MCP server, the agents system, Chameleon delegation, the alignment gate, Provable Done, all <span data-live="commands">24</span> commands, and the concepts behind the project brain. <span class="mono" style="font-size:12px;color:var(--faint)">⌘F is your friend.</span></p>
 
   <!-- ════ START ════ -->
   <section id="install">
@@ -167,10 +174,42 @@ footer a{color:var(--mut)}
     <p>Already have a project? <span class="mono" style="color:var(--mint2)">nexus adopt</span> adds the brain without touching your source code.</p>
   </section>
 
+  <!-- ════ EXECUTION ════ -->
+  <section id="harness">
+    <h2>Execution: Harness &amp; Agent <span class="chip">v2.0 HEADLINE</span></h2>
+    <p>NEXUS 1.x gave every project a brain. <b>NEXUS 2.0 gives that brain A Harness</b>: an execution harness that runs agents already grounded in your plan, rules and lessons, and shows you exactly what they knew and did. The launchers ship in <span class="mono">@nexus-framework/cli</span>; the engine is <a href="https://www.npmjs.com/package/@nexus-framework/harness" target="_blank">@nexus-framework/harness</a>, built on DeepSeek Harness. Full tour on the <a href="/harness">harness page</a>.</p>
+
+    <h3>nexus harness</h3>
+    <div class="code"><span class="p">$</span> <span class="c">nexus harness</span>                 <span class="o"># web GUI at http://localhost:3080</span>
+<span class="p">$</span> <span class="c">nexus harness --port 4000</span>     <span class="o"># bind a different port</span>
+<span class="p">$</span> <span class="c">nexus harness --no-open</span>       <span class="o"># don't open the browser</span>
+<span class="p">$</span> <span class="c">nexus harness --desktop</span>       <span class="o"># packaged desktop app</span></div>
+    <ul class="plain">
+      <li><b>Auto-detects <span class="mono">.nexus/</span></b> and writes <span class="mono">.nexus/state/nexus-brain.patch.yml</span>, which wires the brain into the harness.</li>
+      <li><b>Serves the web GUI</b> at <span class="mono">http://localhost:3080</span> (<span class="mono">--port &lt;n&gt;</span> to change it) and opens it, unless you pass <span class="mono">--no-open</span>. Prints a banner with the project, active plan and mode.</li>
+      <li><b>No local checkout needed:</b> it falls back to <span class="mono">npx -y @nexus-framework/harness</span>, so the harness installs on first run.</li>
+    </ul>
+
+    <h3>nexus agent "&lt;task&gt;"</h3>
+    <div class="code"><span class="p">$</span> <span class="c">nexus agent "add input validation to the signup form"</span>
+<span class="o"># reasoning streams to stderr, the final result prints to stdout, then it exits</span></div>
+    <p>One-shot, headless, unattended. Runs the harness <span class="mono">headless</span> profile with the brain patch: ambient brain context is injected at step 1, the <b>16 in-process brain tools</b> are mounted, and it runs to completion. Stdout carries only the result, so it pipes cleanly. With no task it prints usage. <span class="mono">nexus agent list · new · install · remove · status · sync</span> still manage brain-grounded <a href="#agents">agents</a> exactly as in v1.1.</p>
+
+    <h3>nexus code <span class="chip">COMING IN v3</span></h3>
+    <p>Reserved for NEXUS v3: an interactive, Claude-Code-style terminal REPL with streaming, approval prompts and slash commands. Today it opens a preview of the terminal profile. It is not a shipped feature yet.</p>
+
+    <h3>nexus harness verify &lt;profile&gt;</h3>
+    <p>Since 1.5: an opt-in, live probe of a local Ollama-compatible endpoint described in <span class="mono">.nexus/harnesses.yml</span>. It measures what the model actually receives instead of assuming it. Never runs on its own; you have to type it.</p>
+
+    <h3>How the brain reaches the harness</h3>
+    <p>The harness loads two Nexus plugins. <span class="mono">nexus-brain-context</span> hands the agent the active plan, next unchecked step, rules, matching lessons and a vitals snapshot at step 1 of every turn, so it spends zero tool calls getting oriented. <span class="mono">tool-nexus-brain</span> registers 16 <span class="mono">nexus_*</span> tools natively on the harness tool registry: no separate MCP process, and every call lands in the harness's append-only session log.</p>
+    <div class="callout"><b>Nothing changes for your current tools.</b> Claude Code, Codex, Antigravity IDE and Cursor keep working exactly as before through <a href="#mcp"><span class="mono">nexus mcp</span></a>. Markdown in <span class="mono">.nexus/</span> is still the source of truth; the harness is an additional way to run, not a replacement.</div>
+  </section>
+
   <!-- ════ MCP ════ -->
   <section id="mcp">
     <h2>nexus mcp <span class="chip">v1.0 HEADLINE</span></h2>
-    <p>Starts the <b>brain MCP server</b> on stdio. Any MCP client gets the project brain as <span data-live="tools">17</span> schema-validated tools instead of files it's told to read. Generated projects include this <span class="mono">.mcp.json</span>, so Claude Code and Codex connect automatically:</p>
+    <p>Starts the <b>brain MCP server</b> on stdio. Any MCP client gets the project brain as <span data-live="tools">19</span> schema-validated tools (15 read, 4 write) instead of files it's told to read. Generated projects include this <span class="mono">.mcp.json</span>, so Claude Code and Codex connect automatically:</p>
     <div class="code">{ <span class="k">"mcpServers"</span>: {
     <span class="k">"nexus-brain"</span>: { <span class="k">"command"</span>: <span class="s">"npx"</span>, <span class="k">"args"</span>: [<span class="s">"-y"</span>, <span class="s">"@nexus-framework/cli"</span>, <span class="s">"mcp"</span>] }
 } }</div>
@@ -182,7 +221,8 @@ footer a{color:var(--mut)}
   </section>
 
   <section id="mcp-tools">
-    <h2>The <span data-live="tools">17</span> tools</h2>
+    <h2>The <span data-live="tools">19</span> tools</h2>
+    <p>15 read tools and 4 write tools over <span class="mono">nexus mcp</span>. Inside the <a href="#harness">Nexus Harness</a>, 16 of them are mounted in-process; <span class="mono">nexus_get_context</span>, <span class="mono">nexus_project_graph</span> and <span class="mono">nexus_plan_verify</span> are not in that set, because context arrives ambiently.</p>
     <div class="tbl-wrap"><table>
       <tr><th>Tool</th><th></th><th>What it does</th></tr>
       <tr><td>nexus_wake</td><td><span class="r">READ</span></td><td>Session handshake: deterministic <span class="mono">NX-WAKE-…</span> token + active plan + next step + doctor warn/error counts, in one call. Echo the token in your first response.</td></tr>
@@ -190,7 +230,7 @@ footer a{color:var(--mut)}
       <tr><td>nexus_query_knowledge</td><td><span class="r">READ</span></td><td>Targeted retrieval over <span class="mono">knowledge.md</span>, keyword + category filters, newest first. The 2 relevant gotchas, not 200 lines.</td></tr>
       <tr><td>nexus_get_vital_signs</td><td><span class="r">READ</span></td><td>Live repo sensors: git (branch, dirty, last commit), files, tests, packages. Fresher than the cached block in index.md.</td></tr>
       <tr><td>nexus_brief</td><td><span class="r">READ</span></td><td>Markdown status digest, same output as <span class="mono">nexus brief --md</span>.</td></tr>
-      <tr><td>nexus_doctor</td><td><span class="r">READ</span></td><td>D01–D12 drift report with severity filter.</td></tr>
+      <tr><td>nexus_doctor</td><td><span class="r">READ</span></td><td>D01–D16 drift report with severity filter.</td></tr>
       <tr><td>nexus_list_plans</td><td><span class="r">READ</span></td><td>All plans with status, owner, phase; optional status filter.</td></tr>
       <tr><td>nexus_get_plan</td><td><span class="r">READ</span></td><td>Full markdown of one plan by id.</td></tr>
       <tr><td>nexus_list_skills</td><td><span class="r">READ</span></td><td>Installed skills across custom/core/community with triggers, match your task before significant work.</td></tr>
@@ -199,9 +239,11 @@ footer a{color:var(--mut)}
       <tr><td>nexus_list_agents</td><td><span class="r">READ</span></td><td><b>v1.1.</b> List brain-grounded agent roles (custom &gt; core &gt; community) with triggers.</td></tr>
       <tr><td>nexus_get_agent</td><td><span class="r">READ</span></td><td><b>v1.1.</b> One agent definition: context recipe, tool allowlist, working agreement.</td></tr>
       <tr><td>nexus_get_handoff</td><td><span class="r">READ</span></td><td><b>v1.1.</b> The agent pipeline (implementer → test-writer → reviewer → doc-keeper, or the project’s custom chain) and, given the current agent, the next one to dispatch. Main-thread orchestrated.</td></tr>
+      <tr><td>nexus_project_graph</td><td><span class="r">READ</span></td><td><b>v1.6, spike.</b> The derived project graph, Requirement → Feature → Task → Evidence, as JSON plus a markdown digest. Same data as <span class="mono">nexus graph</span>.</td></tr>
       <tr><td>nexus_plan_tick</td><td><span class="w">WRITE</span></td><td>Mark a checklist step done (1-based index) or reopen it. Out-of-range steps return a clean error, never a corrupt file.</td></tr>
       <tr><td>nexus_plan_note</td><td><span class="w">WRITE</span></td><td>Append a timestamped note to a plan's Notes section.</td></tr>
       <tr><td>nexus_add_knowledge_entry</td><td><span class="w">WRITE</span></td><td>Append a validated entry (category, title, 1–3 sentence body, optional why/how-to-apply). Duplicates rejected, append-only stays clean.</td></tr>
+      <tr><td>nexus_plan_verify</td><td><span class="w">WRITE</span></td><td><b>v1.6.</b> Run the checks in <span class="mono">.nexus/verify.json</span> and record machine evidence in the plan's Evidence section. See <a href="#plans">Provable Done</a>.</td></tr>
     </table></div>
   </section>
 
@@ -234,13 +276,20 @@ footer a{color:var(--mut)}
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td>nexus mcp [path]</td><td>Start the brain MCP server (stdio). See <a href="#mcp">above</a>.</td></tr>
+      <tr><td>nexus harness</td><td><b>v2.0.</b> Launch the Nexus Harness web GUI at <span class="mono">localhost:3080</span>, grounded in this project's brain. <span class="mono">--port &lt;n&gt;</span>, <span class="mono">--no-open</span>, <span class="mono">--desktop</span>. See <a href="#harness">Execution</a>.</td></tr>
+      <tr><td>nexus agent "&lt;task&gt;"</td><td><b>v2.0.</b> Run a task headless and unattended: reasoning to stderr, result to stdout, then exit.</td></tr>
       <tr><td>nexus agent &lt;sub&gt;</td><td><b>v1.1.</b> Manage brain-grounded agents: <span class="mono">list · new · install · remove · status · sync</span>. See <a href="#agents">Agents</a>.</td></tr>
+      <tr><td>nexus code</td><td><b>Reserved for v3.</b> The interactive terminal REPL is coming in NEXUS v3; today it opens a preview of the terminal profile.</td></tr>
       <tr><td>nexus wake [--quiet]</td><td>Issue the session handshake token (<span class="mono">NX-WAKE-XXXX-date</span>, derived from brain content + date). Recorded in <span class="mono">.nexus/state/session.json</span>; doctor D09 flags sessions without one. <span class="mono">--quiet</span> prints only the token, <span class="mono">--no-active-plan</span> for CI.</td></tr>
       <tr><td>nexus sync [--dry-run|--json]</td><td>Run repo sensors and write the Vital Signs block into <span class="mono">index.md</span>. Idempotent, safe to run in CI before doctor/brief. <span class="mono">--scope git|files|tests|packages</span> limits JSON output.</td></tr>
-      <tr><td>nexus plan &lt;sub&gt;</td><td>Durable multi-step work: <span class="mono">new</span> (with --type feature|bug|refactor|spike|chore), <span class="mono">list</span>, <span class="mono">show</span>, <span class="mono">start</span>, <span class="mono">tick &lt;id&gt; &lt;step&gt;</span>, <span class="mono">note</span>, <span class="mono">done</span> (auto-appends to the Progress Log). Lifecycle: draft → approved → in_progress → blocked|done|abandoned.</td></tr>
+      <tr><td>nexus plan &lt;sub&gt;</td><td>Durable multi-step work: <span class="mono">new</span> (with --type feature|bug|refactor|spike|chore), <span class="mono">list</span>, <span class="mono">show</span>, <span class="mono">start</span>, <span class="mono">tick &lt;id&gt; &lt;step&gt;</span>, <span class="mono">note</span>, <span class="mono">done</span> (auto-appends to the Progress Log), <span class="mono">verify</span>. Lifecycle: draft → approved → in_progress → blocked|done|abandoned.</td></tr>
+      <tr><td>nexus plan verify &lt;id&gt;</td><td><b>v1.6.</b> Run the checks in <span class="mono">.nexus/verify.json</span> and record machine evidence in the plan. <span class="mono">--waiver &lt;reason&gt;</span> records an explicit, explained waiver instead. See <a href="#plans">Provable Done</a>.</td></tr>
+      <tr><td>nexus log</td><td><b>v1.6.</b> Append a Progress Log entry to <span class="mono">index.md</span> from the command line: <span class="mono">--message</span>, <span class="mono">--status</span>, <span class="mono">--scope</span>, <span class="mono">--date</span>.</td></tr>
+      <tr><td>nexus note</td><td><b>v1.6.</b> Append a validated Knowledge entry: <span class="mono">--category</span>, <span class="mono">--title</span>, <span class="mono">--body</span>, optional <span class="mono">--why</span> and <span class="mono">--how-to-apply</span>, <span class="mono">--scope</span>.</td></tr>
+      <tr><td>nexus graph [--json] [-f]</td><td><b>v1.6, spike.</b> Parse the project into the derived graph, Requirement → Feature → Task → Evidence, and print a digest. <span class="mono">--json</span> for the full graph on stdout, <span class="mono">-f &lt;file&gt;</span> to write it. Also over MCP as <span class="mono">nexus_project_graph</span>.</td></tr>
       <tr><td>nexus doctor [--severity] [--fix] [--strict]</td><td><span data-live="checks">16</span> drift checks (D01–D16): unresolved placeholders, stale phase, progress gaps, knowledge bloat &amp; staleness, stale/orphan plans, missing vital signs, missed handshakes, skills drift, unverified done (D11), a clobbered Chameleon agent block (D12), a gated plan with no alignment record (D13), an instruction file over the always-loaded context budget (D14), a manifest declaring something the project no longer uses (D15), and docs that drifted from what the code does (D16). <span class="mono">--strict</span> escalates advisory findings to errors for CI. CI-friendly exit codes.</td></tr>
       <tr><td>nexus context "&lt;task&gt;" [--json]</td><td>Prints the same composed context pack <span class="mono">nexus_get_context</span> returns over MCP: plan slice, matching knowledge, trigger-matched skills, vitals, budget-capped. No MCP server needed.</td></tr>
-      <tr><td>nexus harness verify [--config]</td><td>Checks whether a local AI setup described in <span class="mono">.nexus/harnesses.yml</span> is actually receiving what NEXUS sends it, a real needle-probe against the endpoint, not an assumption.</td></tr>
+      <tr><td>nexus harness verify &lt;profile&gt;</td><td>Checks whether a local AI setup described in <span class="mono">.nexus/harnesses.yml</span> is actually receiving what NEXUS sends it, a real needle-probe against the endpoint, not an assumption.</td></tr>
       <tr><td>nexus brief [--md] [--since]</td><td>~30-line status digest: vital signs, drift, plans, shipped commits, suggested next actions. <span class="mono">--md</span> powers the CI PR comment.</td></tr>
       <tr><td>nexus consolidate [--check|--archive]</td><td>Memory hygiene: generates <span class="mono">knowledge-summary.md</span> grouped by category. <span class="mono">--check</span> is a CI gate; <span class="mono">--archive</span> moves year-old entries aside. Deterministic, no LLM.</td></tr>
       <tr><td>nexus brain &lt;status|check&gt;</td><td>Health dashboard + on-demand drift detection. The auto-invoke layer uses the same detector to prompt you when the brain needs attention.</td></tr>
@@ -254,7 +303,7 @@ footer a{color:var(--mut)}
       <tr><td>nexus skill list</td><td>All installed skills (core / custom / community) with status.</td></tr>
       <tr><td>nexus skill registry</td><td>Browse <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">@nexus-framework/skills</a> live from npm, new skills appear without a CLI update. <span class="mono">--framework</span> filters.</td></tr>
       <tr><td>nexus skill new [name]</td><td>Scaffold a custom skill in <span class="mono">custom/</span>, yours, sacred, never touched by NEXUS.</td></tr>
-      <tr><td>nexus skill install &lt;pkg&gt;</td><td>Install a community skill pack into <span class="mono">community/</span>.</td></tr>
+      <tr><td>nexus skill install &lt;source&gt;</td><td>Install community skills into <span class="mono">community/</span>. <b>v1.5.2:</b> the source can be an npm package, a GitHub <span class="mono">owner/repo</span>, a Git URL, or a local path. <span class="mono">--skill &lt;slug&gt;</span> picks one skill from a multi-skill source, <span class="mono">--framework &lt;name&gt;</span> narrows by framework, <span class="mono">--force</span> overwrites an installed skill of the same slug.</td></tr>
       <tr><td>nexus skill remove &lt;name&gt;</td><td>Remove a community skill (refuses core/custom).</td></tr>
       <tr><td>nexus skill status</td><td>Health-check: missing core skills, invalid frontmatter, deprecations.</td></tr>
     </table></div>
@@ -295,11 +344,17 @@ footer a{color:var(--mut)}
 <span class="p">$</span> <span class="c">nexus plan tick add-oauth 2</span>     <span class="o"># or nexus_plan_tick via MCP</span>
 <span class="p">$</span> <span class="c">nexus plan done add-oauth --summary "24 new tests"</span></div>
     <div class="callout"><b>Rule of thumb:</b> any task with ≥3 steps or that spans sessions gets a plan. On <span class="mono">done</span>, the CLI auto-appends to the index Progress Log and nudges for a knowledge entry.</div>
+
+    <h3>Provable Done <span class="chip">v1.6</span></h3>
+    <p>"Done" should be a fact the machine recorded, not a claim an agent wrote. <span class="mono">nexus plan verify &lt;id&gt;</span> runs the checks listed in <span class="mono">.nexus/verify.json</span> and records the machine evidence in the plan's Evidence section. When a check genuinely cannot apply, <span class="mono">--waiver &lt;reason&gt;</span> records an explicit waiver with its explanation, so it stays visible. Doctor check <b>D11</b> (v2) reads that evidence, and agents can do the same over MCP with <span class="mono">nexus_plan_verify</span>.</p>
+    <div class="code"><span class="p">$</span> <span class="c">nexus plan verify add-oauth</span>
+<span class="p">$</span> <span class="c">nexus plan verify add-oauth --waiver "no test runner in this package yet"</span></div>
   </section>
 
   <section id="knowledge">
     <h2>Knowledge base</h2>
     <p><span class="mono">knowledge.md</span> is append-only project memory. Entries are headed <span class="mono">### [category] Title</span> with categories: architecture, bug-fix, pattern, package, performance, convention, gotcha, integration. Agents scan it before decisions and write to it after discoveries, via <span class="mono">nexus_query_knowledge</span> / <span class="mono">nexus_add_knowledge_entry</span> in v1.0.</p>
+    <p><b>Relevance ranking (v1.5.1):</b> the composed context pack (<span class="mono">nexus_get_context</span> / <span class="mono">nexus context</span>) ranks knowledge entries by relevance to the task, not by recency, so the lesson that matters surfaces even when it is old. From the shell, <span class="mono">nexus note</span> appends a validated entry without opening the file.</p>
     <p><span class="mono">nexus consolidate</span> keeps it useful past 200 entries by generating a categorized summary layer, the raw log is never edited or deleted.</p>
   </section>
 
@@ -420,12 +475,12 @@ footer a{color:var(--mut)}
     - feature
     - refactor
   record: "## Grilling"</div>
-  </section>
 
     <h3>Context load (D14)</h3>
     <p>The other cost nobody was measuring. Every generated instruction file is <b>context load</b>: bytes in the agent's window on <i>every</i> turn, spent whether or not they turn out to be relevant. Unlike a doc reached through a pointer, nothing about the task makes that cost go away.</p>
     <p><b>D14 measures per file, not per project.</b> Six harnesses load six different files, Cursor reads <span class="mono">.cursorrules</span>, Claude reads <span class="mono">CLAUDE.md</span>, so a session pays for one of them, not their sum. Warns above 10&nbsp;KB, errors above 16&nbsp;KB or under <span class="mono">--strict</span>, and reports near-identical files as info so you know a hand-edit to one will not reach the others.</p>
     <div class="callout"><b>We ran it on ourselves first.</b> NEXUS's own generated <span class="mono">CLAUDE.md</span> was 13.4&nbsp;KB: the docs table stated twice, "orient first" stated in three places, and a Workflow section instructing the agent to read four files by hand immediately after telling it to prefer one <span class="mono">nexus_get_context</span> call. It is <b>7.9&nbsp;KB</b> in v1.3, with reference material moved behind a pointer into <span class="mono">.nexus/ai/instructions.md</span> and the critical behaviour still inline. A generator test holds it under 8&nbsp;KB, so NEXUS's own output can never trip its own check.</div>
+  </section>
 
   <section id="ci">
     <h2>Brain-aware CI</h2>
@@ -439,7 +494,12 @@ footer a{color:var(--mut)}
 
   <!-- ════ MORE ════ -->
   <section id="upgrade">
-    <h2>Upgrading to v1.x</h2>
+    <h2>Upgrading</h2>
+    <h3>Upgrading to 2.0</h3>
+    <div class="code"><span class="p">$</span> <span class="c">npm i -g @nexus-framework/cli@latest</span>
+<span class="p">$</span> <span class="c">cd your-project && nexus upgrade</span></div>
+    <div class="callout"><b>Nothing breaks.</b> The harness is opt-in: nothing about your brain, plans or MCP setup changes until you run <span class="mono">nexus harness</span>, which installs <span class="mono">@nexus-framework/harness</span> on first run via npx. The CLI keeps zero dependency on the harness engine.</div>
+    <h3>Upgrading to v1.x</h3>
     <div class="code"><span class="p">$</span> <span class="c">npm install -g @nexus-framework/cli@latest</span>
 <span class="p">$</span> <span class="c">cd your-project && nexus upgrade</span></div>
     <ul class="plain">
@@ -449,8 +509,12 @@ footer a{color:var(--mut)}
       <li><b>v1.1.3:</b> <span class="mono">upgrade</span> and <span class="mono">repair</span> now normalize partial manifests first. Projects created by older CLIs, or adopted as backend-only (no frontend framework), no longer render the literal string <span class="mono">undefined</span> into generated docs and AI config. If a past upgrade wrote <span class="mono">undefined</span> into yours, re-run <span class="mono">nexus upgrade</span> to regenerate.</li>
       <li><b>v1.3.0:</b> adds the <a href="#gate">alignment gate</a> (doctor check <b>D13</b>, <span class="mono">doctor --strict</span>, <span class="mono">plan new --major</span>), the context-load check <b>D14</b>, and SKILL_SPEC v2 (<span class="mono">invocation</span>, <span class="mono">category: procedure</span> and <span class="mono">integration</span>, <span class="mono">gate</span>). Generated instruction files shrink from ~13.4&nbsp;KB to ~7.9&nbsp;KB on the next <span class="mono">nexus upgrade</span>; your <span class="mono">custom/</span> skills and populated docs are untouched. <b>Fully additive:</b> <span class="mono">invocation</span> defaults to <span class="mono">model</span>, so no existing skill is invalidated and no coordinated registry release is needed. Plans created before v1.3 are classified from their <span class="mono">source:</span> field, so the gate applies to them too.</li>
       <li><b>v1.2.0:</b> adds <span class="mono">nexus use</span> and <span class="mono">init --ui</span> (<a href="#chameleon">Chameleon delegation</a>), plus doctor check <b>D12</b>. <span class="mono">upgrade</span> and <span class="mono">repair</span> now preserve Chameleon's agent block instead of overwriting it. Nothing here activates on its own, an upgraded project keeps generating exactly as before until you run <span class="mono">nexus use chameleon</span>.</li>
-      <li><b>v1.4.0:</b> the 17 brain tools behind <span class="mono">nexus mcp</span> are now importable directly from <span class="mono">@nexus-framework/cli</span>'s <span class="mono">./mcp</span> subpath, as native TypeScript. No server process required for a host that wants to call a tool directly. Purely additive, nothing about the MCP server itself changed.</li>
+      <li><b>v1.4.0:</b> the brain tools behind <span class="mono">nexus mcp</span> are now importable directly from <span class="mono">@nexus-framework/cli</span>'s <span class="mono">./mcp</span> subpath, as native TypeScript. No server process required for a host that wants to call a tool directly. Purely additive, nothing about the MCP server itself changed.</li>
       <li><b>v1.5.0:</b> three new doctor checks, <b>D14</b> (context load, moved here from v1.3's byte budget), <b>D15</b> (a manifest declaring something the project no longer uses), and <b>D16</b> (docs and code that have drifted apart). Optional <span class="mono">.nexus/harnesses.yml</span> describes the AI setup a project is actually running against, so generated instruction files are sized to fit, and <span class="mono">nexus harness verify</span> checks that a local setup is really receiving what was sent, not just assumed to. <span class="mono">nexus context "&lt;task&gt;"</span> is new too, the same composed context pack the MCP server returns, without needing a server running.</li>
+      <li><b>v1.5.1:</b> knowledge entries in the context pack are ranked by task relevance instead of recency.</li>
+      <li><b>v1.5.2:</b> <span class="mono">nexus skill install &lt;source&gt;</span> accepts an npm package, GitHub <span class="mono">owner/repo</span>, Git URL, or local path.</li>
+      <li><b>v1.6.0:</b> "Capture, verify, and see the graph". <span class="mono">nexus log</span> and <span class="mono">nexus note</span>, <span class="mono">nexus plan verify</span> with <span class="mono">.nexus/verify.json</span> (<a href="#plans">Provable Done</a>, D11 v2), and the <span class="mono">nexus graph</span> spike. The MCP surface grows to 19 tools with <span class="mono">nexus_project_graph</span> and <span class="mono">nexus_plan_verify</span>.</li>
+      <li><b>v2.0.0:</b> execution. <span class="mono">nexus harness</span>, <span class="mono">nexus agent "&lt;task&gt;"</span>, and the <span class="mono">nexus code</span> reservation for v3. See <a href="#harness">Execution</a>.</li>
     </ul>
     <div class="callout warn"><b>On v1.1.3 vs v1.2.0.</b> The published 1.1.3 tarball already contained the Chameleon work, it was cut while that work sat under an <span class="mono">[Unreleased]</span> heading, so 1.1.3 shipped a feature set its own changelog did not describe. <b>1.2.0 is the same code under the version it should have carried.</b> Upgrading from 1.1.3 to 1.2.0 changes only the version number.</div>
   </section>
@@ -472,7 +536,8 @@ footer a{color:var(--mut)}
 </div>
 
 <footer>
-  NEXUS CLI · <a href="https://gdaafrica.org" target="_blank">GDA Africa</a> · Apache 2.0 · <a href="index.html">Home</a> · <a href="/mcp">MCP</a> · <a href="/agents">Agents</a> · <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
+  <a href="index.html">NEXUS CLI</a> by <a href="https://gdaafrica.org" target="_blank">GDA Africa</a> · CLI Apache 2.0 · Harness proprietary<br>
+  <a href="/harness">Harness</a> · <a href="/mcp">MCP</a> · <a href="/agents">Agents</a> · <a href="/skills">Skills</a> · <a href="/docs">Docs</a> · <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a> · <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm CLI</a> · <a href="https://www.npmjs.com/package/@nexus-framework/harness" target="_blank">npm Harness</a> · <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">Skills Registry</a>
 </footer>
 
 <script>

@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What are AI Agents? NEXUS Contextualized Agents, Demoed Live</title>
-<meta name="description" content="AI agents explained, and how NEXUS v1.1 makes them brain-grounded: four specialized roles (implementer, test-writer, reviewer, doc-keeper) orchestrated over MCP, with a verification gate so no work completes untested.">
+<meta name="description" content="AI agents explained, and how NEXUS makes them brain-grounded: four specialized roles (implementer, test-writer, reviewer, doc-keeper) orchestrated over MCP, a verification gate with machine-recorded evidence, and in NEXUS 2.0, headless one-shot runs with nexus agent on the Nexus Harness.">
 <link rel="canonical" href="https://nexus.glenhalton.com/agents">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://nexus.glenhalton.com/agents">
 <meta property="og:site_name" content="NEXUS CLI">
 <meta property="og:title" content="Contextualized Agents: specialized AI roles grounded in YOUR project">
-<meta property="og:description" content="Watch four brain-grounded agents relay a task: implement → verify → review → document. Each with scoped context, least-privilege tools, and a completion gate.">
+<meta property="og:description" content="Watch four brain-grounded agents relay a task: implement → verify → review → document. Each with scoped context, least-privilege tools, and a completion gate. New in NEXUS 2.0: nexus agent runs a task to completion, unattended.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NEXUS Contextualized Agents: the pipeline, demoed live">
 <script type="application/ld+json">
@@ -19,10 +19,10 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "What are AI agents? NEXUS Contextualized Agents explained and demoed",
-  "description": "How NEXUS v1.1 defines specialized, brain-grounded agent roles, implementer, test-writer, reviewer, doc-keeper, orchestrated over MCP with a structural verification gate (doctor D11).",
+  "description": "How NEXUS defines specialized, brain-grounded agent roles, implementer, test-writer, reviewer, doc-keeper, orchestrated over MCP with a structural verification gate (doctor D11), plus headless one-shot runs with nexus agent in NEXUS 2.0.",
   "url": "https://nexus.glenhalton.com/agents",
   "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" },
-  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "1.2.0",
+  "about": { "@type": "SoftwareApplication", "name": "NEXUS CLI", "softwareVersion": "2.0.0",
     "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli" }
 }
 </script>
@@ -123,6 +123,8 @@ p b{color:var(--ink)}
 .pl .k{color:var(--vio2)}.pl .s{color:var(--mint2)}.pl .num{color:var(--amber)}
 .pl .cm{color:var(--faint)}.pl .warn{color:var(--amber)}.pl .ok{color:var(--mint)}
 .pl .who{color:var(--cyan);font-weight:700}
+.term-body.static{height:auto;min-height:0;justify-content:flex-start}
+.term-body.static .pl{opacity:1;transform:none}
 .demo-foot{display:flex;align-items:center;gap:12px;margin-top:14px}
 .replay{font-family:var(--mono);font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:8px;padding:6px 14px;cursor:pointer;background:transparent;transition:all .2s}
 .replay:hover{color:var(--mint);border-color:var(--mint)}
@@ -175,10 +177,12 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="nav-links">
+      <a href="/harness">Harness</a>
       <a href="/mcp">MCP</a>
       <a href="/agents" class="here">Agents</a>
+      <a href="/skills">Skills</a>
       <a href="/docs">Docs</a>
-      <a class="nav-cta" href="/#quickstart">Get started</a>
+      <a class="nav-cta" href="/#quickstart">npm i -g @nexus-framework/cli</a>
     </div>
   </div>
 </nav>
@@ -187,7 +191,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <div class="wrap">
   <!-- ═══ FULL-SCREEN PIPELINE DEMO ═══ -->
   <div class="stage">
-    <div class="kicker rv">contextualized agents · v1.1 headline</div>
+    <div class="kicker rv">contextualized agents · nexus 2.0</div>
     <h1 class="rv rv-d1">One task. Four specialists.<br><em>Zero unverified work.</em></h1>
     <p class="lead rv rv-d2">Watch a real NEXUS pipeline run a feature: each agent wakes with its own scoped context, does <b>only its job</b>, and relays through the brain. The test-writer is the gate, nothing completes without evidence.</p>
 
@@ -204,7 +208,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     </div>
     <div class="demo-foot rv rv-d3">
       <button class="replay" onclick="restartDemo()">↻ replay pipeline</button>
-      <span class="demo-hint">self-playing · every line is a real v1.1 tool call or gate check</span>
+      <span class="demo-hint">self-playing · every line is a real NEXUS tool call or gate check</span>
     </div>
   </div>
 
@@ -273,6 +277,32 @@ footer{border-top:1px solid var(--line);padding:36px 0}
       <div class="card rv rv-d1"><div class="ic">⚠️</div><b>plan done warns</b><p>Completing with no evidence prints the warning and the exact commands to fix it, record results or record a waiver.</p></div>
       <div class="card rv rv-d2"><div class="ic">🤝</div><b>Humans stay the boss</b><p>Waivers are first-class: "WAIVER: docs-only change, approved by Halton." Skipping verification is visible, never impossible, same doctrine as the wake handshake.</p></div>
     </div>
+    <p class="rv rv-d3" style="margin-top:26px"><b>Since 1.6, done is provable.</b> <span class="mono" style="color:var(--mint2)">nexus plan verify &lt;id&gt;</span> runs the checks listed in <span class="mono">.nexus/verify.json</span> and records machine evidence on the plan, or a visible <span class="mono">--waiver &lt;reason&gt;</span>. D11 v2 reads that machine evidence, and agents can trigger the same thing over MCP with <span class="mono" style="color:var(--mint2)">nexus_plan_verify</span>.</p>
+  </section>
+
+  <!-- ═══ HEADLESS: nexus agent ═══ -->
+  <section id="headless">
+    <div class="kicker rv">new in nexus 2.0</div>
+    <h2 class="rv rv-d1">Agents that run on their own: <em>nexus agent.</em></h2>
+    <p class="rv rv-d2"><b><span class="mono">nexus agent "&lt;task&gt;"</span> is one-shot, headless, and unattended.</b> It runs the <a href="/harness" style="color:var(--mint)">Nexus Harness</a> <span class="mono">headless</span> profile wired to your brain: at step 1 the agent is handed the active plan, the next unchecked step, your rules and conventions, matching lessons from knowledge, and a vitals snapshot, with 16 <span class="mono">nexus_*</span> tools mounted in-process. It runs to completion, streams its reasoning to <b>stderr</b>, prints the final result to <b>stdout</b>, and exits, so it pipes and scripts like any other command.</p>
+    <div class="term rv rv-d2" style="margin-top:22px">
+      <div class="term-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="term-title">terminal · nexus agent</span></div>
+      <div class="term-body static">
+        <div class="pl"><span class="out">$</span> nexus agent "add rate limiting to the login route"</div>
+        <div class="pl"><span class="who">NEXUS agent</span> <span class="cm">·</span> project <span class="s">acme-api</span> <span class="cm">·</span> plan <span class="s">harden-auth</span> <span class="cm">·</span> profile <span class="s">headless</span></div>
+        <div class="pl"><span class="cm">[stderr] brain context injected at step 1: plan, next step, rules, 2 lessons, vitals</span></div>
+        <div class="pl"><span class="cm">[stderr] next step: 3. Rate-limit POST /login</span></div>
+        <div class="pl"><span class="cm">[stderr] …reads the route, applies the recorded lesson, writes the limiter + tests…</span></div>
+        <div class="pl"><span class="out">→</span> <span class="k">nexus_plan_tick</span> { <span class="k">"id"</span>: <span class="s">"harden-auth"</span>, <span class="k">"step"</span>: <span class="num">3</span> } <span class="ok">✓ step 3 ticked</span></div>
+        <div class="pl"><span class="ok">✓ done</span> <span class="cm">[stdout]</span> Added rate limiting to POST /login with tests. Next step: 4. Lockout notice email.</div>
+      </div>
+    </div>
+    <div class="demo-foot rv rv-d3"><span class="demo-hint">illustrative output · project, plan, and step names are examples</span></div>
+    <p class="rv rv-d2" style="margin-top:22px">Run with no task and it prints usage. <span class="mono" style="color:var(--mint2)">nexus agent list/new/install/remove/status/sync</span> still manage your brain-grounded agent definitions, exactly as before.</p>
+    <div class="cards">
+      <div class="card hl rv"><div class="ic">👀</div><b>Subagent inspector</b><p>When an agent delegates to a helper, the harness shows the helper's transcript, tool calls, and status live, side by side with the parent. <a href="/harness" style="color:var(--mint)">See the harness →</a></p></div>
+      <div class="card rv rv-d1"><div class="ic">⌨️</div><b>Coming in v3: <span class="mono">nexus code</span></b><p>An interactive terminal for working alongside a brain-grounded agent is reserved for NEXUS v3. Today it opens a preview only.</p></div>
+    </div>
   </section>
 
   <!-- ═══ BENEFITS ═══ -->
@@ -300,13 +330,17 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 <footer>
   <div class="wrap foot">
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
-    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Apache 2.0</span>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · CLI Apache 2.0 · Harness proprietary</span>
     <div class="links">
+      <a href="/harness">Harness</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
       <a href="/docs">Docs</a>
       <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
-      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm CLI</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/harness" target="_blank">npm Harness</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">Skills Registry</a>
     </div>
   </div>
 </footer>

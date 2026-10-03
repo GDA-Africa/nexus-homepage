@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS CLI: Your project has a brain. Agents can call it.</title>
-<meta name="description" content="NEXUS gives every project a structured brain, staffs it with brain-grounded agents over MCP, 17 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client. v1.4 opened that brain up as an importable MCP surface; v1.5 adds reliability checks and support for local AI models. Open source, Apache 2.0.">
+<title>NEXUS 2.0: Your project has a brain. Now it has A Harness.</title>
+<meta name="description" content="NEXUS gives every project a structured brain and serves it over MCP as 19 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client. NEXUS 2.0 gives that brain A Harness: the Nexus Harness runs agents already grounded in your plan, rules and lessons, and shows you exactly what they knew. CLI open source, Apache 2.0.">
 <link rel="canonical" href="https://nexus.glenhalton.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/">
 <meta property="og:site_name" content="NEXUS CLI">
-<meta property="og:title" content="NEXUS CLI v1.5: The AI-Native Development Framework">
-<meta property="og:description" content="The project brain is an MCP server with specialized agents: implementer, test-writer, reviewer, doc-keeper, grounded in your conventions, gated by verification, and now sized for local AI models too.">
+<meta property="og:title" content="NEXUS 2.0: From project brain to execution platform">
+<meta property="og:description" content="The project brain is an MCP server with brain-grounded agents. In 2.0 it gets an execution harness: nexus harness opens a web GUI where agents arrive already knowing the plan, and nexus agent runs a task headless, start to finish.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NEXUS CLI v1.5: Your project has a brain. Agents can call it.">
-<meta name="twitter:description" content="17 schema-validated MCP brain tools for Claude Code, Codex, Cursor & any MCP client. Open source, Apache 2.0.">
-<meta name="keywords" content="MCP server, Model Context Protocol, AI-native development, Claude Code, OpenAI Codex, Cursor, project scaffolding, AI agents, developer tools, open source CLI">
+<meta name="twitter:title" content="NEXUS 2.0: Your project has a brain. Now it has A Harness.">
+<meta name="twitter:description" content="19 schema-validated MCP brain tools, plus the Nexus Harness: agents grounded before the first token. nexus harness · nexus agent.">
+<meta name="keywords" content="MCP server, Model Context Protocol, AI agent harness, headless coding agent, AI-native development, Claude Code, OpenAI Codex, Cursor, project scaffolding, AI agents, developer tools, open source CLI">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -23,8 +23,8 @@
   "name": "NEXUS CLI",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows (Node.js 20+)",
-  "softwareVersion": "1.5.0",
-  "description": "Open-source AI-native development framework. Gives every project a structured brain and serves it over MCP as 17 schema-validated tools and staffs it with brain-grounded agents for Claude Code, Codex, Cursor, and any MCP client. Now with reliability checks that catch stale docs and support for local AI models.",
+  "softwareVersion": "2.0.0",
+  "description": "Open-source AI-native development framework. Gives every project a structured brain, serves it over MCP as 19 schema-validated tools, staffs it with brain-grounded agents, and in 2.0 launches the Nexus Harness execution engine with nexus harness and nexus agent.",
   "url": "https://nexus.glenhalton.com",
   "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli",
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -279,7 +279,6 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
       <a href="/skills">Skills</a>
-      <a href="#brain">The Brain</a>
       <a href="/docs">Docs</a>
       <a class="nav-cta" href="#quickstart">npm i -g @nexus-framework/cli</a>
     </div>
@@ -291,22 +290,23 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ HERO ═══ -->
   <div class="hero">
     <div>
-      <div class="tag rv"><span data-live="versionTag">v1.5.0</span> · RELIABILITY &amp; LOCAL MODELS</div>
-      <h1 class="rv rv-d1">Your project has a brain.<br>Now agents can <em>call it</em>.</h1>
-      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain, docs, knowledge, plans. <b>v1.1 staffed it</b> with brain-grounded agents calling <span data-live="tools">17</span> schema-validated MCP tools instead of being told to read files. <b>v1.2 delegated the parts it shouldn't own</b>, <a href="#chameleon" style="color:var(--mint)">UI generation goes to Chameleon</a>. <b>v1.3 closes the gap before the code:</b> <a href="#gate" style="color:var(--mint)">a recorded interview is a precondition</a> for feature work. <b>v1.4 opened the brain up</b> as an importable MCP surface for any host. <b>v1.5 checks its own math:</b> new doctor checks catch docs that drifted from the code, and the same brain now sizes itself for a small, locally-run AI model instead of assuming one packet fits every model.</p>
+      <div class="tag rv">NEXUS 2.0 · THE BRAIN GETS A HARNES</div>
+      <h1 class="rv rv-d1">Your project has a brain.<br>Now it has <em>A Harness</em>.</h1>
+      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain: docs, plans, knowledge, skills, served to Claude Code, Codex, Antigravity IDE and Cursor as <span data-live="tools">19</span> schema-validated MCP tools. <b>2.0 puts that brain to work.</b> <a href="/harness" style="color:var(--mint)">Nexus Harness</a> runs agents that already know your plan, rules and past lessons before the first token, and shows you exactly what they knew and did. <span class="mono" style="color:var(--mint2)">nexus harness</span> opens it. <span class="mono" style="color:var(--mint2)">nexus agent "&lt;task&gt;"</span> runs one task, start to finish, unattended.</p>
       <div class="cta-row rv rv-d3">
         <button class="btn btn-solid" onclick="document.getElementById('quickstart').scrollIntoView({behavior:'smooth'})">Get started</button>
+        <a href="/harness"><button class="btn btn-ghost">Meet the Harness →</button></a>
         <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank"><button class="btn btn-ghost">GitHub →</button></a>
       </div>
       <div class="stats rv rv-d4">
-        <div class="stat"><div class="n" data-live="tools" data-live-animate>17</div><div class="l">MCP tools</div></div>
-        <div class="stat"><div class="n" data-live="tests" data-live-animate>807</div><div class="l">tests</div></div>
-        <div class="stat"><div class="n" data-live="commands" data-live-animate>20</div><div class="l">commands</div></div>
+        <div class="stat"><div class="n" data-live="tools" data-live-animate>19</div><div class="l">MCP tools</div></div>
+        <div class="stat"><div class="n" data-live="tests" data-live-animate>850</div><div class="l">tests</div></div>
+        <div class="stat"><div class="n" data-live="commands" data-live-animate>24</div><div class="l">commands</div></div>
         <div class="stat"><div class="n" data-live="downloads" data-live-animate>1926</div><div class="l"><span class="live-dot"></span>npm downloads</div></div>
       </div>
       <div class="live-note rv rv-d4">
-        <span class="live-dot"></span>Live from the npm registry &amp; the CLI package, not hand-written:
-        <b data-live="version">1.5.0</b> on npm, <span data-live="published">published today</span>.
+        <span class="live-dot"></span>Live from the npm registry &amp; the CLI package:
+        <b data-live="version">2.0.0</b> on npm, <span data-live="published">published today</span>.
         <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">verify →</a>
       </div>
     </div>
@@ -328,10 +328,43 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
     <span class="client">Claude Code</span><span class="client">Claude Cowork</span><span class="client">OpenAI Codex</span><span class="client">Cursor</span>
     <span class="lbl" style="margin-left:10px">Reads files</span>
     <span class="client">Copilot</span><span class="client">Windsurf</span><span class="client">Cline</span><span class="client">Gemini CLI</span>
+    <span class="lbl" style="margin-left:10px">Runs in</span>
+    <a class="client" href="/harness" style="color:var(--mint2)">Nexus Harness</a>
   </div>
 </div>
 
 <div class="wrap">
+  <!-- ═══ NEXUS 2.0 · EXECUTION ═══ -->
+  <section id="v2">
+    <div class="kicker rv">new in 2.0 · execution</div>
+    <h2 class="rv rv-d1">The Brain can now<br><em>act as a teammate.</em></h2>
+    <p class="lead rv rv-d2">For ten releases NEXUS made agents <i>know</i> your project. 2.0 adds the place they <i>work</i>: the <a href="/harness" style="color:var(--mint)">Nexus Harness</a>, an execution engine with the brain built in. Your editor's agents can keep calling <span class="mono">the nexus mcp</span> exactly as before.</p>
+    <div class="cmds">
+      <div class="cmd hl rv"><div class="c-name">nexus harness<span class="new">v2.0</span></div><p>Opens the web GUI at <span class="mono">localhost:3080</span>, auto-wired to your <span class="mono">.nexus/</span>. A brain badge, a per-turn grounding inspector, a live plan checklist and a subagent inspector. <span class="mono">--port</span> · <span class="mono">--no-open</span> · <span class="mono">--desktop</span>.</p></div>
+      <div class="cmd hl rv rv-d1"><div class="c-name">nexus agent "&lt;task&gt;"<span class="new">v2.0</span></div><p>One task, start to finish, no babysitting. Grounded at step 1, runs to completion, reasoning on stderr, result on stdout. Built for scripts and CI.</p></div>
+      <div class="cmd v rv rv-d2"><div class="c-name">nexus code<span class="new" style="color:var(--vio2);border-color:rgba(139,124,246,.4);background:var(--viobg)">v3</span></div><p>An interactive assistant in your terminal with streaming, approval prompts and slash commands. Reserved now, arriving in NEXUS v3.</p></div>
+    </div>
+    <div class="duo">
+      <div class="duo-card win rv">
+        <div class="duo-h">Grounded before the first token <span class="pill pill-new">AMBIENT</span></div>
+        <ul>
+          <li>Active plan, <b>next unchecked step</b>, conventions, relevant lessons and vitals arrive with every turn</li>
+          <li><b>16 brain tools mounted in-process</b>: no extra server, every call in the session log</li>
+          <li>The agent <b>ticks its own plan</b> and records what it learned</li>
+        </ul>
+      </div>
+      <div class="duo-card win rv rv-d1">
+        <div class="duo-h">Nothing hidden <span class="pill pill-new">VISIBLE</span></div>
+        <ul>
+          <li><b>See what it knew:</b> every turn's injected context, one click away</li>
+          <li><b>Watch delegated helpers</b> work live, side by side</li>
+          <li><b>Local models in one click</b> via Ollama, no account, no key</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead rv rv-d2" style="margin-top:26px"><a href="/harness" style="color:var(--mint)">Tour the Harness, with a live demo you can click →</a></p>
+  </section>
+
   <!-- ═══ BEFORE/AFTER ═══ -->
   <section id="mcp">
     <div class="kicker rv">why mcp changes everything</div>
@@ -363,8 +396,8 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ MCP TOOL SURFACE ═══ -->
   <section>
     <div class="kicker rv">the tool surface</div>
-    <h2 class="rv rv-d1">17 tools. <em>One brain.</em></h2>
-    <p class="lead rv rv-d2">Click a tool to see its shape. Reads return targeted data; writes go through the same parser the CLI uses, schema-validated, always.</p>
+    <h2 class="rv rv-d1"><span data-live="tools">19</span> tools. <em>One brain.</em></h2>
+    <p class="lead rv rv-d2">Click a tool to see its shape. Reads return targeted data; writes go through the same parser the CLI uses, schema-validated, always. Inside the <a href="/harness" style="color:var(--mint)">Nexus Harness</a>, the same handlers run in-process.</p>
     <div class="tools-wrap rv rv-d2">
       <div class="tools-grid" id="toolgrid"></div>
       <div class="tool-view">
@@ -376,16 +409,20 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 
   <!-- ═══ ALIVE BRAIN COMMANDS ═══ -->
   <section>
-    <div class="kicker rv">the alive brain · <span data-live="commands">18</span> commands</div>
+    <div class="kicker rv">the alive brain · <span data-live="commands">24</span> commands</div>
     <h2 class="rv rv-d1">Senses. Tracks. Audits.<br>Speaks. Remembers. <em>Serves.</em></h2>
     <p class="lead rv rv-d1" style="margin-bottom:0"><a href="/agents" style="color:var(--mint)">Meet the v1.1 agents: the full pipeline, demoed →</a></p>
     <div class="cmds">
+      <div class="cmd hl rv"><div class="c-name">nexus plan verify<span class="new">v1.6</span></div><p>Provable Done. Runs the checks in <span class="mono">.nexus/verify.json</span> and records machine evidence, or an explicit <span class="mono">--waiver</span>. D11 reads the evidence, not a claim.</p></div>
+      <div class="cmd hl rv rv-d1"><div class="c-name">nexus log · nexus note<span class="new">v1.6</span></div><p>Capture from the shell: a Progress Log entry, or a validated knowledge entry with <span class="mono">--why</span> and <span class="mono">--how-to-apply</span>.</p></div>
+      <div class="cmd hl rv rv-d2"><div class="c-name">nexus graph<span class="new">v1.6</span></div><p>Derives the project graph, Requirement → Feature → Task → Evidence, as a digest or <span class="mono">--json</span>. An early spike toward NEXUS as a project control plane.</p></div>
+      <div class="cmd rv rv-d3"><div class="c-name">nexus skill install</div><p>Skills from anywhere: an npm package, a GitHub <span class="mono">owner/repo</span>, a Git URL, or a local path.</p></div>
       <div class="cmd hl rv"><div class="c-name">nexus use<span class="new">v1.2</span></div><p>Set the UI generator NEXUS delegates to. <span class="mono">--global</span> for every project, <span class="mono">--explain</span> names the file it resolved from.</p></div>
       <div class="cmd rv rv-d1"><div class="c-name">nexus mcp</div><p>The brain as a stdio MCP server. Registered automatically via generated <span class="mono">.mcp.json</span>.</p></div>
       <div class="cmd v rv rv-d2"><div class="c-name">nexus wake</div><p>Deterministic handshake token. Agents echo it, doctor flags sessions that skip it.</p></div>
       <div class="cmd v rv rv-d3"><div class="c-name">nexus sync</div><p>Repo sensors → Vital Signs block. Git, tests, files, packages. Idempotent, CI-safe.</p></div>
       <div class="cmd v rv rv-d1"><div class="c-name">nexus plan</div><p>Durable multi-step work in <span class="mono">.nexus/plans/</span>. Survives sessions, diffs cleanly.</p></div>
-      <div class="cmd rv rv-d2"><div class="c-name">nexus doctor</div><p><span data-live="checks">14</span> drift checks: stale docs, orphan plans, knowledge bloat, missed handshakes, a clobbered Chameleon block, a gated plan with no alignment record, an over-budget instruction file.</p></div>
+      <div class="cmd rv rv-d2"><div class="c-name">nexus doctor</div><p><span data-live="checks">16</span> drift checks: stale docs, orphan plans, knowledge bloat, missed handshakes, a clobbered Chameleon block, a gated plan with no alignment record, an over-budget instruction file, docs that drifted from the code, a plan marked done without evidence.</p></div>
       <div class="cmd rv rv-d2"><div class="c-name">nexus brief</div><p>Status digest for humans, and for the brain-aware CI comment on every PR.</p></div>
       <div class="cmd rv rv-d3"><div class="c-name">nexus consolidate</div><p>Memory hygiene. Rolls knowledge into a summary; append-only stays append-only.</p></div>
       <div class="cmd rv rv-d4"><div class="c-name">nexus brain</div><p>Health dashboard + auto-invoke: the brain detects when it needs updating.</p></div>
@@ -434,7 +471,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <ul>
           <li><span class="mono">CLAUDE.md</span> and <span class="mono">AGENTS.md</span> were in the always-replace set, so every <b>upgrade wiped the block</b> <span class="mono">chameleon agents init</span> splices between its markers</li>
           <li>NEXUS now <b>captures that block before regenerating</b> and restores it after, across <span class="mono">init</span>, <span class="mono">upgrade</span>, and <span class="mono">repair</span></li>
-          <li>New <b>doctor check D12</b> flags any project where it went missing, <span data-live="checks">14</span> checks total</li>
+          <li>New <b>doctor check D12</b> flags any project where it went missing, <span data-live="checks">16</span> checks total</li>
         </ul>
       </div>
     </div>
@@ -482,7 +519,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <h4>🧠 NEXUS Brain Brief</h4>
         <div class="pr-row"><span class="ok">✓</span> Shipped (7d): feat: oauth provider · fix: session ttl</div>
         <div class="pr-row"><span class="ok">→</span> Active plan: add-user-authentication (step 3/5)</div>
-        <div class="pr-row"><span class="ok">✓</span> Vital signs: 807 tests · branch clean · synced 4 min ago</div>
+        <div class="pr-row"><span class="ok">✓</span> Vital signs: 850 tests · branch clean · synced 4 min ago</div>
         <div class="pr-row"><span class="warn">⚠</span> Doctor: D05, 1 knowledge entry references a moved file</div>
         <div class="pr-row"><span class="ok">＋</span> Knowledge: [gotcha] Session cookies need sameSite=lax</div>
       </div>
@@ -502,14 +539,17 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 ├─ <span class="d">plans/</span>          <span class="note">← durable multi-step work</span>
 ├─ <span class="d">skills/</span>         <span class="note">← how YOUR project does things</span>
 ├─ <span class="d">state/</span>          <span class="note">← session tokens · sensor cache</span>
-│  └─ <span class="hot">chameleon.json</span> <span class="note">← generation evidence (v1.2)</span>
+│  ├─ <span class="hot">chameleon.json</span> <span class="note">← generation evidence (v1.2)</span>
+│  └─ <span class="hot">nexus-brain.patch.yml</span> <span class="note">← harness wiring (v2.0)</span>
+├─ <span class="f">verify.json</span>     <span class="note">← Provable Done checks (v1.6)</span>
 ├─ <span class="f">config.json</span>     <span class="note">← UI generator preference (v1.2)</span>
 └─ <span class="d">ai/</span>             <span class="note">← instructions for every agent</span>
 <span class="f">.mcp.json</span>          <span class="note">← auto-registers nexus-brain</span></div>
       <div class="an-points">
         <div class="an-pt on rv rv-d1"><b>Readable by anything</b><p>Cursor rules, AGENTS.md, CLAUDE.md, Copilot instructions, all generated, all pointing at the same brain.</p></div>
         <div class="an-pt rv rv-d2"><b>Callable by MCP clients</b><p><span class="mono" style="color:var(--mint2)">npx -y @nexus-framework/cli mcp</span>, spawned per client, exits with it.</p></div>
-        <div class="an-pt rv rv-d3"><b>Owned by you</b><p>Plain files in your repo. Eject anytime; your knowledge stays.</p></div>
+        <div class="an-pt rv rv-d3"><b>Mounted by the harness</b><p>Inside <a href="/harness" style="color:var(--mint)">Nexus Harness</a> the same files ground every turn ambiently, and 16 tools run in-process.</p></div>
+        <div class="an-pt rv rv-d4"><b>Owned by you</b><p>Plain files in your repo. Eject anytime; your knowledge stays.</p></div>
       </div>
     </div>
   </section>
@@ -517,8 +557,8 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ TIMELINE ═══ -->
   <section>
     <div class="kicker rv">built in the open</div>
-    <h2 class="rv rv-d1">Ten releases to a brain that <em>checks itself.</em></h2>
-    <p class="lead rv rv-d2">In v1.5 the brain gained its own reliability checks, and started sizing itself for the AI model it's actually talking to.</p>
+    <h2 class="rv rv-d1">Twelve releases to a brain <em>with A Harness.</em></h2>
+    <p class="lead rv rv-d2">v1.6 made "done" provable. 2.0 gave the brain an execution engine of its own, without making the CLI depend on it.</p>
     <div class="tl">
       <div class="tl-c rv"><div class="v">v0.1. FEB 2026</div><div class="t">Genesis</div><p>init · adopt · 6 frameworks · full toolchain</p></div>
       <div class="tl-c rv rv-d1"><div class="v">v0.2. FEB 2026</div><div class="t">Intelligence</div><p>8 structured docs · project brain · agent personas</p></div>
@@ -528,8 +568,10 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="tl-c rv rv-d4"><div class="v">v1.1. JUN 2026</div><div class="t">Agents</div><p>Core four brain-grounded agents · get_context · D11 verification gate</p></div>
       <div class="tl-c rv rv-d4"><div class="v">v1.2. AUG 2026</div><div class="t">Delegation</div><p>Chameleon UI delegation · <span class="mono">nexus use</span> · D12 block preservation</p></div>
       <div class="tl-c rv rv-d4"><div class="v">v1.3. AUG 2026</div><div class="t">Alignment</div><p>Invocation axis · <a href="#gate" style="color:var(--mint)">grilling gate</a> · D13 + D14</p></div>
-      <div class="tl-c rv rv-d4"><div class="v">v1.4. AUG 2026</div><div class="t">Open Surface</div><p>The 17 brain tools importable directly, no server process required</p></div>
-      <div class="tl-c now rv rv-d4"><div class="v">v1.5. AUG 2026</div><div class="t">Self-Check</div><p>D15 + D16 drift checks · <span class="mono">nexus harness verify</span> · local-model sizing · <span data-live="tests">807</span> tests</p></div>
+      <div class="tl-c rv rv-d4"><div class="v">v1.4. AUG 2026</div><div class="t">Open Surface</div><p>The brain tools importable directly, no server process required. The seam 2.0 is built on</p></div>
+      <div class="tl-c rv rv-d4"><div class="v">v1.5. AUG 2026</div><div class="t">Self-Check</div><p>D15 + D16 drift checks · <span class="mono">nexus harness verify</span> · local-model sizing · skills from anywhere</p></div>
+      <div class="tl-c rv rv-d4"><div class="v">v1.6. SEP 2026</div><div class="t">Provable Done</div><p><span class="mono">plan verify</span> evidence · <span class="mono">log</span> · <span class="mono">note</span> · project-graph spike · 19 tools</p></div>
+      <div class="tl-c now rv rv-d4"><div class="v">v2.0. OCT 2026</div><div class="t">Execution</div><p><a href="/harness" style="color:var(--mint)">Nexus Harness</a> · <span class="mono">nexus harness</span> · <span class="mono">nexus agent</span> · <span data-live="tests">850</span> tests</p></div>
     </div>
   </section>
 
@@ -546,6 +588,9 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 <div><span class="p">$</span> <span class="c">cd my-app && claude</span>  <span class="o"># or codex / cursor</span></div>
 <div class="o">  › agent calls nexus_wake → NX-WAKE-7K9F-2026-06-10</div>
 <div class="o">  › "Synced with the brain. Active plan: none. What are we building?"</div>
+<div><span class="p">$</span> <span class="c">nexus harness</span>  <span class="o"># or: the web GUI, grounded and inspectable</span></div>
+<div class="o">  ✓ brain wired · Nexus Glass at http://localhost:3080</div>
+<div><span class="p">$</span> <span class="c">nexus agent "add a health-check route"</span>  <span class="o"># or: headless, unattended</span></div>
       </div>
     </div>
   </section>
@@ -554,14 +599,16 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 <footer>
   <div class="wrap foot">
     <div class="logo"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></div>
-    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Apache 2.0</span>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · CLI Apache 2.0 · Harness proprietary</span>
     <div class="links">
+      <a href="/harness">Harness</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
       <a href="/skills">Skills</a>
       <a href="/docs">Docs</a>
       <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
-      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">npm CLI</a>
+      <a href="https://www.npmjs.com/package/@nexus-framework/harness" target="_blank">npm Harness</a>
       <a href="https://www.npmjs.com/package/@nexus-framework/skills" target="_blank">Skills Registry</a>
     </div>
   </div>
@@ -649,10 +696,13 @@ const TOOLS=[
  ['nexus_get_skill','R','{ "name": "database" }','{ "source": "custom",  // custom > core > community\n  "markdown": "# Skill: Database Patterns…" }'],
  ['nexus_get_context','R','{ "task": "add session middleware",\n  "agent": "nexus-implementer" }','{ "plan": { "id": "add-auth", "nextStep": "3. …" },\n  "knowledge": [ /* matching entries */ ],\n  "skills": [ { "name": "api-design", "matchedTrigger": "middleware" } ],\n  "vitals": { "branch": "main", "dirty": false } }\n// ONE composed pack instead of N reads.'],
  ['nexus_list_agents','R','{ }','{ "agents": [\n   { "name": "nexus-test-writer", "role": "verification",\n     "source": "core", "triggers": ["write tests", …] } ] }'],
+ ['nexus_get_handoff','R','{ "agent": "nexus-implementer" }','{ "from": "nexus-implementer",\n  "to": "nexus-test-writer",\n  "plan": "add-user-authentication" }\n// who picks up next, and with what.'],
+ ['nexus_project_graph','R','{ }','{ "requirements": 6, "features": 9,\n  "tasks": 31, "evidence": 22,\n  "orphans": [ "task: rotate session keys" ] }\n// Requirement → Feature → Task → Evidence. v1.6 spike.'],
  ['nexus_get_agent','R','{ "name": "nexus-test-writer" }','{ "source": "core",\n  "markdown": "## Mission\\nNo work completes unverified…" }'],
  ['nexus_plan_tick','W','{ "id": "add-user-authentication",\n  "step": 3 }','{ "checked": true,\n  "nextStep": "4. Add integration tests" }\n// out-of-range step? Clean error, never a corrupt file.'],
  ['nexus_plan_note','W','{ "id": "add-user-authentication",\n  "message": "Chose lucia over next-auth" }','{ "noted": "2026-06-10T09:41:02Z. Chose lucia…" }'],
  ['nexus_add_knowledge_entry','W','{ "category": "gotcha",\n  "title": "Refresh tokens rotate",\n  "body": "Every use rotates the token…",\n  "why": "Replay protection" }','{ "heading": "### [gotcha] Refresh tokens rotate",\n  "appended": true }\n// duplicates rejected, append-only stays clean.'],
+ ['nexus_plan_verify','W','{ "id": "add-user-authentication" }','{ "checks": [ { "name": "tests", "passed": true },\n    { "name": "typecheck", "passed": true } ],\n  "evidence": "recorded" }\n// Provable Done: checks from .nexus/verify.json, v1.6.'],
 ];
 const grid=document.getElementById('toolgrid'),tvn=document.getElementById('tvname'),tvb=document.getElementById('tvbody');
 let pinned=-1,cycle=0,cycleTimer=null;
