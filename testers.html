@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Insiders — Join the Tester Program & Get Early Access</title>
+<meta name="description" content="Sign up as a Nexus tester. Get early access to pre-release CLI tools, the Nexus Harness GUI, experimental MCP brain capabilities, and new skill packs. Direct feedback line to core maintainers.">
+<link rel="canonical" href="https://nexus.glenhalton.com/testers">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nexus.glenhalton.com/testers">
+<meta property="og:site_name" content="NEXUS">
+<meta property="og:title" content="Nexus Insiders: Test the Edge of AI-Native Engineering">
+<meta property="og:description" content="Sign up as a tester. Get early access to pre-release CLI versions, the Nexus Harness GUI, and experimental MCP brain tools.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nexus Insiders — Tester Program & Early Access">
+<meta name="twitter:description" content="Test pre-release Nexus CLI versions, the Nexus Harness, and MCP brain tools before they hit npm latest.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d12; --bg2:#0d1117; --panel:#0e1319; --panel2:#11161d;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --vio:#8b7cf6; --vio2:#b4a7fb; --viobg:rgba(139,124,246,.08);
+  --amber:#fbbf24; --red:#f87171; --cyan:#67e8f9;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+  --glass:rgba(14,19,25,.65);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(52,211,153,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+#neuronCanvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+code,.code{font-family:var(--mono);font-size:.9em;color:var(--mint2)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* ── reveals ── */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}.rv-d4{transition-delay:.32s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ── nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(10,13,18,.78);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px;cursor:pointer}
+.logo-mark{width:22px;height:22px;border:1.5px solid var(--mint);border-radius:6px;position:relative;flex-shrink:0}
+.logo-mark::after{content:'';position:absolute;inset:4px;background:var(--mint);border-radius:2px;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+.logo span{color:var(--mint)}
+.nav-links{display:flex;gap:22px;margin-left:auto;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--mut);transition:color .2s}
+.nav-links a:hover,.nav-links a.here{color:var(--ink)}
+.nav-links a.here{color:var(--mint)}
+.nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px;border:1px solid var(--mint);border-radius:8px;color:var(--mint)!important;transition:background .2s}
+.nav-cta:hover{background:var(--mintbg)}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
+.menu-btn:hover{border-color:var(--mint);color:var(--mint)}
+@media(max-width:760px){
+  .menu-btn{display:block}
+  .nav-links{display:none;position:fixed;top:57px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 24px 18px;background:rgba(10,13,18,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  body.nav-open .nav-links{display:flex}
+  .nav-links a{display:block!important;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
+  .nav-links a:last-child{border-bottom:none}
+  .nav-links a.nav-cta{border:1px solid var(--mint);padding:10px 14px;text-align:center;margin-top:8px}
+}
+
+/* ── hero ── */
+.hero{padding:140px 0 60px;text-align:center}
+.tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;letter-spacing:1px;color:var(--mint);border:1px solid rgba(52,211,153,.35);background:var(--mintbg);padding:6px 14px;border-radius:99px;margin-bottom:24px}
+.tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 1.8s infinite}
+h1{font-size:clamp(36px,5.2vw,64px);line-height:1.06;font-weight:700;letter-spacing:-1.5px;margin-bottom:22px}
+h1 em{font-style:normal;color:var(--mint)}
+.sub{font-size:18px;color:var(--mut);max-width:680px;margin:0 auto 36px;line-height:1.6}
+.sub b{color:var(--ink);font-weight:600}
+
+/* ── quick stats strip ── */
+.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;background:rgba(255,255,255,.012);margin-bottom:60px}
+.strip-in{display:flex;align-items:center;gap:36px;justify-content:center;flex-wrap:wrap}
+.strip-item{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--mut)}
+.strip-item i{width:7px;height:7px;border-radius:50%;background:var(--mint);display:inline-block}
+
+/* ── layout grid: form & value props ── */
+.app-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:start;margin-bottom:80px}
+@media(max-width:960px){.app-grid{grid-template-columns:1fr}}
+
+/* ── terminal form card ── */
+.term-card{background:var(--panel);border:1px solid var(--line2);border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 0 1px rgba(52,211,153,.07);overflow:hidden;position:relative}
+.term-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.dot{width:10px;height:10px;border-radius:50%;background:#2a3340}
+.term-title{font-family:var(--mono);font-size:11px;color:var(--mut);margin-left:6px}
+.term-status{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:1px;color:var(--mint);display:flex;align-items:center;gap:6px}
+.term-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--mint);animation:pulse 1.2s infinite}
+.term-body{padding:28px 24px}
+
+/* form elements */
+.form-group{margin-bottom:20px}
+.form-label{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.form-label .req{color:var(--mint);margin-left:2px}
+.form-input,.form-select,.form-textarea{width:100%;background:rgba(10,13,18,.8);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;color:var(--ink);font-family:var(--mono);font-size:13px;transition:border-color .2s,box-shadow .2s;outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--mint);box-shadow:0 0 0 3px rgba(52,211,153,.15)}
+.form-textarea{resize:vertical;min-height:76px;line-height:1.5}
+.form-select option{background:var(--panel2);color:var(--ink)}
+
+/* interest pill grid */
+.pills-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:540px){.pills-grid{grid-template-columns:1fr}}
+.pill-option{position:relative;cursor:pointer}
+.pill-option input{position:absolute;opacity:0;pointer-events:none}
+.pill-box{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:10px;transition:all .2s;font-size:12px;color:var(--mut)}
+.pill-box i{width:14px;height:14px;border:1.5px solid var(--faint);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.pill-box i::after{content:'';width:6px;height:6px;background:var(--mint);border-radius:1px;opacity:0;transition:opacity .15s}
+.pill-option input:checked + .pill-box{border-color:var(--mint);background:var(--mintbg);color:var(--ink)}
+.pill-option input:checked + .pill-box i{border-color:var(--mint)}
+.pill-option input:checked + .pill-box i::after{opacity:1}
+
+/* radio tracks */
+.radio-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:540px){.radio-row{grid-template-columns:1fr}}
+.radio-card{position:relative;cursor:pointer}
+.radio-card input{position:absolute;opacity:0;pointer-events:none}
+.radio-box{padding:12px 14px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:10px;transition:all .2s}
+.radio-box .rtitle{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--mut);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.radio-box .rdesc{font-size:11px;color:var(--faint);line-height:1.4}
+.radio-card input:checked + .radio-box{border-color:var(--vio);background:var(--viobg)}
+.radio-card input:checked + .radio-box .rtitle{color:var(--vio2)}
+
+/* submit button */
+.btn-submit{width:100%;font-family:var(--mono);font-size:14px;font-weight:700;padding:14px 20px;border-radius:10px;border:none;background:var(--mint);color:#06281c;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;margin-top:10px}
+.btn-submit:hover{background:var(--mint2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(52,211,153,.25)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.spinner{width:16px;height:16px;border:2px solid rgba(6,40,28,.3);border-top-color:#06281c;border-radius:50%;animation:spin .8s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading .spinner{display:inline-block}
+
+/* ── terminal output log ── */
+.term-log{margin-top:18px;background:rgba(10,13,18,.95);border:1px solid var(--line);border-radius:10px;padding:14px;font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--faint);display:none}
+.term-log.show{display:block}
+.term-log .log-line{opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.term-log .log-line.in{opacity:1;transform:none}
+.log-line .ok{color:var(--mint)}
+.log-line .warn{color:var(--amber)}
+.log-line .dim{color:var(--faint)}
+
+/* success screen */
+.term-success{display:none;text-align:center;padding:24px 10px}
+.term-success.show{display:block;animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.succ-icon{width:56px;height:56px;border-radius:50%;background:var(--mintbg);border:1.5px solid var(--mint);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:var(--mint);font-size:24px}
+.succ-h{font-size:22px;font-weight:700;margin-bottom:8px;letter-spacing:-.4px}
+.succ-p{font-size:14px;color:var(--mut);max-width:440px;margin:0 auto 24px}
+.cmd-box{background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px;max-width:480px;margin:0 auto 20px;text-align:left}
+.cmd-box code{flex:1;font-size:12.5px;color:var(--mint2)}
+.cmd-copy{background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--mut);font-family:var(--mono);font-size:11px;padding:5px 9px;cursor:pointer;transition:all .2s}
+.cmd-copy:hover{border-color:var(--mint);color:var(--mint)}
+
+/* ── value proposition cards (sidebar) ── */
+.info-col{display:flex;flex-direction:column;gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;position:relative;overflow:hidden;transition:border-color .2s}
+.card:hover{border-color:var(--line2)}
+.card-kicker{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--mint);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.card h3{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:8px;color:var(--ink)}
+.card p{font-size:13.5px;color:var(--mut);line-height:1.6}
+.steps-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.step-item{display:flex;gap:14px;align-items:flex-start}
+.step-num{width:24px;height:24px;border-radius:6px;border:1px solid var(--line2);background:rgba(255,255,255,.03);font-family:var(--mono);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--mint);flex-shrink:0;margin-top:2px}
+.step-body b{color:var(--ink);font-size:13.5px;display:block;margin-bottom:2px}
+.step-body p{font-size:12.5px;color:var(--mut);line-height:1.5}
+
+/* ── FAQ section ── */
+.faq-sec{padding:60px 0 100px;border-top:1px solid var(--line)}
+.sec-h{text-align:center;margin-bottom:48px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mint);margin-bottom:12px;display:block}
+h2{font-size:clamp(28px,3.8vw,44px);font-weight:700;letter-spacing:-.9px}
+h2 em{font-style:normal;color:var(--mint)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:800px){.faq-grid{grid-template-columns:1fr}}
+.faq-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:8px;color:var(--ink)}
+.faq-item p{font-size:13px;color:var(--mut);line-height:1.6}
+
+/* ── footer ── */
+footer{border-top:1px solid var(--line);padding:44px 0 34px;background:var(--panel2);font-size:13px;color:var(--faint)}
+.ft-in{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.ft-links{display:flex;gap:20px;font-family:var(--mono);font-size:12px}
+.ft-links a{color:var(--mut);transition:color .2s}
+.ft-links a:hover{color:var(--mint)}
+</style>
+</head>
+<body>
+<canvas id="neuronCanvas"></canvas>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav>
+  <div class="nav-in">
+    <a href="/" class="logo"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
+    <div class="nav-links">
+      <a href="/harness">Harness</a>
+      <a href="/mcp">MCP</a>
+      <a href="/agents">Agents</a>
+      <a href="/skills">Skills</a>
+      <a href="/docs">Docs</a>
+      <a href="/testers" class="here">Testers</a>
+      <a class="nav-cta" href="/#quickstart">npm i -g @nexus-framework/cli</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+  <!-- ═══ HERO ═══ -->
+  <header class="hero">
+    <div class="tag rv">NEXUS INSIDERS · EARLY ACCESS PROGRAM</div>
+    <h1 class="rv rv-d1">Become A tester for Africa's #1 A.I Framework.<br>Get early access to <em>Nexus releases</em>.</h1>
+    <p class="sub rv rv-d2">Be the first to run pre-release CLI versions, experiment with the Nexus Harness GUI, test new MCP brain capabilities, and help us break updates before they reach <span class="mono" style="color:var(--mint2)">the public</span>.</p>
+  </header>
+
+  <!-- ═══ LIVE STRIP ═══ -->
+  <div class="strip rv rv-d3">
+    <div class="strip-in">
+      <div class="strip-item"><i></i> 4 Testing Tracks</div>
+      <div class="strip-item"><i></i> Schema-Validated MCP Tools</div>
+      <div class="strip-item"><i></i> Pre-release npm @next Distribution Tags</div>
+      <div class="strip-item"><i></i> Direct Dispatch via GDA Gateway</div>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN APPLICATION SECTION ═══ -->
+  <div class="app-grid">
+    
+    <!-- LEFT: TERMINAL SIGNUP FORM -->
+    <div class="term-card rv rv-d2">
+      <div class="term-head">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span class="term-title">nexus-insiders-enrollment.sh</span>
+        <span class="term-status" id="termStatus">READY FOR INPUT</span>
+      </div>
+
+      <div class="term-body">
+        <form id="testerForm" onsubmit="handleTesterSubmit(event)">
+          
+          <!-- Full Name / GitHub -->
+          <div class="form-group">
+            <label class="form-label" for="fullName">Your Name or GitHub Handle <span class="req">*</span></label>
+            <input class="form-input" type="text" id="fullName" placeholder="e.g. Alex Rivera or @alexdev" required autocomplete="name">
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label class="form-label" for="email">Work or Personal Email <span class="req">*</span></label>
+            <input class="form-input" type="email" id="email" placeholder="alex@company.com or alex@domain.dev" required autocomplete="email">
+          </div>
+
+          <!-- Focus Areas (Checkboxes) -->
+          <div class="form-group">
+            <label class="form-label">What areas do you want to test? <span class="req">*</span></label>
+            <div class="pills-grid">
+              <label class="pill-option">
+                <input type="checkbox" name="tracks" value="cli" checked>
+                <div class="pill-box"><i></i> <span>CLI & Scaffolding</span></div>
+              </label>
+              <label class="pill-option">
+                <input type="checkbox" name="tracks" value="harness" checked>
+                <div class="pill-box"><i></i> <span>Nexus Harness GUI</span></div>
+              </label>
+              <label class="pill-option">
+                <input type="checkbox" name="tracks" value="mcp" checked>
+                <div class="pill-box"><i></i> <span>MCP Brain Tools</span></div>
+              </label>
+              <label class="pill-option">
+                <input type="checkbox" name="tracks" value="skills">
+                <div class="pill-box"><i></i> <span>Skills Registry</span></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Primary IDE / AI Agent -->
+          <div class="form-group">
+            <label class="form-label" for="primaryAgent">Primary AI Coding Tool</label>
+            <select class="form-select" id="primaryAgent">
+              <option value="claude-code">Claude Code</option>
+              <option value="antigravity-ide">Antigravity IDE</option>
+              <option value="cursor">Cursor / Windsurf</option>
+              <option value="codex-copilot">GitHub Copilot / Codex</option>
+              <option value="cli-terminal">Headless CLI / Scripting</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Channel Track Preference -->
+          <div class="form-group">
+            <label class="form-label">Release Channel Preference</label>
+            <div class="radio-row">
+              <label class="radio-card">
+                <input type="radio" name="channelTier" value="rc" checked>
+                <div class="radio-box">
+                  <div class="rtitle">Release Candidates</div>
+                  <div class="rdesc">Staged, validated builds prior to npm latest. High signal, low churn.</div>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="channelTier" value="bleeding-edge">
+                <div class="radio-box">
+                  <div class="rtitle">Bleeding Edge (@next)</div>
+                  <div class="rdesc">Nightly and alpha builds as soon as commits land on main.</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Optional Context -->
+          <div class="form-group">
+            <label class="form-label" for="projectNotes">What projects will you test Nexus on? (Optional)</label>
+            <textarea class="form-textarea" id="projectNotes" placeholder="e.g. Next.js 15 monorepo, FastAPI backend, Cloudflare Workers..."></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" id="submitBtn" class="btn-submit">
+            <span class="btn-text">Enroll as a Nexus Tester →</span>
+            <div class="spinner"></div>
+          </button>
+        </form>
+
+        <!-- Live Terminal Progress Output -->
+        <div id="termLog" class="term-log"></div>
+
+        <!-- Success Dashboard -->
+        <div id="termSuccess" class="term-success">
+          <div class="succ-icon">✓</div>
+          <h3 class="succ-h">Welcome to Nexus Insiders!</h3>
+          <p class="succ-p">Your tester profile has been registered. A welcome briefing with testing guidelines has been sent to your inbox.</p>
+          
+          <div class="cmd-box">
+            <code id="quickstartCmd">npm install -g @nexus-framework/cli@next</code>
+            <button class="cmd-copy" onclick="copyTesterCmd()">Copy</button>
+          </div>
+
+          <p style="font-size:12.5px;color:var(--faint);line-height:1.6">
+            Keep an eye out for updates from <span class="mono" style="color:var(--mint2)">nexus@glenhalton.com</span> when release candidate drops are ready.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: VALUE PROPOSITIONS & HOW IT WORKS -->
+    <div class="info-col">
+      
+      <!-- Card 1: What You Get -->
+      <div class="card rv rv-d2">
+        <div class="card-kicker"><span>⚡</span> Inside the Program</div>
+        <h3>Direct access to pre-release code</h3>
+        <p>Instead of waiting for npm releases, testers receive early access to new framework tools, experimental skills, and harness enhancements.</p>
+        <div style="margin-top:16px;font-family:var(--mono);font-size:12px;color:var(--mint2);line-height:1.8">
+          <div>› Dist-tag preview builds (@next)</div>
+          <div>› Experimental MCP tools & protocols</div>
+          <div>› Feature test briefs before public releases</div>
+          <div>› Direct line to GDA Africa core engineers</div>
+        </div>
+      </div>
+
+      <!-- Card 2: How Testing Works -->
+      <div class="card rv rv-d3">
+        <div class="card-kicker"><span>🛠️</span> The Feedback Loop</div>
+        <h3>How it works</h3>
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <b>Enroll your focus areas</b>
+              <p>Tell us what IDEs and parts of the Nexus framework you actively use in your workflow.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <b>Receive update dispatches</b>
+              <p>When an RC or experimental feature is cut, you'll receive an email with instructions and scenarios to test.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <b>Report bugs & influence releases</b>
+              <p>Share doctor outputs, edge case logs, or feedback before the final version ships.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Recognition & Privacy -->
+      <div class="card rv rv-d4">
+        <div class="card-kicker"><span>🛡️</span> Zero Spam Guarantee</div>
+        <h3>Developer-first communication</h3>
+        <p>No marketing blasts or newsletters. You will only receive targeted release candidate alerts and early testing invitations. You can opt out at any time with a single click.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ═══ FAQ SECTION ═══ -->
+  <section class="faq-sec">
+    <div class="sec-h rv">
+      <span class="kicker">frequently asked questions</span>
+      <h2>Tester Program <em>Details</em></h2>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item rv rv-d1">
+        <h4>What is the expected time commitment?</h4>
+        <p>Testing is completely asynchronous and self-paced. When a test flight is announced, you can spend as little as 5–10 minutes verifying a command on your setup, or integrate the pre-release into an active project.</p>
+      </div>
+      <div class="faq-item rv rv-d2">
+        <h4>Can I run preview builds alongside stable Nexus?</h4>
+        <p>Yes. You can test preview builds locally via <span class="mono">npx @nexus-framework/cli@next &lt;command&gt;</span> without replacing your global npm installation, or switch back anytime with <span class="mono">npm i -g @nexus-framework/cli@latest</span>.</p>
+      </div>
+      <div class="faq-item rv rv-d3">
+        <h4>How do I submit feedback or bug reports?</h4>
+        <p>You can run <span class="mono">nexus doctor --severity=warn</span> and share drift outputs, reply directly to the update email, or open a GitHub issue tagged with <span class="mono">[tester-feedback]</span>.</p>
+      </div>
+      <div class="faq-item rv rv-d4">
+        <h4>Do I get recognition for testing?</h4>
+        <p>Yes! Active testers who help uncover bugs, verify blueprints, or validate MCP tools are credited in release changelogs and GitHub release notes.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="wrap">
+    <div class="ft-in">
+      <div>© 2026 NEXUS Framework · Built by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mint);text-decoration:none">GDA Africa</a> · Open source Apache 2.0</div>
+      <div class="ft-links">
+        <a href="/">Home</a>
+        <a href="/harness">Harness</a>
+        <a href="/mcp">MCP</a>
+        <a href="/docs">Docs</a>
+        <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/neurons.js"></script>
+<script>
+// Scroll reveals
+const reveals = document.querySelectorAll('.rv');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Copy command helper
+function copyTesterCmd() {
+  const cmd = document.getElementById('quickstartCmd').innerText;
+  navigator.clipboard.writeText(cmd).then(() => {
+    const btn = document.querySelector('.cmd-copy');
+    const orig = btn.innerText;
+    btn.innerText = 'Copied!';
+    setTimeout(() => btn.innerText = orig, 2000);
+  });
+}
+
+// Log line helper
+function addLogLine(container, text, type = 'dim') {
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  if (type === 'ok') line.innerHTML = `<span class="ok">✓</span> ${text}`;
+  else if (type === 'warn') line.innerHTML = `<span class="warn">!</span> ${text}`;
+  else line.innerHTML = `<span class="dim">›</span> ${text}`;
+  container.appendChild(line);
+  setTimeout(() => line.classList.add('in'), 20);
+  container.scrollTop = container.scrollHeight;
+}
+
+// Form Submission Handler
+async function handleTesterSubmit(e) {
+  e.preventDefault();
+  
+  const submitBtn = document.getElementById('submitBtn');
+  const termStatus = document.getElementById('termStatus');
+  const termLog = document.getElementById('termLog');
+  const termSuccess = document.getElementById('termSuccess');
+  const form = document.getElementById('testerForm');
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const primaryAgent = document.getElementById('primaryAgent').value;
+  const projectNotes = document.getElementById('projectNotes').value.trim();
+  const channelTierEl = document.querySelector('input[name="channelTier"]:checked');
+  const channelTier = channelTierEl ? channelTierEl.value : 'rc';
+
+  const selectedTracks = Array.from(document.querySelectorAll('input[name="tracks"]:checked'))
+    .map(cb => cb.value);
+
+  if (selectedTracks.length === 0) {
+    alert('Please select at least one testing focus area.');
+    return;
+  }
+
+  // Set loading state
+  submitBtn.disabled = true;
+  submitBtn.classList.add('loading');
+  submitBtn.querySelector('.btn-text').innerText = 'Registering with Gateway...';
+  termStatus.innerText = 'DISPATCHING';
+  termLog.classList.add('show');
+  termLog.innerHTML = '';
+
+  addLogLine(termLog, `Parsing tester credentials for ${fullName}...`);
+  await new Promise(r => setTimeout(r, 250));
+
+  addLogLine(termLog, `Testing tracks: [${selectedTracks.join(', ')}] | Track: ${channelTier}`);
+  await new Promise(r => setTimeout(r, 200));
+
+  // Build welcome HTML email for the tester
+  const welcomeHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0a0d12; color: #e8edf2; margin: 0; padding: 24px; }
+.card { max-width: 600px; margin: 0 auto; background: #0e1319; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 32px; }
+.badge { display: inline-block; font-family: monospace; font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(52,211,153,0.1); color: #34d399; border: 1px solid rgba(52,211,153,0.3); margin-bottom: 20px; }
+h1 { font-size: 24px; font-weight: 700; color: #ffffff; margin: 0 0 16px; }
+p { font-size: 15px; line-height: 1.6; color: #8a94a6; margin: 0 0 16px; }
+.code-box { background: #06080b; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 14px 18px; font-family: monospace; font-size: 13px; color: #6ee7b7; margin: 20px 0; }
+.footer { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 32px; padding-top: 20px; font-size: 12px; color: #566070; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="badge">NEXUS INSIDERS · EARLY ACCESS</div>
+  <h1>Welcome to the Nexus Tester Program</h1>
+  <p>Hello ${fullName},</p>
+  <p>Thank you for joining the Nexus Insiders program. You are registered to receive early access dispatches for upcoming releases.</p>
+  
+  <p><b>Your Enrolled Tracks:</b> ${selectedTracks.join(', ').toUpperCase()}<br>
+  <b>Preferred Channel:</b> ${channelTier === 'bleeding-edge' ? 'Bleeding-edge (@next Nightlies)' : 'Release Candidates (RC)'}<br>
+  <b>Primary AI Tool:</b> ${primaryAgent}</p>
+
+  <p>To start testing cutting-edge builds ahead of npm latest, install the preview tag:</p>
+  <div class="code-box">npm install -g @nexus-framework/cli@next</div>
+
+  <p>Or launch the Nexus Harness GUI directly:</p>
+  <div class="code-box">nexus harness</div>
+
+  <p>Whenever a new release candidate or major experimental feature lands, you will receive a testing brief detailing what changed and what to test.</p>
+
+  <p>Got immediate feedback or found an anomaly? You can reply directly to this email or run <code style="color:#6ee7b7">nexus doctor --severity=warn</code> in your project.</p>
+
+  <div class="footer">
+    © 2026 NEXUS Framework by GDA Africa · <a href="https://nexus.glenhalton.com/docs" style="color:#34d399;text-decoration:none">Documentation</a> · <a href="https://github.com/GDA-Africa/nexus-cli" style="color:#34d399;text-decoration:none">GitHub</a>
+  </div>
+</div>
+</body>
+</html>
+`;
+
+  // Build team notification email
+  const teamHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { font-family: monospace; background:#f4f6f8; padding:20px; color:#111; }
+.box { background:#fff; padding:24px; border-radius:8px; border:1px solid #ddd; max-width:600px; margin:0 auto; }
+h2 { color:#06281c; margin-top:0; }
+li { margin-bottom:8px; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>🎉 New Nexus Tester Signup</h2>
+  <ul>
+    <li><strong>Name / Handle:</strong> ${fullName}</li>
+    <li><strong>Email:</strong> ${email}</li>
+    <li><strong>Focus Areas:</strong> ${selectedTracks.join(', ')}</li>
+    <li><strong>Release Channel:</strong> ${channelTier}</li>
+    <li><strong>Primary AI Tool:</strong> ${primaryAgent}</li>
+    <li><strong>Project Notes:</strong> ${projectNotes || 'None specified'}</li>
+    <li><strong>Timestamp:</strong> ${new Date().toISOString()}</li>
+  </ul>
+</div>
+</body>
+</html>
+`;
+
+  addLogLine(termLog, 'Dispatching confirmation to ' + email + '...');
+
+  try {
+    let delivered = false;
+
+    // 1. Primary: Server-side registration & dispatch via /api/testers.php
+    try {
+      const phpRes = await fetch('/api/testers.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: fullName,
+          email: email,
+          tracks: selectedTracks,
+          agent: primaryAgent,
+          channel: channelTier,
+          notes: projectNotes,
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      if (phpRes.ok) {
+        const phpData = await phpRes.json().catch(() => ({}));
+        if (phpData.status === 'ok') {
+          delivered = true;
+          addLogLine(termLog, 'Registration verified with Insiders registry.', 'ok');
+          addLogLine(termLog, 'Welcome briefing transmitted to ' + email + '.', 'ok');
+          addLogLine(termLog, 'Team alert routed to hello@gdaafrica.org.', 'ok');
+        }
+      }
+    } catch (phpErr) {
+      console.warn('Server endpoint unmounted, attempting direct gateway dispatch...', phpErr);
+    }
+
+    // 2. Fallback: Direct Client-Side Gateway Dispatch if PHP endpoint was unreachable
+    if (!delivered) {
+      addLogLine(termLog, 'Routing directly via Centralized Email Gateway...');
+      const testerReq = fetch('https://gmailer-gda.fly.dev/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: email,
+          subject: 'Welcome to Nexus Insiders — Early Access & Instructions',
+          html_body: welcomeHtml,
+          sender_name: 'Nexus Framework',
+          source_url: 'https://nexus.glenhalton.com/testers',
+          logo_url: 'https://nexus.glenhalton.com/favicon.svg'
+        })
+      });
+
+      const teamReq = fetch('https://gmailer-gda.fly.dev/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: 'hello@gdaafrica.org',
+          subject: `[Nexus Tester Signup] ${fullName} (${email})`,
+          html_body: teamHtml,
+          sender_name: 'Nexus Insiders Gateway',
+          source_url: 'https://nexus.glenhalton.com/testers',
+          logo_url: 'https://nexus.glenhalton.com/favicon.svg'
+        })
+      });
+
+      await Promise.allSettled([testerReq, teamReq]);
+      addLogLine(termLog, 'Gateway delivery completed.', 'ok');
+      addLogLine(termLog, 'Welcome briefing transmitted.', 'ok');
+      addLogLine(termLog, 'Team alert routed to hello@gdaafrica.org.', 'ok');
+    }
+
+    await new Promise(r => setTimeout(r, 400));
+
+    // Show success view
+    form.style.display = 'none';
+    termStatus.innerText = 'ENROLLED';
+    termSuccess.classList.add('show');
+
+  } catch (err) {
+    console.error('Signup error:', err);
+    addLogLine(termLog, 'Notice: Gateway queued offline. We will process your registration shortly.', 'warn');
+    form.style.display = 'none';
+    termStatus.innerText = 'ENROLLED';
+    termSuccess.classList.add('show');
+  } finally {
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

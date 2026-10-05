@@ -22,6 +22,8 @@ zip -r "$ZIP_NAME" . \
   -x "CLAUDE.md" -x ".claude/*" -x ".mcp.json" \
   -x "deploy.sh" \
   -x "scripts/build-stats.mjs" \
+  -x "scripts/notify-testers.mjs" \
+  -x "data/*" \
   -x "*.zip" \
   -x "index.html.old" -x "*-legacy.html"
 # NOTE: scripts/ is build tooling (build-stats.mjs), not a public asset — it
@@ -44,7 +46,7 @@ cd "$REMOTE_PATH"
 # Self-heal: a DIRECTORY occupying a page filename blocks unzip -o from
 # replacing it (unzip warns and skips, the page 404s forever). Nuke any
 # directory that collides with a file we ship.
-for f in index.html docs.html mcp.html agents.html skills.html harness.html 404.html .htaccess robots.txt sitemap.xml llms.txt llms-full.txt favicon.svg npm-live.js stats.json; do
+for f in index.html docs.html mcp.html agents.html skills.html harness.html testers.html 404.html .htaccess robots.txt sitemap.xml llms.txt llms-full.txt favicon.svg npm-live.js stats.json; do
   if [ -d "\$f" ]; then echo "⚠ \$f was a DIRECTORY - removing"; rm -rf "\$f"; fi
 done
 unzip -o $ZIP_NAME
@@ -60,7 +62,7 @@ find . -type d -exec chmod 755 {} +
 # npm-live.js + stats.json are included: if either is missing the pages still
 # render, but every number silently freezes at its hardcoded fallback, which
 # is exactly the drift this setup exists to prevent.
-for f in index.html docs.html mcp.html agents.html skills.html harness.html .htaccess npm-live.js stats.json; do
+for f in index.html docs.html mcp.html agents.html skills.html harness.html testers.html .htaccess npm-live.js stats.json; do
   [ -f "\$f" ] || { echo "FATAL: \$f missing after deploy"; exit 1; }
 done
 echo "Permissions normalized (644/755)."
@@ -75,6 +77,8 @@ curl -s -o /dev/null -w "  /index.html → %{http_code}\n" https://nexus.glenhal
 curl -s -o /dev/null -w "  /docs → %{http_code}\n"      https://nexus.glenhalton.com/docs || true
 curl -s -o /dev/null -w "  /mcp → %{http_code}\n"       https://nexus.glenhalton.com/mcp || true
 curl -s -o /dev/null -w "  /agents → %{http_code}\n"    https://nexus.glenhalton.com/agents || true
+curl -s -o /dev/null -w "  /testers → %{http_code}\n"   https://nexus.glenhalton.com/testers || true
+curl -s -o /dev/null -w "  /api/testers.php → %{http_code} (want 405 for GET)\n" https://nexus.glenhalton.com/api/testers.php || true
 curl -s -o /dev/null -w "  /llms.txt → %{http_code}\n"  https://nexus.glenhalton.com/llms.txt || true
 curl -s -o /dev/null -w "  /npm-live.js → %{http_code}\n" https://nexus.glenhalton.com/npm-live.js || true
 curl -s -o /dev/null -w "  /stats.json → %{http_code}\n"  https://nexus.glenhalton.com/stats.json || true

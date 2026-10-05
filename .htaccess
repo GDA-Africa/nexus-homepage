@@ -22,6 +22,11 @@ DirectoryIndex index.html
   Require all denied
 </FilesMatch>
 
+# Block private data directory
+<IfModule mod_rewrite.c>
+  RewriteRule ^data/ - [F,L]
+</IfModule>
+
 # ── Rewrites ────────────────────────────────────────────────────────
 <IfModule mod_rewrite.c>
   RewriteEngine On
@@ -46,6 +51,7 @@ DirectoryIndex index.html
   RewriteRule ^agents/?$ agents.html [L]
   RewriteRule ^skills/?$ skills.html [L]
   RewriteRule ^harness/?$ harness.html [L]
+  RewriteRule ^testers/?$ testers.html [L]
 
   # Extensionless pages: /<page> → <page>.html when it exists.
   # REQUEST_FILENAME resolves correctly per-directory on cPanel
@@ -92,7 +98,7 @@ DirectoryIndex index.html
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-  Header always set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
+  Header always set Content-Security-Policy "default-src 'self'; connect-src 'self' https://gmailer-gda.fly.dev; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
   Header always unset X-Powered-By
 </IfModule>
 
