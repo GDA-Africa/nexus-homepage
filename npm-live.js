@@ -1,15 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   npm-live.js — the numbers on this site come from somewhere real.
+   npm-live.js : the numbers on this site come from somewhere real.
 
    Two different kinds of number, two different sources:
 
-   1. TRULY LIVE — changes without anyone deploying this site.
+   1. TRULY LIVE : changes without anyone deploying this site.
         · total downloads since launch   api.npmjs.org
         · published version + date       registry.npmjs.org
       Both endpoints send `access-control-allow-origin: *`, so a static page
       can read them directly. No build step, no token, no server.
 
-   2. RELEASE-COUPLED — changes only when the CLI changes.
+   2. RELEASE-COUPLED : changes only when the CLI changes.
         · tests · commands · MCP tools · doctor checks
       Fetched from /stats.json, which scripts/build-stats.mjs generates from
       the actual CLI package. One source of truth instead of the same integer
@@ -27,7 +27,7 @@
   var PKG = '@nexus-framework/cli';
   var LAUNCH = '2026-02-01'; // first publish; the download range starts here
   var CACHE_KEY = 'nexus-live-v1';
-  var CACHE_TTL = 30 * 60 * 1000; // 30 min — this is marketing data, not telemetry
+  var CACHE_TTL = 30 * 60 * 1000; // 30 min : this is marketing data, not telemetry
 
   var $ = function (sel) { return [].slice.call(document.querySelectorAll(sel)); };
   var fmt = function (n) { return n.toLocaleString('en-US'); };
@@ -41,7 +41,7 @@
   function paint(el, value) {
     // Write the real value FIRST, always. requestAnimationFrame is paused in
     // background tabs, so an animation that starts by painting 0 and counts up
-    // leaves a hard "0" on screen until the tab is focused — and leaves it
+    // leaves a hard "0" on screen until the tab is focused : and leaves it
     // there permanently for anything that never runs rAF at all. Landing on
     // the truth and treating the count-up as decoration inverts that risk:
     // worst case the number simply appears without animating.
@@ -60,7 +60,7 @@
 
   // Snapshot the hand-written fallbacks before anything overwrites them, so a
   // failed fetch still animates to the correct static number. This script is
-  // the ONLY animator for [data-live] elements — the page's own count-up
+  // the ONLY animator for [data-live] elements : the page's own count-up
   // observer must not also target them, or two rAF loops fight over one node.
   var fallbacks = null;
   function snapshot() {

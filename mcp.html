@@ -157,9 +157,31 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 .foot a{font-size:13px;color:var(--mut)}
 .foot a:hover{color:var(--mint)}
 .foot .gda{font-size:12.5px;color:var(--faint)}
+
+/* ── ecosystem switcher bar ── */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#06080c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--mint);background:var(--mintbg);border-color:rgba(52,211,153,.35)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+nav{top:32px}
+@media(max-width:720px){.nav-links{top:89px}}
 </style>
 </head>
 <body>
+<div class="eco-bar" role="navigation" aria-label="NEXUS Ecosystem Sites">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS Network:</span>
+    <a class="eco-link active" href="https://get-nexus.web.app"><i></i>get-nexus (Hub)</a>
+    <a class="eco-link" href="https://nexus-harness.web.app"><i></i>nexus-harness (Visual IDE)</a>
+    <a class="eco-link" href="https://nexus-mcp.web.app"><i></i>nexus-mcp (Project Memory)</a>
+    <a class="eco-link" href="https://nexus-agent.web.app"><i></i>nexus-agent (4-Role Team)</a>
+    <a class="eco-link" href="https://nexus-tests.web.app"><i></i>nexus-tests (Field Lab &amp; Insiders)</a>
+  </div>
+</div>
 <nav>
   <div class="nav-in">
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
@@ -236,7 +258,7 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <div class="cards">
       <div class="card rv"><div class="ic">🔌</div><b>Over stdio: <span class="mono" style="color:var(--mint2)">nexus mcp</span></b><p>Claude Code, Codex, Cursor, and Cowork keep working exactly as before. The client spawns <span class="mono">nexus mcp</span>, discovers all <span data-live="tools">23</span> tools, and calls them over stdio. Agents orient with one <span class="mono" style="color:var(--mint2)">nexus_get_context</span> call.</p></div>
       <div class="card hl rv rv-d1"><div class="ic">⚙️</div><b>In-process: the Nexus Harness</b><p>Inside the <a href="/harness" style="color:var(--mint)">Nexus Harness</a>, all 23 <span class="mono">nexus_*</span> tools are mounted natively on the harness tool registry. No separate server process, no stdio hop: every call lands in the harness's own append-only session log and token accounting.</p></div>
-      <div class="card rv rv-d2"><div class="ic">🌱</div><b>Context arrives ambiently</b><p>In the harness the agent does not even need to ask for context. At step 1 of every turn it is handed the active plan, next unchecked step, rules, matching lessons, and a vitals snapshot—so zero tool calls are spent getting oriented.</p></div>
+      <div class="card rv rv-d2"><div class="ic">🌱</div><b>Context arrives ambiently</b><p>In the harness the agent does not even need to ask for context. At step 1 of every turn it is handed the active plan, next unchecked step, rules, matching lessons, and a vitals snapshot, so zero tool calls are spent getting oriented.</p></div>
     </div>
     <p class="rv rv-d3" style="margin-top:26px"><b>The seam is a public export.</b> Since 1.4 the CLI ships its brain handlers as an importable <span class="mono">./mcp</span> subpath, and that is exactly what the harness imports. The CLI keeps zero dependency on the harness engine, markdown stays the source of truth, and the harness is an additional way to run, not a replacement. <a href="/harness" style="color:var(--mint)">See the harness →</a></p>
   </section>

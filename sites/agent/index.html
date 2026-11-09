@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS Agents: Watch 4 AI Specialists Build, Test &amp; Review Together</title>
+<meta name="description" content="Instead of one AI writing code and grading its own homework, NEXUS splits the work across 4 focused roles: Builder, Tester, Reviewer, and Note-Taker. Watch the live team relay.">
+<link rel="canonical" href="https://nexus-agent.web.app/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nexus-agent.web.app/">
+<meta property="og:site_name" content="NEXUS Agent">
+<meta property="og:title" content="NEXUS Agents: One task. Four specialists. Zero unverified work.">
+<meta property="og:description" content="Watch a four-specialist AI team relay your feature from implementation to automated testing, convention review, and project memory.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEXUS Agents: AI Teamwork That Checks Its Own Work">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c11; --bg2:#0b1017; --panel:#0d141c; --panel2:#111923;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --cyan:#67e8f9; --cyan2:#a5f3fc; --cyanbg:rgba(103,232,249,.09);
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --vio:#8b7cf6; --vio2:#b4a7fb; --amber:#fbbf24; --red:#f87171;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(103,232,249,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(103,232,249,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(103,232,249,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* ── ecosystem bar ── */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#05080c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--cyan);background:var(--cyanbg);border-color:rgba(103,232,249,.4)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* ── nav ── */
+nav{position:fixed;top:32px;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(8,12,17,.82);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+.logo-mark{width:22px;height:22px;border:1.5px solid var(--cyan);border-radius:6px;position:relative;flex-shrink:0}
+.logo-mark::after{content:'';position:absolute;inset:4px;background:var(--cyan);border-radius:2px;animation:pulse 2.4s infinite}
+.logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:20px;margin-left:auto;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--mut);transition:color .2s;padding:4px 0;border-bottom:2px solid transparent}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.here{color:var(--cyan);border-bottom-color:var(--cyan);font-weight:600}
+.nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px!important;border:1px solid var(--cyan)!important;border-radius:8px;color:var(--cyan)!important}
+.nav-cta:hover{background:var(--cyanbg)}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
+@media(max-width:760px){
+  .menu-btn{display:block}
+  .nav-links{display:none;position:fixed;top:89px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 24px 18px;background:rgba(8,12,17,.98);border-bottom:1px solid var(--line)}
+  body.nav-open .nav-links{display:flex}
+  .nav-links a{display:block!important;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
+}
+
+/* ── hero & relay stage ── */
+.stage{padding:138px 0 64px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:inline-flex;align-items:center;gap:8px;background:var(--cyanbg);border:1px solid rgba(103,232,249,.32);padding:5px 12px;border-radius:99px}
+.kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 1.6s infinite}
+h1{font-size:clamp(34px,4.8vw,56px);line-height:1.07;font-weight:700;letter-spacing:-1.3px;margin-bottom:18px}
+h1 em{font-style:normal;color:var(--cyan)}
+.lead{color:var(--mut);font-size:17px;max-width:780px;margin-bottom:28px;line-height:1.65}
+.lead b{color:var(--ink)}
+
+/* ── scenario switcher tabs ── */
+.scen-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.scen-btn{font-family:var(--mono);font-size:12px;padding:10px 16px;border-radius:10px;border:1px solid var(--line2);background:var(--panel);color:var(--mut);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.scen-btn:hover{border-color:var(--cyan);color:var(--ink)}
+.scen-btn.active{border-color:var(--cyan);background:var(--cyanbg);color:var(--cyan2);font-weight:600;box-shadow:0 0 24px rgba(103,232,249,.12)}
+.scen-btn span.num{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--cyan)}
+
+/* ── 4-agent pipeline ── */
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+@media(max-width:880px){.pipe{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.pipe{grid-template-columns:1fr}}
+.agent-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;transition:all .35s;position:relative;opacity:.55}
+.agent-card .role{font-family:var(--mono);font-size:9.5px;letter-spacing:1.8px;color:var(--faint);text-transform:uppercase}
+.agent-card .nm{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink);margin:4px 0 6px}
+.agent-card .st{font-family:var(--mono);font-size:11px;color:var(--faint);min-height:30px}
+.agent-card.active{opacity:1;border-color:var(--cyan);box-shadow:0 0 30px rgba(103,232,249,.14);transform:translateY(-3px)}
+.agent-card.active .nm{color:var(--cyan2)}
+.agent-card.active .st{color:var(--cyan)}
+.agent-card.done{opacity:.92;border-color:rgba(52,211,153,.32)}
+.agent-card.done .st{color:var(--mint)}
+.agent-card.done::after{content:'✓';position:absolute;top:12px;right:14px;color:var(--mint);font-family:var(--mono);font-weight:700}
+.agent-card.gate{opacity:1;border-color:var(--amber);box-shadow:0 0 30px rgba(251,191,36,.15)}
+.agent-card.gate .st{color:var(--amber)}
+
+.term{background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.term-bar{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.dot{width:10px;height:10px;border-radius:50%;background:#2a3340}
+.term-title{font-family:var(--mono);font-size:11.5px;color:var(--mut);margin-left:6px}
+.term-live{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;color:var(--cyan);display:flex;align-items:center;gap:6px}
+.term-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 1.2s infinite}
+.term-body{font-family:var(--mono);font-size:12px;line-height:1.8;padding:18px;height:260px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.pl{white-space:pre-wrap;word-break:break-word;opacity:0;transform:translateY(4px);transition:opacity .28s,transform .28s}
+.pl.show{opacity:1;transform:none}
+.pl .who{color:var(--cyan);font-weight:700}
+.pl .out{color:var(--vio2)}.pl .in{color:var(--mint)}.pl .k{color:var(--vio2)}.pl .s{color:var(--mint2)}.pl .num{color:var(--amber)}.pl .cm{color:var(--faint)}.pl .warn{color:var(--amber)}.pl .ok{color:var(--mint)}
+.demo-foot{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.replay{font-family:var(--mono);font-size:11.5px;color:var(--mut);border:1px solid var(--line2);border-radius:8px;padding:7px 14px;cursor:pointer;background:transparent;transition:all .2s}
+.replay:hover{color:var(--cyan);border-color:var(--cyan)}
+.demo-hint{font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* ── outcomes & comparison ── */
+section{padding:80px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(26px,3.4vw,40px);font-weight:700;letter-spacing:-.8px;line-height:1.15;margin-bottom:14px}
+h2 em{font-style:normal;color:var(--cyan)}
+.sub-kicker{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;display:block}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px}
+@media(max-width:840px){.duo{grid-template-columns:1fr}}
+.duo-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
+.duo-card.win{border-color:rgba(103,232,249,.38);background:linear-gradient(180deg,rgba(103,232,249,.06),var(--panel) 55%)}
+.duo-h{display:flex;align-items:center;gap:10px;margin-bottom:16px;font-weight:600;font-size:17px}
+.pill{font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;padding:3px 9px;border-radius:99px;margin-left:auto}
+.pill-old{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.25)}
+.pill-new{background:var(--cyanbg);color:var(--cyan);border:1px solid rgba(103,232,249,.35)}
+.duo-card ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.duo-card li{font-size:14px;color:var(--mut);padding-left:24px;position:relative}
+.duo-card li::before{position:absolute;left:0;font-family:var(--mono);font-weight:700}
+.duo-card.lose li::before{content:'×';color:var(--red)}
+.duo-card.win li::before{content:'✓';color:var(--cyan)}
+.duo-card li b{color:var(--ink)}
+
+/* ── next page cards ── */
+.next-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+@media(max-width:760px){.next-grid{grid-template-columns:1fr}}
+.next-card{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:10px;transition:all .25s}
+.next-card:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.next-card .nk{font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--cyan)}
+.next-card h3{font-size:20px;font-weight:700}
+.next-card p{font-size:14px;color:var(--mut);line-height:1.6}
+.next-card .go{margin-top:auto;padding-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--cyan)}
+
+footer{border-top:1px solid var(--line);padding:38px 0;margin-top:40px}
+.foot{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.foot .links{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.foot a{font-size:13px;color:var(--mut)}
+.foot a:hover{color:var(--cyan)}
+.foot .gda{font-size:12.5px;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="eco-bar" role="navigation" aria-label="NEXUS Ecosystem Sites">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS Network:</span>
+    <a class="eco-link" href="https://get-nexus.web.app"><i></i>get-nexus (Hub)</a>
+    <a class="eco-link" href="https://nexus-harness.web.app"><i></i>nexus-harness (Visual IDE)</a>
+    <a class="eco-link" href="https://nexus-mcp.web.app"><i></i>nexus-mcp (Project Memory)</a>
+    <a class="eco-link active" href="https://nexus-agent.web.app"><i></i>nexus-agent (4-Role Team)</a>
+    <a class="eco-link" href="https://nexus-tests.web.app"><i></i>nexus-tests (Field Lab &amp; Insiders)</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>AGENTS</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
+    <div class="nav-links">
+      <a href="/" class="here">1. Watch the Team</a>
+      <a href="/roles">2. The 4 Roles</a>
+      <a href="/autopilot">3. Run Hands-Free</a>
+      <a href="https://get-nexus.web.app/docs">Docs</a>
+      <a class="nav-cta" href="https://get-nexus.web.app/#download">Get Nexus</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+  <div class="stage">
+    <div class="kicker rv">nexus-agent.web.app · focus 1 of 3</div>
+    <h1 class="rv rv-d1">When one AI writes code and grades its own homework, <em>bugs slip through.</em></h1>
+    <p class="lead rv rv-d2">Most coding tools give a single AI assistant access to everything and hope it remembers to write tests, follow your style rules, and update your docs. In NEXUS, your task is handled by <b>four specialized teammates</b>: a Builder, a Tester, a Reviewer, and a Note-Taker. Each one wakes up knowing only what it needs, does its job, and passes the baton only when the work is verified.</p>
+
+    <div class="scen-bar rv rv-d2" role="tablist" aria-label="Choose a real-world scenario">
+      <button type="button" class="scen-btn active" id="tab0" onclick="selectScenario(0)"><span class="num">01</span> Build a New Feature</button>
+      <button type="button" class="scen-btn" id="tab1" onclick="selectScenario(1)"><span class="num">02</span> Catch a Missing Test Before It Ships</button>
+      <button type="button" class="scen-btn" id="tab2" onclick="selectScenario(2)"><span class="num">03</span> Pick Up Where Yesterday Left Off</button>
+    </div>
+
+    <div class="pipe rv rv-d2">
+      <div class="agent-card" id="ag0"><div class="role">1 · Builder</div><div class="nm">nexus-implementer</div><div class="st" id="st0">waiting…</div></div>
+      <div class="agent-card" id="ag1"><div class="role">2 · Tester (The Gate)</div><div class="nm">nexus-test-writer</div><div class="st" id="st1">waiting…</div></div>
+      <div class="agent-card" id="ag2"><div class="role">3 · Reviewer</div><div class="nm">nexus-reviewer</div><div class="st" id="st2">waiting…</div></div>
+      <div class="agent-card" id="ag3"><div class="role">4 · Note-Taker</div><div class="nm">nexus-doc-keeper</div><div class="st" id="st3">waiting…</div></div>
+    </div>
+
+    <div class="term rv rv-d3">
+      <div class="term-bar">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span class="term-title" id="termTitle">scenario 01 · building "OAuth login callback"</span>
+        <span class="term-live">LIVE RELAY</span>
+      </div>
+      <div class="term-body" id="relay"></div>
+    </div>
+    <div class="demo-foot rv rv-d3">
+      <button class="replay" onclick="restartDemo()">↻ replay scenario</button>
+      <span class="demo-hint">click any scenario tab above to see how the 4 specialists coordinate</span>
+    </div>
+  </div>
+
+  <section>
+    <span class="sub-kicker rv">why separation of duties matters</span>
+    <h2 class="rv rv-d1">Why four specialists beat <em>one solo assistant.</em></h2>
+    <p class="lead rv rv-d2" style="margin-bottom:0">When the same AI writes a feature and immediately tells you "everything looks great!", it is grading its own test. Splitting the job across four focused roles changes the outcome completely.</p>
+
+    <div class="duo">
+      <div class="duo-card lose rv">
+        <div class="duo-h">One Solo AI Assistant <span class="pill pill-old">SELF-GRADED</span></div>
+        <ul>
+          <li>Writes the code and immediately declares <b>"All done!"</b> without running the test suite</li>
+          <li>Reviews its own code against generic advice instead of your team's real conventions</li>
+          <li>Can accidentally edit files while you only asked it for a code review</li>
+          <li>Forgets every tricky bug it solved the moment you close the window</li>
+        </ul>
+      </div>
+      <div class="duo-card win rv rv-d1">
+        <div class="duo-h">The 4 NEXUS Specialists <span class="pill pill-new">VERIFIED TEAM</span></div>
+        <ul>
+          <li><b>The Builder</b> writes the feature and ticks the step, but cannot mark the plan finished</li>
+          <li><b>The Tester</b> runs your real test suite and blocks completion until every test is green</li>
+          <li><b>The Reviewer</b> has read-only tools so it can inspect against your rules without touching code</li>
+          <li><b>The Note-Taker</b> records new lessons so the next session starts smarter than the last</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="sub-kicker rv">explore the next idea</span>
+    <h2 class="rv rv-d1">See how each specialist is built, or <em>run one from your terminal.</em></h2>
+    <div class="next-grid">
+      <a class="next-card rv" href="/roles">
+        <span class="nk">Page 2 of 3 · Role Boundaries</span>
+        <h3>Meet the 4 Roles (and Create Your Own)</h3>
+        <p>Inspect what each of the four specialists is allowed to read and write, and see how to add a custom role for your own team in a single command.</p>
+        <div class="go">Explore the 4 Roles →</div>
+      </a>
+      <a class="next-card rv rv-d1" href="/autopilot">
+        <span class="nk">Page 3 of 3 · Headless Execution</span>
+        <h3>Hand Off a Task &amp; Walk Away</h3>
+        <p>Learn how to run <code>nexus agent "your task"</code> in your terminal or CI pipeline so NEXUS finishes and verifies the work unattended.</p>
+        <div class="go">See Autopilot CLI →</div>
+      </a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>AGENTS</span></a>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Part of the <a href="https://get-nexus.web.app" style="color:var(--cyan)">NEXUS 2.0 Ecosystem</a></span>
+    <div class="links">
+      <a href="/">Watch the Team</a>
+      <a href="/roles">The 4 Roles</a>
+      <a href="/autopilot">Run Hands-Free</a>
+      <a href="https://get-nexus.web.app">Main Hub</a>
+      <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+</main>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
+
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SCENARIOS=[
+  {
+    title: 'scenario 01 · building "OAuth login callback"',
+    steps: [
+      [0,'reading plan & rules',[
+        '<span class="who">Builder</span> <span class="out">→</span> wakes up and reads active plan <span class="s">"add-oauth-login"</span> (Step 2: Callback route)',
+        '<span class="in">←</span> Brain hands over 1 past lesson: <span class="s">"Refresh tokens must rotate on every use"</span>'
+      ]],
+      [0,'step 2 built → handoff',[
+        '<span class="cm">// Builder writes src/routes/oauth-callback.ts with token rotation applied</span>',
+        '<span class="who">Builder</span> <span class="out">→</span> ticks Step 2 and hands the baton to <span class="s">nexus-test-writer</span>'
+      ]],
+      [1,'running test suite',[
+        '<span class="who">Tester</span> <span class="out">→</span> wakes up, checks project test runner (<span class="s">vitest</span> configured)',
+        '<span class="ok">✓ Writes and runs 14 integration tests for OAuth callback (14/14 passing)</span>',
+        '<span class="who">Tester</span> <span class="out">→</span> records machine test proof on the plan'
+      ], true],
+      [2,'checking project rules',[
+        '<span class="who">Reviewer</span> <span class="out">→</span> checks diff against your recorded team rules (read-only mode)',
+        '<span class="ok">✓ Confirmed: cookie flags match team security rules and all 14 tests passed</span>'
+      ]],
+      [3,'saving new lesson',[
+        '<span class="who">Note-Taker</span> <span class="out">→</span> saves lesson: <span class="s">"OAuth provider rate-limits token refresh over 10 req/min"</span>',
+        '<span class="ok">✓ Feature complete: built, tested, reviewed, and remembered for next time</span>'
+      ]]
+    ]
+  },
+  {
+    title: 'scenario 02 · catching a missing edge case before you ever see it',
+    steps: [
+      [0,'writes password reset',[
+        '<span class="who">Builder</span> <span class="out">→</span> implements <span class="s">POST /api/reset-password</span> and hands off to Tester',
+        '<span class="cm">// Builder forgot to handle expired reset tokens cleanly</span>'
+      ]],
+      [1,'BLOCKS completion',[
+        '<span class="who">Tester</span> <span class="out">→</span> runs edge-case test suite against <span class="s">POST /api/reset-password</span>',
+        '<span class="warn">⚠ Test failed: expired token returned 500 instead of 400 Bad Request</span>',
+        '<span class="who">Tester</span> <span class="out">→</span> refuses to mark work done and sends exact failure back to Builder'
+      ], true],
+      [0,'fixes expired token bug',[
+        '<span class="who">Builder</span> <span class="out">→</span> adds expiry check in <span class="s">reset-password.ts</span> and re-submits to Tester'
+      ]],
+      [1,'re-verifies suite',[
+        '<span class="who">Tester</span> <span class="out">→</span> re-runs vitest: <span class="ok">✓ 19/19 tests passing</span> · proof recorded on plan'
+      ], true],
+      [2,'approves clean fix',[
+        '<span class="who">Reviewer</span> <span class="out">→</span> verifies the 400 error format matches API rules <span class="ok">✓ Approved</span>'
+      ]],
+      [3,'logs progress',[
+        '<span class="who">Note-Taker</span> <span class="out">→</span> updates project progress log <span class="ok">✓ Bug caught &amp; fixed automatically</span>'
+      ]]
+    ]
+  },
+  {
+    title: 'scenario 03 · picking up tomorrow morning with zero re-explaining',
+    steps: [
+      [0,'instant morning resume',[
+        '<span class="cm">// Next morning: you open your laptop and ask "continue the checkout plan"</span>',
+        '<span class="who">Builder</span> <span class="out">→</span> reads plan <span class="s">"stripe-checkout"</span>: Steps 1 and 2 are already ✓ done',
+        '<span class="in">←</span> Resumes immediately at <span class="s">"Step 3: Webhook signature verification"</span>'
+      ]],
+      [0,'applies yesterday\'s note',[
+        '<span class="in">←</span> Reads yesterday\'s note: <span class="s">"Use raw request body buffer for Stripe webhook check"</span>',
+        '<span class="who">Builder</span> <span class="out">→</span> writes webhook handler using raw body buffer and ticks Step 3'
+      ]],
+      [1,'verifies webhook tests',[
+        '<span class="who">Tester</span> <span class="out">→</span> tests valid and tampered webhook signatures <span class="ok">✓ 11/11 passing</span>'
+      ], true],
+      [2,'reviews security',[
+        '<span class="who">Reviewer</span> <span class="out">→</span> confirms secret key is read from env and never hardcoded <span class="ok">✓ Approved</span>'
+      ]],
+      [3,'marks plan complete',[
+        '<span class="who">Note-Taker</span> <span class="out">→</span> marks <span class="s">"stripe-checkout"</span> done with full test proof attached <span class="ok">✓ Shipped</span>'
+      ]]
+    ]
+  }
+];
+
+let currentScen=0, runId=0;
+const relay=document.getElementById('relay');
+const termTitle=document.getElementById('termTitle');
+
+function setCard(i,cls,txt){
+  for(let j=0;j<4;j++){
+    const c=document.getElementById('ag'+j);
+    if(j===i){c.className='agent-card '+cls;document.getElementById('st'+j).textContent=txt;}
+    else if(j<i){c.className='agent-card done';}
+  }
+}
+
+function selectScenario(idx){
+  currentScen=idx;
+  for(let i=0;i<3;i++){
+    document.getElementById('tab'+i).classList.toggle('active',i===idx);
+  }
+  runDemo();
+}
+
+async function runDemo(){
+  const id=++runId;
+  const scen=SCENARIOS[currentScen];
+  termTitle.textContent=scen.title;
+  relay.innerHTML='';
+  for(let j=0;j<4;j++){
+    document.getElementById('ag'+j).className='agent-card';
+    document.getElementById('st'+j).textContent='waiting…';
+  }
+  for(const [idx,status,lines,gate] of scen.steps){
+    if(id!==runId)return;
+    setCard(idx,gate?'gate':'active',status);
+    for(const h of lines){
+      if(id!==runId)return;
+      const div=document.createElement('div');
+      div.className='pl';
+      div.innerHTML=h;
+      relay.appendChild(div);
+      while(relay.children.length>6)relay.removeChild(relay.firstChild);
+      await wait(RM?0:110);
+      div.classList.add('show');
+      await wait(RM?60:950);
+    }
+  }
+  if(id!==runId)return;
+  for(let j=0;j<4;j++)document.getElementById('ag'+j).className='agent-card done';
+}
+
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function restartDemo(){runDemo()}
+runDemo();
+</script>
+<script src="/npm-live.js" defer></script>
+</body>
+</html>
+

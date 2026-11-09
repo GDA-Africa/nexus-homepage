@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS CLI — Documentation</title>
-<meta name="description" content="Complete documentation for NEXUS CLI — the AI-native development framework. Command reference, skills system, editor integration, and more.">
+<title>NEXUS CLI : Documentation</title>
+<meta name="description" content="Complete documentation for NEXUS CLI : the AI-native development framework. Command reference, skills system, editor integration, and more.">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ─── ROOT ─── */
@@ -451,7 +451,7 @@ section{position:relative;z-index:10}
       <div class="card">
         <div class="card-title">🎭 Agent Persona</div>
         <div class="card-desc">
-          Configure your AI's tone, verbosity, and identity. When the agent reads the NEXUS instructions and calls itself "Nexus" — you know it's synced.
+          Configure your AI's tone, verbosity, and identity. When the agent reads the NEXUS instructions and calls itself "Nexus" : you know it's synced.
         </div>
         <div class="card-actions">
           <button class="btn btn-ghost" onclick="navigateTo('agent-persona')">Customize →</button>
@@ -525,7 +525,7 @@ nexus-cli/0.3.2 darwin-arm64 node-v20.19.5</div>
           <div class="example-block" style="margin-top:8px">
             <div class="example-title">Get Help:</div>
             <div class="example-code">$ nexus --help
-🔮 NEXUS CLI v0.3.2 — AI-Native Development Framework
+🔮 NEXUS CLI v0.3.2 : AI-Native Development Framework
 Usage: nexus [options] [command]</div>
           </div>
         </div>
@@ -1029,7 +1029,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"</div>
           <div class="command-name">nexus mcp ✦ v1.0</div>
           <div class="command-usage">nexus mcp [path]</div>
         </div>
-        <div class="command-desc">Start the brain MCP server (stdio). Exposes 13 schema-validated tools — wake, vital signs, knowledge query, plans, brief, doctor, skills (read) and plan_tick, plan_note, add_knowledge_entry (write) — to Claude Code, Codex, Cursor, and any MCP client. Generated projects register it automatically via .mcp.json.</div>
+        <div class="command-desc">Start the brain MCP server (stdio). Exposes 13 schema-validated tools : wake, vital signs, knowledge query, plans, brief, doctor, skills (read) and plan_tick, plan_note, add_knowledge_entry (write) : to Claude Code, Codex, Cursor, and any MCP client. Generated projects register it automatically via .mcp.json.</div>
         <div class="example-block">
           <div class="example-title">Examples:</div>
           <div class="example-code">$ nexus mcp</div>
@@ -1043,7 +1043,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"</div>
           <div class="command-name">nexus wake</div>
           <div class="command-usage">nexus wake [path] [--quiet] [--no-active-plan]</div>
         </div>
-        <div class="command-desc">Session handshake — issues a deterministic token (NX-WAKE-XXXX-date) proving the brain was read. Agents echo it in their first response; doctor flags sessions without one.</div>
+        <div class="command-desc">Session handshake : issues a deterministic token (NX-WAKE-XXXX-date) proving the brain was read. Agents echo it in their first response; doctor flags sessions without one.</div>
         <div class="example-block">
           <div class="example-title">Examples:</div>
           <div class="example-code">$ nexus wake</div>
@@ -1057,7 +1057,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"</div>
           <div class="command-name">nexus sync</div>
           <div class="command-usage">nexus sync [path] [--dry-run] [--json]</div>
         </div>
-        <div class="command-desc">Run repo sensors (git, files, tests, packages) and write the Vital Signs block into the project brain. Idempotent — safe in CI.</div>
+        <div class="command-desc">Run repo sensors (git, files, tests, packages) and write the Vital Signs block into the project brain. Idempotent : safe in CI.</div>
         <div class="example-block">
           <div class="example-title">Examples:</div>
           <div class="example-code">$ nexus sync</div>
@@ -1071,7 +1071,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"</div>
           <div class="command-name">nexus plan</div>
           <div class="command-usage">nexus plan &lt;new|list|show|start|tick|note|done&gt;</div>
         </div>
-        <div class="command-desc">Durable multi-step work tracking in .nexus/plans/. Plans survive across sessions — agents resume instead of re-deriving.</div>
+        <div class="command-desc">Durable multi-step work tracking in .nexus/plans/. Plans survive across sessions : agents resume instead of re-deriving.</div>
         <div class="example-block">
           <div class="example-title">Examples:</div>
           <div class="example-code">$ nexus plan new "Add OAuth" --type=feature</div>
@@ -1114,7 +1114,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"</div>
           <div class="command-name">nexus consolidate</div>
           <div class="command-usage">nexus consolidate [--check] [--archive]</div>
         </div>
-        <div class="command-desc">Memory hygiene — rolls knowledge.md into a generated knowledge-summary.md grouped by category. Append-only stays append-only.</div>
+        <div class="command-desc">Memory hygiene : rolls knowledge.md into a generated knowledge-summary.md grouped by category. Append-only stays append-only.</div>
         <div class="example-block">
           <div class="example-title">Examples:</div>
           <div class="example-code">$ nexus consolidate</div>
@@ -3339,7 +3339,7 @@ $ npm install -g @nexus-framework/cli@0.3.1</div>
           <div class="zone-title">🛠️ Custom Skills</div>
           <div class="zone-count">User-created, never touched</div>
         </div>
-        <div class="zone-desc">Your conventions, stored in .nexus/skills/custom/ — never overwritten by upgrades</div>
+        <div class="zone-desc">Your conventions, stored in .nexus/skills/custom/ : never overwritten by upgrades</div>
         <div class="example-block">
           <div class="example-title">Create a custom skill:</div>
           <div class="example-code">$ nexus skill new auth-flow</div>
@@ -4524,7 +4524,7 @@ function addSimulatorLine(text, type=''){
 
 function processSimulatorCommand(cmd){
   if(cmd.startsWith('nexus init')){
-    addSimulatorLine('🔮 NEXUS CLI v0.3.2 — AI-Native Development Framework', 'violet');
+    addSimulatorLine('🔮 NEXUS CLI v0.3.2 : AI-Native Development Framework', 'violet');
     addSimulatorLine('Strategy-first interactive setup...', 'comment');
     addSimulatorLine('?', 'violet');
     addSimulatorLine('What are you building? › Web Application', 'cyan');

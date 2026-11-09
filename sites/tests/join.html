@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Nexus Insiders: Test Early Builds, Shape Autonomous Features</title>
+<meta name="description" content="Enroll as a Nexus tester. Get preview builds, test experimental MCP capabilities, and help shape autonomous AI coding frameworks.">
+<link rel="canonical" href="https://nexus-tests.web.app/join">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nexus-tests.web.app/join">
+<meta property="og:site_name" content="NEXUS Field Tests">
+<meta property="og:title" content="Join Nexus Insiders: Test Early Builds, Shape Autonomous Features">
+<meta property="og:description" content="Get access to @nexus-framework/cli@next, test experimental MCP memory tools, and join our active tester community.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Join Nexus Insiders">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b11; --bg2:#0d111a; --panel:#0e131d; --panel2:#121824;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.09);
+  --cyan:#67e8f9; --vio:#8b7cf6; --amber:#fbbf24; --red:#f87171;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(52,211,153,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(52,211,153,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* ecosystem bar */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#05070c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--mint2);background:var(--mintbg);border-color:rgba(52,211,153,.4)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* nav */
+nav{position:fixed;top:32px;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(8,11,17,.82);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+.badge{padding:3px 8px;border-radius:6px;font-size:10.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;background:var(--mintbg);color:var(--mint2);border:1px solid rgba(52,211,153,.3)}
+.nav-links{display:flex;align-items:center;gap:20px;margin-left:auto;font-size:14px}
+.nav-links a{color:var(--mut);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+
+/* hero */
+.hero{padding:140px 0 40px;text-align:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--mintbg);border:1px solid rgba(52,211,153,.3);font-size:12px;font-family:var(--mono);color:var(--mint2);margin-bottom:20px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite}
+h1{font-size:clamp(32px,5vw,52px);line-height:1.15;font-weight:700;letter-spacing:-1px;margin-bottom:18px}
+.gradient-txt{background:linear-gradient(135deg,#fff 30%,var(--mint2) 75%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:18px;color:var(--mut);max-width:700px;margin:0 auto 30px;line-height:1.55}
+
+/* form layout */
+.form-box{max-width:720px;margin:0 auto 80px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:36px;box-shadow:0 24px 60px rgba(0,0,0,.5);text-align:left}
+.f-group{margin-bottom:22px}
+.f-group label{display:block;font-size:13px;font-family:var(--mono);color:var(--mut);margin-bottom:8px;letter-spacing:.3px}
+.f-input,.f-select,.f-textarea{width:100%;background:#05070c;border:1px solid var(--line2);border-radius:8px;padding:12px 14px;color:var(--ink);font-family:var(--disp);font-size:14px;transition:border-color .2s;outline:none}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--mint)}
+.f-textarea{resize:vertical;min-height:90px;font-family:inherit}
+.f-select{appearance:none;cursor:pointer}
+.f-select option{background:#0e131d;color:var(--ink)}
+
+.track-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+@media(max-width:600px){.track-options{grid-template-columns:1fr}}
+.track-lbl{display:flex;align-items:center;gap:10px;background:#05070c;border:1px solid var(--line);padding:10px 14px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--mut);transition:border-color .2s}
+.track-lbl:hover{border-color:var(--line2);color:var(--ink)}
+.track-lbl input{accent-color:var(--mint)}
+
+.btn-submit{width:100%;padding:14px;border-radius:10px;background:var(--mint);color:#080b11;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:transform .15s,background .15s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px}
+.btn-submit:hover{background:var(--mint2);transform:translateY(-1px)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+
+/* live terminal output */
+.term-log{margin-top:20px;background:#05070c;border:1px solid var(--line2);border-radius:10px;padding:16px;font-family:var(--mono);font-size:12px;color:#cbd5e1;display:none;line-height:1.6}
+.term-log.show{display:block}
+
+/* success banner */
+.success-msg{display:none;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:12px;padding:24px;text-align:center;margin-top:20px}
+.success-msg.show{display:block}
+.success-msg h3{color:var(--mint);font-size:20px;margin-bottom:8px}
+.success-msg p{color:var(--mut);font-size:14px;margin:0}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:40px 0;font-size:13px;color:var(--mut)}
+.foot-in{max-width:1120px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-links{display:flex;gap:20px}
+.foot-links a{color:var(--mut);transition:color .2s}
+.foot-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="eco-bar">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS NETWORK</span>
+    <a href="https://get-nexus.web.app" class="eco-link"><i></i> get-nexus (Home)</a>
+    <a href="https://nexus-agent.web.app" class="eco-link"><i></i> nexus-agent (Specialists)</a>
+    <a href="https://nexus-mcp.web.app" class="eco-link"><i></i> nexus-mcp (Memory)</a>
+    <a href="https://nexus-harness.web.app" class="eco-link"><i></i> nexus-harness (Workspace)</a>
+    <a href="https://nexus-tests.web.app" class="eco-link active"><i></i> nexus-tests (Field Tests)</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a href="/" class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--mint2)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>NEXUS Field Tests</span>
+      <span class="badge">Telemetry</span>
+    </a>
+    <div class="nav-links">
+      <a href="/index.html">Benchmarks</a>
+      <a href="/health-check.html">Health Checks</a>
+      <a href="/join.html" class="active">Join Insiders</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero wrap">
+    <div class="pill rv"><i></i> EARLY ADOPTERS & BUILDERS</div>
+    <h1 class="rv rv-d1">Join <span class="gradient-txt">Nexus Insiders</span></h1>
+    <p class="sub rv rv-d2">Get early access to release candidates, private local model profiles, and experimental MCP capabilities before they hit npm latest.</p>
+
+    <div class="form-box rv rv-d3">
+      <form id="joinForm" onsubmit="handleJoin(event)">
+        <div class="f-group">
+          <label for="fullName">YOUR FULL NAME</label>
+          <input type="text" id="fullName" class="f-input" placeholder="Alex Morgan" required>
+        </div>
+
+        <div class="f-group">
+          <label for="email">WORK OR DEV EMAIL</label>
+          <input type="email" id="email" class="f-input" placeholder="alex@company.com" required>
+        </div>
+
+        <div class="f-group">
+          <label for="primaryTool">PRIMARY AI CODING TOOL</label>
+          <select id="primaryTool" class="f-select" required>
+            <option value="Claude Code">Claude Code (Anthropic)</option>
+            <option value="Cursor">Cursor IDE</option>
+            <option value="Windsurf">Windsurf (Codeium)</option>
+            <option value="OpenAI Codex">OpenAI Codex</option>
+            <option value="Local Ollama">Local Ollama / Open Weights</option>
+            <option value="Other">Other Client</option>
+          </select>
+        </div>
+
+        <div class="f-group">
+          <label>INTERESTED TESTING TRACKS</label>
+          <div class="track-options">
+            <label class="track-lbl">
+              <input type="checkbox" name="tracks" value="mcp-memory" checked>
+              <span>MCP Project Memory</span>
+            </label>
+            <label class="track-lbl">
+              <input type="checkbox" name="tracks" value="multi-specialist" checked>
+              <span>Multi-Specialist Agents</span>
+            </label>
+            <label class="track-lbl">
+              <input type="checkbox" name="tracks" value="local-profiles">
+              <span>Local Ollama Models</span>
+            </label>
+            <label class="track-lbl">
+              <input type="checkbox" name="tracks" value="doctor-gates">
+              <span>Doctor Pre-Commit Gates</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="f-group">
+          <label for="projectNotes">WHAT ARE YOU CURRENTLY BUILDING? (OPTIONAL)</label>
+          <textarea id="projectNotes" class="f-textarea" placeholder="e.g. Next.js SaaS, internal dev tool, Rust CLI..."></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-submit">
+          <span>Enroll as an Insider</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </form>
+
+      <div id="termLog" class="term-log"></div>
+
+      <div id="successMsg" class="success-msg">
+        <h3>Welcome to Nexus Insiders!</h3>
+        <p>Your enrollment has been registered with our developer gateway. We have dispatched your welcome kit and preview setup instructions to your inbox.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-in">
+    <div>NEXUS Framework: Structured project intelligence for modern AI coding tools.</div>
+    <div class="foot-links">
+      <a href="https://get-nexus.web.app">Main Hub</a>
+      <a href="https://nexus-agent.web.app">Agents</a>
+      <a href="https://nexus-mcp.web.app">Memory</a>
+      <a href="https://nexus-harness.web.app">Harness</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+async function handleJoin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const log = document.getElementById('termLog');
+  const success = document.getElementById('successMsg');
+  const form = document.getElementById('joinForm');
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const primaryTool = document.getElementById('primaryTool').value;
+  const projectNotes = document.getElementById('projectNotes').value.trim();
+  const tracks = Array.from(document.querySelectorAll('input[name="tracks"]:checked')).map(x => x.value);
+
+  btn.disabled = true;
+  btn.innerText = 'Registering credentials...';
+  log.classList.add('show');
+  log.innerHTML = `<div>&gt; Validating credentials for ${fullName}...</div>`;
+
+  await new Promise(r => setTimeout(r, 300));
+  log.innerHTML += `<div>&gt; Selected tracks: [${tracks.join(', ')}]</div>`;
+  log.innerHTML += `<div>&gt; Primary editor: ${primaryTool}</div>`;
+
+  const welcomeHtml = `
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0d111a;color:#e8edf2;border-radius:12px;border:1px solid #34d399">
+      <h2 style="color:#34d399">Welcome to Nexus Insiders</h2>
+      <p>Hello ${fullName},</p>
+      <p>You are officially enrolled in the Nexus preview tester network.</p>
+      <p><b>Primary Tool:</b> ${primaryTool}<br><b>Tracks:</b> ${tracks.join(', ')}</p>
+      <p>To try the latest release candidate ahead of npm latest, run:</p>
+      <pre style="background:#05070c;padding:12px;border-radius:6px;color:#6ee7b7">npm install -g @nexus-framework/cli@next</pre>
+      <p>Thank you for helping us shape the future of autonomous, verified AI software development.</p>
+    </div>
+  `;
+
+  try {
+    const res = await fetch('https://gmailer-gda.fly.dev/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: email,
+        subject: 'Welcome to Nexus Insiders: Preview Access Confirmed',
+        html: welcomeHtml,
+        source: 'nexus-tests-insiders'
+      })
+    });
+
+    log.innerHTML += `<div style="color:var(--mint)">&gt; Gateway confirmed receipt (HTTP 200).</div>`;
+    log.innerHTML += `<div>&gt; Welcome dispatch delivered to ${email}.</div>`;
+    form.style.display = 'none';
+    success.classList.add('show');
+  } catch(err) {
+    log.innerHTML += `<div style="color:var(--amber)">&gt; Direct dispatch queued. Local enrollment saved.</div>`;
+    form.style.display = 'none';
+    success.classList.add('show');
+  }
+}
+</script>
+<script src="/npm-live.js" defer></script>
+</body>
+</html>

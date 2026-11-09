@@ -103,9 +103,33 @@ td .r{color:var(--mint);font-family:var(--mono);font-size:9px;letter-spacing:1px
 
 footer{border-top:1px solid var(--line);padding:32px 24px;text-align:center;font-size:13px;color:var(--faint)}
 footer a{color:var(--mut)}
+
+/* ── ecosystem switcher bar ── */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#06080c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1280px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2);text-decoration:none}
+.eco-link.active{color:var(--mint);background:var(--mintbg);border-color:rgba(52,211,153,.35)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+nav.top{top:32px}
+aside{top:116px}
+html{scroll-padding-top:116px}
+@media(max-width:720px){.top-links{top:85px}}
 </style>
 </head>
 <body>
+<div class="eco-bar" role="navigation" aria-label="NEXUS Ecosystem Sites">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS Network:</span>
+    <a class="eco-link active" href="https://get-nexus.web.app"><i></i>get-nexus (Hub)</a>
+    <a class="eco-link" href="https://nexus-harness.web.app"><i></i>nexus-harness (Visual IDE)</a>
+    <a class="eco-link" href="https://nexus-mcp.web.app"><i></i>nexus-mcp (Project Memory)</a>
+    <a class="eco-link" href="https://nexus-agent.web.app"><i></i>nexus-agent (4-Role Team)</a>
+    <a class="eco-link" href="https://nexus-tests.web.app"><i></i>nexus-tests (Field Lab &amp; Insiders)</a>
+  </div>
+</div>
 <nav class="top">
   <div class="top-in">
     <a class="logo" href="index.html"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>

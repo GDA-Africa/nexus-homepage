@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS Harness: The Visual AI Workspace Where Nothing Is Hidden</title>
+<meta name="description" content="Stop guessing what your AI agent is doing in the terminal. NEXUS Harness provides real-time plan checklists, grounded memory badges, and transparent execution.">
+<link rel="canonical" href="https://nexus-harness.web.app/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nexus-harness.web.app/">
+<meta property="og:site_name" content="NEXUS Harness">
+<meta property="og:title" content="NEXUS Harness: The Visual AI Workspace Where Nothing Is Hidden">
+<meta property="og:description" content="A visual control deck for autonomous coding agents. See files touched, tests run, and decisions made in real time.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEXUS Harness: Visual Workspace for Autonomous AI">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b11; --bg2:#0d111a; --panel:#0e131d; --panel2:#121824;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --amb:#f59e0b; --amb2:#fbbf24; --ambbg:rgba(245,158,11,.09);
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --cyan:#67e8f9; --vio:#8b7cf6; --red:#f87171;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(245,158,11,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(245,158,11,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* ecosystem bar */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#05070c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--amb2);background:var(--ambbg);border-color:rgba(245,158,11,.4)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* nav */
+nav{position:fixed;top:32px;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(8,11,17,.82);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+.badge{padding:3px 8px;border-radius:6px;font-size:10.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;background:var(--ambbg);color:var(--amb2);border:1px solid rgba(245,158,11,.3)}
+.nav-links{display:flex;align-items:center;gap:20px;margin-left:auto;font-size:14px}
+.nav-links a{color:var(--mut);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.btn-harness{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;background:var(--amb);color:#080b11;font-weight:700;font-size:13px;border:none;cursor:pointer;transition:transform .15s,background .15s}
+.btn-harness:hover{background:var(--amb2);transform:translateY(-1px)}
+
+/* hero */
+.hero{padding:140px 0 70px;text-align:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--ambbg);border:1px solid rgba(245,158,11,.3);font-size:12px;font-family:var(--mono);color:var(--amb2);margin-bottom:20px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite}
+h1{font-size:clamp(32px,5.5vw,56px);line-height:1.15;font-weight:700;letter-spacing:-1px;margin-bottom:20px}
+.gradient-txt{background:linear-gradient(135deg,#fff 30%,var(--amb2) 75%,#f97316 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:19px;color:var(--mut);max-width:760px;margin:0 auto 36px;line-height:1.55}
+
+/* interactive glass GUI mock */
+.glass-deck{background:var(--panel);border:1px solid var(--line2);border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.6);margin-bottom:80px;text-align:left}
+.deck-topbar{background:var(--bg2);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.deck-title{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:13px;color:var(--ink)}
+.deck-controls{display:flex;gap:10px}
+.deck-pill{padding:4px 10px;border-radius:6px;font-family:var(--mono);font-size:11px;background:rgba(52,211,153,.1);color:var(--mint);border:1px solid rgba(52,211,153,.25);display:flex;align-items:center;gap:6px}
+.deck-body{display:grid;grid-template-columns:300px 1fr;min-height:420px}
+@media(max-width:850px){.deck-body{grid-template-columns:1fr}}
+
+.deck-sidebar{background:#0a0e17;border-right:1px solid var(--line);padding:20px}
+.deck-section-title{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.plan-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:13px;margin-bottom:6px;transition:background .2s}
+.plan-item.done{color:var(--mint);background:rgba(52,211,153,.05)}
+.plan-item.active{color:var(--amb2);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);font-weight:600}
+.plan-item.pending{color:var(--mut)}
+
+.deck-main{padding:24px;display:flex;flex-direction:column;gap:18px;background:#05070c}
+.feed-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:16px;font-family:var(--mono);font-size:12px;line-height:1.7}
+.feed-line{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.feed-time{color:var(--faint);font-size:11px}
+.feed-tag{padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700}
+.tag-mcp{background:rgba(139,124,246,.2);color:var(--vio)}
+.tag-gate{background:rgba(52,211,153,.2);color:var(--mint)}
+.tag-doc{background:rgba(245,158,11,.2);color:var(--amb2)}
+
+/* 3 Pillars */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:80px}
+@media(max-width:850px){.pillars{grid-template-columns:1fr}}
+.pillar-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px}
+.pillar-card h3{font-size:19px;margin-bottom:10px;color:var(--ink)}
+.pillar-card p{color:var(--mut);font-size:14px;line-height:1.6}
+.pillar-icon{width:40px;height:40px;border-radius:10px;background:var(--ambbg);border:1px solid rgba(245,158,11,.3);display:flex;align-items:center;justify-content:center;color:var(--amb2);margin-bottom:18px}
+
+/* quick start strip */
+.start-strip{background:linear-gradient(135deg,rgba(245,158,11,.08),transparent);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:80px}
+.start-strip h2{font-size:22px;margin-bottom:6px}
+.start-strip p{color:var(--mut);font-size:14px}
+.cmd-pill{padding:10px 18px;border-radius:8px;background:#05070c;border:1px solid var(--line2);font-family:var(--mono);color:var(--amb2);font-size:13px;display:inline-flex;align-items:center;gap:12px}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:40px 0;font-size:13px;color:var(--mut)}
+.foot-in{max-width:1120px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-links{display:flex;gap:20px}
+.foot-links a{color:var(--mut);transition:color .2s}
+.foot-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="eco-bar">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS NETWORK</span>
+    <a href="https://get-nexus.web.app" class="eco-link"><i></i> get-nexus (Home)</a>
+    <a href="https://nexus-agent.web.app" class="eco-link"><i></i> nexus-agent (Specialists)</a>
+    <a href="https://nexus-mcp.web.app" class="eco-link"><i></i> nexus-mcp (Memory)</a>
+    <a href="https://nexus-harness.web.app" class="eco-link active"><i></i> nexus-harness (Workspace)</a>
+    <a href="https://nexus-tests.web.app" class="eco-link"><i></i> nexus-tests (Field Tests)</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a href="/" class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--amb2)"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>NEXUS Harness</span>
+      <span class="badge">Workspace</span>
+    </a>
+    <div class="nav-links">
+      <a href="/index.html" class="active">Overview</a>
+      <a href="/overnight.html">The Overnight Build</a>
+      <a href="/local-models.html">Local Models</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero wrap">
+    <div class="pill rv"><i></i> THE VISIBLE RUNTIME ENVIRONMENT</div>
+    <h1 class="rv rv-d1">Stop Coding Blind. <br>The AI Workspace Where <span class="gradient-txt">Nothing Is Hidden</span></h1>
+    <p class="sub rv rv-d2">Standard terminal agents execute commands in the dark and overwrite code without explanation. NEXUS Harness brings full visibility: active plan checklists, verified test counters, and live grounding drawers.</p>
+
+    <!-- Interactive Mock GUI -->
+    <div class="glass-deck rv rv-d3">
+      <div class="deck-topbar">
+        <div class="deck-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Workspace Session: #tikiTasker-build-04</span>
+        </div>
+        <div class="deck-controls">
+          <div class="deck-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>42 Tests Passing</span>
+          </div>
+          <div class="deck-pill" style="color:var(--amb2);background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">
+            <span>Memory Active</span>
+          </div>
+        </div>
+      </div>
+      <div class="deck-body">
+        <div class="deck-sidebar">
+          <div class="deck-section-title">Active Implementation Plan</div>
+          <div class="plan-item done">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>1. Schema & Migration</span>
+          </div>
+          <div class="plan-item done">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>2. Quiz Generator Engine</span>
+          </div>
+          <div class="plan-item active">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="8"/></svg>
+            <span>3. Anti-Cheat & Rewards</span>
+          </div>
+          <div class="plan-item pending">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+            <span>4. Webhook Notification</span>
+          </div>
+          <div class="plan-item pending">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+            <span>5. End-to-End Test Suite</span>
+          </div>
+        </div>
+        <div class="deck-main">
+          <div class="feed-box">
+            <div class="feed-line">
+              <span class="feed-time">00:41:12</span>
+              <span class="feed-tag tag-mcp">MCP</span>
+              <span style="color:#cbd5e1">nexus_get_context({ task: "Build anti-cheat time-delta check" })</span>
+            </div>
+            <div class="feed-line">
+              <span class="feed-time">00:41:14</span>
+              <span class="feed-tag tag-gate">GATE</span>
+              <span style="color:var(--mint)">Rule matched: Minimum 1.5s per question before submission allowed</span>
+            </div>
+            <div class="feed-line">
+              <span class="feed-time">00:41:28</span>
+              <span class="feed-tag tag-doc">FILE</span>
+              <span style="color:var(--amb2)">Created: src/server/rewards/antiCheat.ts (+48 lines)</span>
+            </div>
+            <div class="feed-line">
+              <span class="feed-time">00:41:35</span>
+              <span class="feed-tag tag-gate">TEST</span>
+              <span style="color:var(--mint)">vitest run antiCheat.test.ts: 6/6 tests passing (124ms)</span>
+            </div>
+          </div>
+          <div style="font-size:13px;color:var(--mut);display:flex;align-items:center;justify-content:space-between">
+            <span>Specialist in charge: <strong>Builder (autonomous mode)</strong></span>
+            <span style="font-family:var(--mono);color:var(--mint)">0 errors detected</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Core Pillars -->
+    <div class="pillars rv">
+      <div class="pillar-card">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h3>Live Plan Tracking</h3>
+        <p>No more silent wandering. The harness shows the exact checklist step your AI is executing, the rules it must obey, and the proof required to check it off.</p>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Child-Quiescent Driver</h3>
+        <p>Terminal hangs are solved. Harness v1.1 monitors background child processes, ensuring background compilations and test watchers settle before advancing.</p>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Credit Clamping Guard</h3>
+        <p>If an external AI API provider returns an HTTP 402 payment required response, the harness halts cleanly instead of burning infinite retry loops and corrupting state.</p>
+      </div>
+    </div>
+
+    <!-- Quick Start Banner -->
+    <div class="start-strip rv">
+      <div>
+        <h2>Ready to run your first guided build?</h2>
+        <p>Start the harness in any directory with NEXUS documentation enabled.</p>
+      </div>
+      <div class="cmd-pill">
+        <span>npx -y @nexus-framework/cli harness</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-in">
+    <div>NEXUS Framework: Structured project intelligence for modern AI coding tools.</div>
+    <div class="foot-links">
+      <a href="https://get-nexus.web.app">Main Hub</a>
+      <a href="https://nexus-agent.web.app">Agents</a>
+      <a href="https://nexus-mcp.web.app">Memory</a>
+      <a href="https://nexus-tests.web.app">Field Tests</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+<script src="/npm-live.js" defer></script>
+</body>
+</html>

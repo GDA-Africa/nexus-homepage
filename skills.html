@@ -199,9 +199,31 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 .sk-cta p{color:var(--mut);font-size:14px;margin-bottom:14px;max-width:70ch}
 .sk-code{font-family:var(--mono);font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:14px 16px;overflow-x:auto;line-height:1.85;white-space:pre}
 .sk-code .p{color:var(--mint)}.sk-code .c{color:var(--ink)}.sk-code .o{color:var(--faint)}
+
+/* ── ecosystem switcher bar ── */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#06080c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--mint);background:var(--mintbg);border-color:rgba(52,211,153,.35)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+nav{top:32px}
+@media(max-width:720px){.nav-links{top:89px}}
 </style>
 </head>
 <body>
+<div class="eco-bar" role="navigation" aria-label="NEXUS Ecosystem Sites">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS Network:</span>
+    <a class="eco-link active" href="https://get-nexus.web.app"><i></i>get-nexus (Hub)</a>
+    <a class="eco-link" href="https://nexus-harness.web.app"><i></i>nexus-harness (Visual IDE)</a>
+    <a class="eco-link" href="https://nexus-mcp.web.app"><i></i>nexus-mcp (Project Memory)</a>
+    <a class="eco-link" href="https://nexus-agent.web.app"><i></i>nexus-agent (4-Role Team)</a>
+    <a class="eco-link" href="https://nexus-tests.web.app"><i></i>nexus-tests (Field Lab &amp; Insiders)</a>
+  </div>
+</div>
 <nav>
   <div class="nav-in">
     <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>

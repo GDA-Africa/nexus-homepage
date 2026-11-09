@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect NEXUS MCP in 30 Seconds: Claude, Cursor, Codex, Windsurf</title>
+<meta name="description" content="One command or a simple JSON block gives your favorite AI coding assistant direct access to project memory, live status, and verified task plans.">
+<link rel="canonical" href="https://nexus-mcp.web.app/setup">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://nexus-mcp.web.app/setup">
+<meta property="og:site_name" content="NEXUS MCP">
+<meta property="og:title" content="Connect NEXUS MCP in 30 Seconds: Claude, Cursor, Codex, Windsurf">
+<meta property="og:description" content="Copy-pasteable configs for Claude Code, Cursor, Windsurf, and Codex. Cut token usage by 94% on day one.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Connect NEXUS MCP in 30 Seconds">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b11; --bg2:#0d111a; --panel:#0e131d; --panel2:#121824;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --vio:#8b7cf6; --vio2:#b4a7fb; --viobg:rgba(139,124,246,.09);
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --cyan:#67e8f9; --amber:#fbbf24; --red:#f87171;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(139,124,246,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(139,124,246,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(139,124,246,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* ecosystem bar */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#05070c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--vio2);background:var(--viobg);border-color:rgba(139,124,246,.4)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* nav */
+nav{position:fixed;top:32px;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(8,11,17,.82);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+.badge{padding:3px 8px;border-radius:6px;font-size:10.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;background:var(--viobg);color:var(--vio2);border:1px solid rgba(139,124,246,.3)}
+.nav-links{display:flex;align-items:center;gap:20px;margin-left:auto;font-size:14px}
+.nav-links a{color:var(--mut);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.btn-mcp{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;background:var(--vio);color:#fff;font-weight:600;font-size:13px;border:none;cursor:pointer;transition:transform .15s,background .15s}
+.btn-mcp:hover{background:var(--vio2);color:#080b11;transform:translateY(-1px)}
+
+/* hero */
+.hero{padding:140px 0 60px;position:relative}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--viobg);border:1px solid rgba(139,124,246,.3);font-size:12px;font-family:var(--mono);color:var(--vio2);margin-bottom:20px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite}
+h1{font-size:clamp(32px,5vw,52px);line-height:1.15;font-weight:700;letter-spacing:-1px;margin-bottom:18px}
+.gradient-txt{background:linear-gradient(135deg,#fff 30%,var(--vio2) 75%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:18px;color:var(--mut);max-width:720px;margin-bottom:32px;line-height:1.55}
+
+/* tabs container */
+.setup-box{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:60px}
+.tab-bar{display:flex;align-items:center;background:var(--bg2);border-bottom:1px solid var(--line);padding:0 12px;overflow-x:auto}
+.tab-btn{padding:14px 18px;font-size:13px;font-family:var(--mono);color:var(--mut);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--vio2);border-bottom-color:var(--vio);background:rgba(139,124,246,.04)}
+.tab-content{padding:28px;display:none}
+.tab-content.active{display:block}
+
+/* code snippet */
+.code-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-family:var(--mono);font-size:12px;color:var(--mut)}
+.copy-pill{padding:5px 12px;border-radius:6px;background:var(--panel2);border:1px solid var(--line2);color:var(--ink);cursor:pointer;font-family:var(--mono);font-size:11px;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.copy-pill:hover{background:var(--vio);color:#fff;border-color:var(--vio)}
+pre{background:#05070c;border:1px solid var(--line);border-radius:10px;padding:20px;overflow-x:auto;font-family:var(--mono);font-size:13px;color:#cbd5e1;line-height:1.6}
+.hl-key{color:#93c5fd}
+.hl-str{color:#a7f3d0}
+.hl-com{color:#64748b;font-style:italic}
+
+/* economics comparison */
+.econ-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:60px}
+@media(max-width:768px){.econ-grid{grid-template-columns:1fr}}
+.econ-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;position:relative}
+.econ-card.bad{border-color:rgba(248,113,113,.25)}
+.econ-card.good{border-color:rgba(52,211,153,.3);background:linear-gradient(180deg,rgba(52,211,153,.03),transparent)}
+.econ-card h3{font-size:18px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.econ-card p{color:var(--mut);font-size:14px;margin-bottom:20px}
+.stat-row{display:flex;align-items:baseline;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.stat-row:last-child{border-bottom:none}
+.stat-val{font-family:var(--mono);font-weight:700}
+.stat-val.red{color:var(--red)}
+.stat-val.green{color:var(--mint)}
+
+/* automatic setup */
+.auto-banner{background:linear-gradient(135deg,rgba(139,124,246,.12),rgba(52,211,153,.05));border:1px solid rgba(139,124,246,.3);border-radius:14px;padding:28px;margin-bottom:60px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.auto-banner h3{font-size:20px;margin-bottom:6px}
+.auto-banner p{color:var(--mut);font-size:14px;max-width:600px}
+.cmd-box{background:#05070c;border:1px solid var(--line2);border-radius:8px;padding:12px 18px;font-family:var(--mono);font-size:13px;color:var(--mint);display:flex;align-items:center;gap:12px}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:40px 0;font-size:13px;color:var(--mut)}
+.foot-in{max-width:1120px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-links{display:flex;gap:20px}
+.foot-links a{color:var(--mut);transition:color .2s}
+.foot-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="eco-bar">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS NETWORK</span>
+    <a href="https://get-nexus.web.app" class="eco-link"><i></i> get-nexus (Home)</a>
+    <a href="https://nexus-agent.web.app" class="eco-link"><i></i> nexus-agent (Specialists)</a>
+    <a href="https://nexus-mcp.web.app" class="eco-link active"><i></i> nexus-mcp (Memory)</a>
+    <a href="https://nexus-harness.web.app" class="eco-link"><i></i> nexus-harness (Workspace)</a>
+    <a href="https://nexus-tests.web.app" class="eco-link"><i></i> nexus-tests (Field Tests)</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a href="/" class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--vio2)"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      <span>NEXUS MCP</span>
+      <span class="badge">Memory</span>
+    </a>
+    <div class="nav-links">
+      <a href="/index.html">Overview</a>
+      <a href="/tools.html">23 Tools</a>
+      <a href="/setup.html" class="active">30s Setup</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero wrap">
+    <div class="pill rv"><i></i> ONE-CLICK OR CONFIG DROP-IN</div>
+    <h1 class="rv rv-d1">Connect Project Memory in <span class="gradient-txt">30 Seconds</span></h1>
+    <p class="sub rv rv-d2">Give your AI editor instant access to your architecture, decisions, and current plan. No complicated setup, no custom plugin builds, and no surprise token bills.</p>
+
+    <div class="auto-banner rv rv-d3">
+      <div>
+        <h3>Fastest Way: Automated Registration</h3>
+        <p>Run this in any repo with NEXUS initialized. It auto-detects your installed editors and registers the MCP server configuration for you.</p>
+      </div>
+      <div class="cmd-box">
+        <span>npx -y @nexus-framework/cli mcp</span>
+        <button class="copy-pill" onclick="copyText('npx -y @nexus-framework/cli mcp', this)">Copy</button>
+      </div>
+    </div>
+
+    <!-- Manual Tabs -->
+    <div class="setup-box rv">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="openTab(event, 'tab-claude')">Claude Code (.mcp.json)</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-cursor')">Cursor (.cursor/mcp.json)</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-windsurf')">Windsurf</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-codex')">Codex / Generic MCP</button>
+      </div>
+
+      <!-- Claude Code -->
+      <div id="tab-claude" class="tab-content active">
+        <div class="code-header">
+          <span>Place in repo root: <strong>.mcp.json</strong></span>
+          <button class="copy-pill" onclick="copySnippet('code-claude', this)">Copy JSON</button>
+        </div>
+        <pre id="code-claude">{
+  <span class="hl-key">"mcpServers"</span>: {
+    <span class="hl-key">"nexus"</span>: {
+      <span class="hl-key">"command"</span>: <span class="hl-str">"npx"</span>,
+      <span class="hl-key">"args"</span>: [<span class="hl-str">"-y"</span>, <span class="hl-str">"@nexus-framework/cli"</span>, <span class="hl-str">"mcp"</span>]
+    }
+  }
+}</pre>
+        <p style="color:var(--mut);font-size:13px;margin-top:14px">Next time you run Claude Code in this folder, NEXUS MCP tools wake automatically with zero extra flags.</p>
+      </div>
+
+      <!-- Cursor -->
+      <div id="tab-cursor" class="tab-content">
+        <div class="code-header">
+          <span>Place in: <strong>.cursor/mcp.json</strong></span>
+          <button class="copy-pill" onclick="copySnippet('code-cursor', this)">Copy JSON</button>
+        </div>
+        <pre id="code-cursor">{
+  <span class="hl-key">"mcpServers"</span>: {
+    <span class="hl-key">"nexus-brain"</span>: {
+      <span class="hl-key">"command"</span>: <span class="hl-str">"npx"</span>,
+      <span class="hl-key">"args"</span>: [<span class="hl-str">"-y"</span>, <span class="hl-str">"@nexus-framework/cli"</span>, <span class="hl-str">"mcp"</span>]
+    }
+  }
+}</pre>
+        <p style="color:var(--mut);font-size:13px;margin-top:14px">Open Cursor Settings &gt; Features &gt; MCP to verify that the green light appears next to <code>nexus-brain</code>.</p>
+      </div>
+
+      <!-- Windsurf -->
+      <div id="tab-windsurf" class="tab-content">
+        <div class="code-header">
+          <span>Global config: <strong>~/.codeium/windsurf/mcp_config.json</strong></span>
+          <button class="copy-pill" onclick="copySnippet('code-windsurf', this)">Copy JSON</button>
+        </div>
+        <pre id="code-windsurf">{
+  <span class="hl-key">"mcpServers"</span>: {
+    <span class="hl-key">"nexus"</span>: {
+      <span class="hl-key">"command"</span>: <span class="hl-str">"npx"</span>,
+      <span class="hl-key">"args"</span>: [<span class="hl-str">"-y"</span>, <span class="hl-str">"@nexus-framework/cli"</span>, <span class="hl-str">"mcp"</span>]
+    }
+  }
+}</pre>
+        <p style="color:var(--mut);font-size:13px;margin-top:14px">Cascade in Windsurf immediately gains awareness of your project backlog, rules, and architecture specs.</p>
+      </div>
+
+      <!-- Codex -->
+      <div id="tab-codex" class="tab-content">
+        <div class="code-header">
+          <span>Standard standard-io JSON configuration</span>
+          <button class="copy-pill" onclick="copySnippet('code-codex', this)">Copy JSON</button>
+        </div>
+        <pre id="code-codex">{
+  <span class="hl-key">"servers"</span>: {
+    <span class="hl-key">"nexus"</span>: {
+      <span class="hl-key">"transport"</span>: <span class="hl-str">"stdio"</span>,
+      <span class="hl-key">"command"</span>: <span class="hl-str">"npx"</span>,
+      <span class="hl-key">"args"</span>: [<span class="hl-str">"-y"</span>, <span class="hl-str">"@nexus-framework/cli"</span>, <span class="hl-str">"mcp"</span>]
+    }
+  }
+}</pre>
+        <p style="color:var(--mut);font-size:13px;margin-top:14px">Compatible with any client that follows the open Model Context Protocol specification over stdio.</p>
+      </div>
+    </div>
+
+    <!-- Token Economics Comparison -->
+    <h2 style="font-size:28px;margin-bottom:12px" class="rv">The Token Economics: Real Numbers</h2>
+    <p style="color:var(--mut);margin-bottom:32px" class="rv">Why sending a targeted memory pack beats dumping markdown files into context every single prompt.</p>
+
+    <div class="econ-grid rv rv-d1">
+      <div class="econ-card bad">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          Without NEXUS MCP
+        </h3>
+        <p>Assistant reads raw documentation files in full or performs broad searches across your repository on turn 1.</p>
+        <div class="stat-row">
+          <span>First turn prompt tokens</span>
+          <span class="stat-val red">24,500 - 48,000</span>
+        </div>
+        <div class="stat-row">
+          <span>Average response latency</span>
+          <span class="stat-val red">14.2s (cluttered context)</span>
+        </div>
+        <div class="stat-row">
+          <span>Cost per 50-turn day</span>
+          <span class="stat-val red">$6.80 - $14.20</span>
+        </div>
+        <div class="stat-row">
+          <span>Context window remaining</span>
+          <span class="stat-val red">Fast compaction needed</span>
+        </div>
+      </div>
+
+      <div class="econ-card good">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="9 11 12 14 22 4"/></svg>
+          With NEXUS MCP
+        </h3>
+        <p>Assistant calls <code>nexus_get_context({ task })</code>. It gets only the active plan step, matching rules, and relevant notes.</p>
+        <div class="stat-row">
+          <span>First turn prompt tokens</span>
+          <span class="stat-val green">1,180 tokens</span>
+        </div>
+        <div class="stat-row">
+          <span>Average response latency</span>
+          <span class="stat-val green">1.8s (lean prompt)</span>
+        </div>
+        <div class="stat-row">
+          <span>Cost per 50-turn day</span>
+          <span class="stat-val green">&lt; $0.40 (94% savings)</span>
+        </div>
+        <div class="stat-row">
+          <span>Context window remaining</span>
+          <span class="stat-val green">Plenty of room for real code</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <div class="foot-in">
+    <div>NEXUS Framework: Structured project intelligence for modern AI coding tools.</div>
+    <div class="foot-links">
+      <a href="https://get-nexus.web.app">Main Hub</a>
+      <a href="https://nexus-agent.web.app">Agents</a>
+      <a href="https://nexus-harness.web.app">Harness</a>
+      <a href="https://nexus-tests.web.app">Field Tests</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+function openTab(evt, tabId) {
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  evt.currentTarget.classList.add('active');
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerText;
+    btn.innerText = 'Copied!';
+    btn.style.background = 'var(--mint)';
+    btn.style.color = '#080b11';
+    setTimeout(() => {
+      btn.innerText = orig;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 2000);
+  });
+}
+
+function copySnippet(id, btn) {
+  const code = document.getElementById(id).innerText;
+  copyText(code, btn);
+}
+</script>
+<script src="/npm-live.js" defer></script>
+</body>
+</html>

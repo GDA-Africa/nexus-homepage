@@ -1,0 +1,113 @@
+{
+  "hosting": [
+    {
+      "target": "get-nexus",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        ".firebaserc",
+        "**/.*",
+        "sites/**",
+        "scripts/**",
+        "api/**",
+        "deploy*.sh",
+        "*.old",
+        "*-legacy.html"
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
+        {
+          "source": "**/*.@(css|js|svg|png|jpg|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=86400"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "nexus-agent",
+      "public": "sites/agent",
+      "ignore": [
+        "**/.*"
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
+        {
+          "source": "**/*.@(css|js|svg|png|jpg|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=86400"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "nexus-mcp",
+      "public": "sites/mcp",
+      "ignore": [
+        "**/.*"
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
+        {
+          "source": "**/*.@(css|js|svg|png|jpg|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=86400"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "nexus-harness",
+      "public": "sites/harness",
+      "ignore": [
+        "**/.*"
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
+        {
+          "source": "**/*.@(css|js|svg|png|jpg|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=86400"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "nexus-tests",
+      "public": "sites/tests",
+      "ignore": [
+        "**/.*"
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "headers": [
+        {
+          "source": "**/*.@(css|js|svg|png|jpg|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "max-age=86400"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS MCP: Stop Explaining Your Project Every Morning</title>
+<meta name="description" content="Every time you start a new AI chat, your assistant forgets your rules and past mistakes. NEXUS serves your project memory over MCP so your editor knows the plan from step 1.">
+<link rel="canonical" href="https://nexus-mcp.web.app/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nexus-mcp.web.app/">
+<meta property="og:site_name" content="NEXUS MCP">
+<meta property="og:title" content="NEXUS MCP: Your Project's Memory as a Tool Server">
+<meta property="og:description" content="Watch two AI sessions side by side: one guessing through files, and one connected to NEXUS project memory over MCP.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEXUS MCP: Instant Memory for Claude Code, Cursor &amp; Codex">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b11; --bg2:#0d111a; --panel:#0e131d; --panel2:#121824;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --vio:#8b7cf6; --vio2:#b4a7fb; --viobg:rgba(139,124,246,.09);
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --cyan:#67e8f9; --amber:#fbbf24; --red:#f87171;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(139,124,246,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(139,124,246,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(139,124,246,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes blink{50%{opacity:0}}
+
+/* ── ecosystem bar ── */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#05070c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--vio2);background:var(--viobg);border-color:rgba(139,124,246,.4)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* ── nav ── */
+nav{position:fixed;top:32px;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(8,11,17,.82);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+.logo-mark{width:22px;height:22px;border:1.5px solid var(--vio2);border-radius:6px;position:relative;flex-shrink:0}
+.logo-mark::after{content:'';position:absolute;inset:4px;background:var(--vio2);border-radius:2px;animation:pulse 2.4s infinite}
+.logo span{color:var(--vio2)}
+.nav-links{display:flex;gap:20px;margin-left:auto;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--mut);transition:color .2s;padding:4px 0;border-bottom:2px solid transparent}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.here{color:var(--vio2);border-bottom-color:var(--vio2);font-weight:600}
+.nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px!important;border:1px solid var(--vio2)!important;border-radius:8px;color:var(--vio2)!important}
+.nav-cta:hover{background:var(--viobg)}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
+@media(max-width:760px){
+  .menu-btn{display:block}
+  .nav-links{display:none;position:fixed;top:89px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 24px 18px;background:rgba(8,11,17,.98);border-bottom:1px solid var(--line)}
+  body.nav-open .nav-links{display:flex}
+  .nav-links a{display:block!important;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
+}
+
+/* ── hero ── */
+.stage{padding:138px 0 60px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--vio2);margin-bottom:14px;display:inline-flex;align-items:center;gap:8px;background:var(--viobg);border:1px solid rgba(139,124,246,.32);padding:5px 12px;border-radius:99px}
+.kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--vio2);animation:pulse 1.6s infinite}
+h1{font-size:clamp(34px,4.8vw,56px);line-height:1.07;font-weight:700;letter-spacing:-1.3px;margin-bottom:18px}
+h1 em{font-style:normal;color:var(--vio2)}
+.lead{color:var(--mut);font-size:17px;max-width:780px;margin-bottom:34px;line-height:1.65}
+.lead b{color:var(--ink)}
+
+/* ── duo terminal demo ── */
+.duo-demo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}
+@media(max-width:880px){.duo-demo{grid-template-columns:1fr}}
+.term{background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.term.bad{border-color:rgba(248,113,113,.28)}
+.term.good{border-color:rgba(139,124,246,.4);box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 36px rgba(139,124,246,.08)}
+.term-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.dot{width:10px;height:10px;border-radius:50%;background:#2a3340}
+.term-title{font-family:var(--mono);font-size:11px;color:var(--mut);margin-left:6px}
+.badge{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;padding:3px 9px;border-radius:99px}
+.badge.b-bad{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.25)}
+.badge.b-good{background:var(--viobg);color:var(--vio2);border:1px solid rgba(139,124,246,.35)}
+.term-body{font-family:var(--mono);font-size:12px;line-height:1.8;padding:18px;height:340px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.pl{white-space:pre-wrap;word-break:break-word;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.pl.show{opacity:1;transform:none}
+.pl .out{color:var(--vio2)}.pl .in{color:var(--mint)}.pl .meth{color:var(--cyan)}
+.pl .k{color:var(--vio2)}.pl .s{color:var(--mint2)}.pl .num{color:var(--amber)}
+.pl .cm{color:var(--faint)}.pl .err{color:var(--red)}.pl .ok{color:var(--mint)}
+.pl .tok{background:var(--viobg);border:1px solid rgba(139,124,246,.3);border-radius:4px;padding:0 5px;color:var(--vio2)}
+.caret{display:inline-block;width:7px;height:13px;background:var(--vio2);vertical-align:-2px;animation:blink .9s steps(1) infinite}
+.demo-foot{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.replay{font-family:var(--mono);font-size:11.5px;color:var(--mut);border:1px solid var(--line2);border-radius:8px;padding:7px 14px;cursor:pointer;background:transparent;transition:all .2s}
+.replay:hover{color:var(--vio2);border-color:var(--vio2)}
+.demo-hint{font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* ── explainer sections ── */
+section{padding:80px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(26px,3.4vw,40px);font-weight:700;letter-spacing:-.8px;line-height:1.15;margin-bottom:14px}
+h2 em{font-style:normal;color:var(--vio2)}
+.sub-kicker{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--vio2);margin-bottom:10px;display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px}
+.card .ic{font-size:22px;margin-bottom:10px}
+.card b{display:block;font-size:16px;color:var(--ink);margin-bottom:8px}
+.card p{font-size:13.5px;color:var(--mut);line-height:1.6}
+
+/* ── next links ── */
+.next-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+@media(max-width:760px){.next-grid{grid-template-columns:1fr}}
+.next-card{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:10px;transition:all .25s}
+.next-card:hover{border-color:var(--vio2);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.next-card .nk{font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--vio2)}
+.next-card h3{font-size:20px;font-weight:700}
+.next-card p{font-size:14px;color:var(--mut);line-height:1.6}
+.next-card .go{margin-top:auto;padding-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--vio2)}
+
+footer{border-top:1px solid var(--line);padding:38px 0;margin-top:40px}
+.foot{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.foot .links{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.foot a{font-size:13px;color:var(--mut)}
+.foot a:hover{color:var(--vio2)}
+.foot .gda{font-size:12.5px;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="eco-bar" role="navigation" aria-label="NEXUS Ecosystem Sites">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS Network:</span>
+    <a class="eco-link" href="https://get-nexus.web.app"><i></i>get-nexus (Hub)</a>
+    <a class="eco-link" href="https://nexus-harness.web.app"><i></i>nexus-harness (Visual IDE)</a>
+    <a class="eco-link active" href="https://nexus-mcp.web.app"><i></i>nexus-mcp (Project Memory)</a>
+    <a class="eco-link" href="https://nexus-agent.web.app"><i></i>nexus-agent (4-Role Team)</a>
+    <a class="eco-link" href="https://nexus-tests.web.app"><i></i>nexus-tests (Field Lab &amp; Insiders)</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>MCP</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
+    <div class="nav-links">
+      <a href="/" class="here">1. Guessing vs. Memory</a>
+      <a href="/tools">2. The 23 Actions</a>
+      <a href="/setup">3. 30-Second Setup</a>
+      <a href="https://get-nexus.web.app/docs">Docs</a>
+      <a class="nav-cta" href="https://get-nexus.web.app/#download">Get Nexus</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+  <div class="stage">
+    <div class="kicker rv">nexus-mcp.web.app · focus 1 of 3</div>
+    <h1 class="rv rv-d1">Same model. Same task.<br><em>One of them has project memory.</em></h1>
+    <p class="lead rv rv-d2">When you give an AI assistant a task, it usually starts from scratch: scanning 30 files, guessing how your authentication works, and making the exact same mistake you corrected last week. When connected to NEXUS over MCP, the model wakes up with your active plan, reads the exact lesson you saved last time, and gets straight to work.</p>
+
+    <div class="duo-demo rv rv-d2">
+      <div class="term bad">
+        <div class="term-bar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span class="term-title">Claude Code: guessing without memory</span>
+          <span class="badge b-bad">BLANK SLATE</span>
+        </div>
+        <div class="term-body" id="demoBad"></div>
+      </div>
+      <div class="term good">
+        <div class="term-bar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span class="term-title">Claude Code: connected to NEXUS over MCP</span>
+          <span class="badge b-good">PROJECT MEMORY</span>
+        </div>
+        <div class="term-body" id="demoGood"></div>
+      </div>
+    </div>
+    <div class="demo-foot rv rv-d3">
+      <button class="replay" onclick="restartDemo()">↻ replay comparison</button>
+      <span class="demo-hint">both sides are given the exact same instruction: "add session middleware"</span>
+    </div>
+  </div>
+
+  <section>
+    <span class="sub-kicker rv">how it works in everyday work</span>
+    <h2 class="rv rv-d1">What is an MCP brain server, <em>simply put?</em></h2>
+    <p class="lead rv rv-d2">MCP (Model Context Protocol) is an open standard that lets AI coding assistants connect to external tools. Instead of stuffing your whole repository into a giant prompt, NEXUS runs a lightweight brain server on your machine that gives Claude Code, Cursor, Codex, and Antigravity IDE 23 structured actions to look up what they need on demand.</p>
+
+    <div class="cards">
+      <div class="card rv">
+        <div class="ic">📄</div>
+        <b>Markdown stays the source of truth</b>
+        <p>There is no hidden database or heavy background daemon. Your project memory lives in plain <code>.nexus/</code> markdown files that you can read, version control with Git, and edit whenever you want.</p>
+      </div>
+      <div class="card rv rv-d1">
+        <div class="ic">⚡</div>
+        <b>Targeted answers, not file floods</b>
+        <p>When the assistant needs to know how you handle cookies, it gets back the exact 2-sentence lesson you recorded, rather than burning 4,000 tokens reading unrelated files.</p>
+      </div>
+      <div class="card rv rv-d2">
+        <div class="ic">🔒</div>
+        <b>Impossible to corrupt</b>
+        <p>When an AI tries to tick a plan step or record a note, the request runs through the NEXUS schema validator. It can never produce malformed files or accidentally wipe your notes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="sub-kicker rv">explore the details</span>
+    <h2 class="rv rv-d1">See what your AI can do, or <em>connect your editor now.</em></h2>
+    <div class="next-grid">
+      <a class="next-card rv" href="/tools">
+        <span class="nk">Page 2 of 3 · Tool Surface</span>
+        <h3>The 23 Actions Your Editor Gains</h3>
+        <p>Explore the full set of read and write capabilities NEXUS gives your AI, grouped into simple everyday workflows.</p>
+        <div class="go">Inspect the 23 Actions →</div>
+      </a>
+      <a class="next-card rv rv-d1" href="/setup">
+        <span class="nk">Page 3 of 3 · Editor Setup &amp; Savings</span>
+        <h3>Connect Your Editor in 30 Seconds</h3>
+        <p>Copy-pasteable setup guides for Claude Code, Cursor, Codex, and Windsurf, plus token cost savings benchmarks.</p>
+        <div class="go">See 30-Second Setup →</div>
+      </a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>MCP</span></a>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Part of the <a href="https://get-nexus.web.app" style="color:var(--vio2)">NEXUS 2.0 Ecosystem</a></span>
+    <div class="links">
+      <a href="/">Guessing vs. Memory</a>
+      <a href="/tools">The 23 Actions</a>
+      <a href="/setup">30-Second Setup</a>
+      <a href="https://get-nexus.web.app">Main Hub</a>
+      <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+</main>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
+
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TODAY=new Date().toISOString().slice(0,10);
+const BAD=[
+ {h:'<span class="cm">// Prompt: "add session middleware"</span>'},
+ {t:1,h:'<span class="out">$</span> cat README.md src/**/*.ts <span class="cm"># scans 3,800 lines into context</span>'},
+ {h:'<span class="cm">// Assistant skims files, misses the cookie security rule recorded 2 weeks ago</span>'},
+ {t:1,h:'<span class="out">›</span> "What should I work on next? Should I create a new database table?"'},
+ {h:'<span class="err">✕</span> Re-derives an existing plan that was already mapped out'},
+ {t:1,h:'<span class="out">$</span> vim .nexus/plans/add-auth.md <span class="cm"># edits frontmatter manually</span>'},
+ {h:'<span class="err">✕</span> Typo in YAML frontmatter corrupts the plan'},
+ {h:'<span class="err">✕</span> Writes cookie without sameSite=lax (the bug you solved last week)'},
+ {h:'<span class="cm">// 15 minutes of rebuilding context and fixing repeated mistakes</span>'},
+];
+const GOOD=[
+ {h:'<span class="cm">// Prompt: "add session middleware"</span>'},
+ {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_wake</span> {}'},
+ {h:'<span class="in">←</span> { <span class="k">"token"</span>: <span class="tok">NX-WAKE-7K9F-'+TODAY+'</span>, <span class="k">"activePlan"</span>: <span class="s">"add-auth"</span>,\n   <span class="k">"nextStep"</span>: <span class="s">"3. Write session middleware"</span> }'},
+ {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_get_context</span> { <span class="k">"task"</span>: <span class="s">"session middleware"</span> }'},
+ {h:'<span class="in">←</span> { <span class="k">"knowledge"</span>: [<span class="s">"[gotcha] Session cookies need sameSite=lax"</span>],\n   <span class="k">"skills"</span>: [<span class="s">"api-design"</span>], <span class="k">"vitals"</span>: { <span class="k">"tests"</span>: <span class="s">"896 passing"</span> } }'},
+ {h:'<span class="cm">// Implements Step 3 with the gotcha applied immediately</span>'},
+ {t:1,h:'<span class="out">→</span> <span class="meth">tools/call</span> <span class="k">nexus_plan_tick</span> { <span class="k">"id"</span>: <span class="s">"add-auth"</span>, <span class="k">"step"</span>: <span class="num">3</span> }'},
+ {h:'<span class="in">←</span> { <span class="k">"checked"</span>: <span class="num">true</span>, <span class="k">"nextStep"</span>: <span class="s">"4. Hand off to test-writer"</span> }'},
+ {h:'<span class="ok">✓</span> Grounded in 4 calls. <span class="cm">Zero guessing, zero forgotten lessons</span>'},
+];
+
+const elBad=document.getElementById('demoBad'),elGood=document.getElementById('demoGood');
+let runId=0;
+
+async function play(el,script,id){
+  el.innerHTML='';
+  for(const step of script){
+    if(id!==runId)return;
+    const div=document.createElement('div');
+    div.className='pl';
+    el.appendChild(div);
+    while(el.children.length>8)el.removeChild(el.firstChild);
+    if(step.t&&!RM){
+      div.classList.add('show');
+      const plain=step.h.replace(/<[^>]+>/g,'');
+      for(let i=0;i<=plain.length;i+=2){
+        if(id!==runId)return;
+        div.textContent=plain.slice(0,i);
+        div.appendChild(Object.assign(document.createElement('span'),{className:'caret'}));
+        await wait(14);
+      }
+      div.innerHTML=step.h;
+    }else{
+      div.innerHTML=step.h;
+      await wait(RM?0:100);
+      div.classList.add('show');
+    }
+    await wait(RM?50:780);
+  }
+}
+
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+async function runDemo(){
+  const id=++runId;
+  await Promise.all([play(elBad,BAD,id),play(elGood,GOOD,id)]);
+  if(id!==runId)return;
+  await wait(4500);
+  if(id===runId)runDemo();
+}
+function restartDemo(){runDemo()}
+runDemo();
+</script>
+<script src="/npm-live.js" defer></script>
+</body>
+</html>
+

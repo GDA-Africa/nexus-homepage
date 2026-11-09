@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 56-Minute Autonomous Build: How tikiTasker Shipped Overnight</title>
+<meta name="description" content="Most coding assistants are tested on isolated functions while humans babysit every prompt. We handed NEXUS one prompt, answered 7 questions before bed, and let it build overnight.">
+<link rel="canonical" href="https://nexus-harness.web.app/overnight">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://nexus-harness.web.app/overnight">
+<meta property="og:site_name" content="NEXUS Harness">
+<meta property="og:title" content="The 56-Minute Autonomous Build: How tikiTasker Shipped Overnight">
+<meta property="og:description" content="1 prompt, 7 alignment questions answered before bed, 0 manual interventions, 42 passing tests by sunrise.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The 56-Minute Autonomous Build">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b11; --bg2:#0d111a; --panel:#0e131d; --panel2:#121824;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --amb:#f59e0b; --amb2:#fbbf24; --ambbg:rgba(245,158,11,.09);
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --cyan:#67e8f9; --vio:#8b7cf6; --red:#f87171;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(245,158,11,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(245,158,11,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* ecosystem bar */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#05070c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--amb2);background:var(--ambbg);border-color:rgba(245,158,11,.4)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* nav */
+nav{position:fixed;top:32px;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(8,11,17,.82);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+.badge{padding:3px 8px;border-radius:6px;font-size:10.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;background:var(--ambbg);color:var(--amb2);border:1px solid rgba(245,158,11,.3)}
+.nav-links{display:flex;align-items:center;gap:20px;margin-left:auto;font-size:14px}
+.nav-links a{color:var(--mut);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+
+/* hero */
+.hero{padding:140px 0 60px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--ambbg);border:1px solid rgba(245,158,11,.3);font-size:12px;font-family:var(--mono);color:var(--amb2);margin-bottom:20px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:pulse 2s infinite}
+h1{font-size:clamp(32px,5vw,52px);line-height:1.15;font-weight:700;letter-spacing:-1px;margin-bottom:18px}
+.gradient-txt{background:linear-gradient(135deg,#fff 30%,var(--amb2) 75%,#f97316 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* story callout */
+.story-card{background:linear-gradient(180deg,rgba(245,158,11,.06),rgba(8,11,17,.95));border:1px solid rgba(245,158,11,.3);border-radius:18px;padding:36px;margin-bottom:60px;position:relative}
+.story-lead{font-size:20px;line-height:1.65;color:var(--ink);margin-bottom:24px}
+
+/* interactive tooltips using modern popover & fallback */
+.tip-wrap{position:relative;display:inline-block}
+.tip-trig{background:rgba(245,158,11,.15);border:1px dashed var(--amb2);color:var(--amb2);padding:2px 8px;border-radius:6px;font-weight:600;font-size:inherit;font-family:inherit;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:4px}
+.tip-trig:hover{background:var(--amb2);color:#080b11}
+.tip-box{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);width:min(440px,90vw);background:#0e131d;border:1px solid var(--amb2);border-radius:12px;padding:18px;color:#e8edf2;font-size:13px;line-height:1.55;box-shadow:0 16px 40px rgba(0,0,0,.7);z-index:100;pointer-events:none;opacity:0;visibility:hidden;transition:all .2s ease;text-align:left}
+.tip-wrap:hover .tip-box,.tip-wrap:focus-within .tip-box{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(-4px)}
+.tip-box h4{font-size:13px;font-family:var(--mono);color:var(--amb2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.tip-box ol{padding-left:18px;margin-top:6px}
+.tip-box ol li{margin-bottom:4px;color:#cbd5e1}
+
+/* stat metrics */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:60px}
+@media(max-width:768px){.metrics{grid-template-columns:repeat(2,1fr)}}
+.m-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.m-val{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--amb2);margin-bottom:4px}
+.m-lbl{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+
+/* timeline */
+.timeline{position:relative;padding-left:36px;margin-bottom:80px}
+.timeline::before{content:'';position:absolute;top:10px;bottom:10px;left:14px;width:2px;background:var(--line2)}
+.t-node{position:relative;margin-bottom:36px}
+.t-node:last-child{margin-bottom:0}
+.t-dot{position:absolute;left:-36px;top:4px;width:26px;height:26px;border-radius:50%;background:var(--panel);border:2px solid var(--amb);display:flex;align-items:center;justify-content:center;color:var(--amb2);font-size:11px;font-family:var(--mono)}
+.t-dot.done{border-color:var(--mint);color:var(--mint)}
+.t-header{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.t-time{font-family:var(--mono);font-size:13px;color:var(--amb2);font-weight:700}
+.t-title{font-size:17px;font-weight:600;color:var(--ink)}
+.t-desc{color:var(--mut);font-size:14px;line-height:1.6}
+
+/* telemetry card */
+.telemetry{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:32px;margin-bottom:80px}
+.telemetry h2{font-size:24px;margin-bottom:12px}
+.telemetry p{color:var(--mut);font-size:14px;margin-bottom:24px}
+.t-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.t-grid{grid-template-columns:1fr}}
+.t-box{background:#05070c;border:1px solid var(--line);border-radius:10px;padding:20px}
+.t-box h3{font-size:16px;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.t-box p{color:var(--mut);font-size:13px;margin:0}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:40px 0;font-size:13px;color:var(--mut)}
+.foot-in{max-width:1120px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-links{display:flex;gap:20px}
+.foot-links a{color:var(--mut);transition:color .2s}
+.foot-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="eco-bar">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS NETWORK</span>
+    <a href="https://get-nexus.web.app" class="eco-link"><i></i> get-nexus (Home)</a>
+    <a href="https://nexus-agent.web.app" class="eco-link"><i></i> nexus-agent (Specialists)</a>
+    <a href="https://nexus-mcp.web.app" class="eco-link"><i></i> nexus-mcp (Memory)</a>
+    <a href="https://nexus-harness.web.app" class="eco-link active"><i></i> nexus-harness (Workspace)</a>
+    <a href="https://nexus-tests.web.app" class="eco-link"><i></i> nexus-tests (Field Tests)</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a href="/" class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--amb2)"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>NEXUS Harness</span>
+      <span class="badge">Workspace</span>
+    </a>
+    <div class="nav-links">
+      <a href="/index.html">Overview</a>
+      <a href="/overnight.html" class="active">The Overnight Build</a>
+      <a href="/local-models.html">Local Models</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero wrap">
+    <div class="pill rv"><i></i> FIELD REPORT: TIKITASKER</div>
+    <h1 class="rv rv-d1">The 56-Minute <span class="gradient-txt">Autonomous Build</span></h1>
+
+    <!-- Story Callout with Interactive Tooltips -->
+    <div class="story-card rv rv-d2">
+      <div class="story-lead">
+        Most coding assistants are tested on isolated functions while a human babysits every prompt. We handed NEXUS a 
+        <span class="tip-wrap">
+          <button type="button" class="tip-trig">1-shot prompt</button>
+          <div class="tip-box">
+            <h4>Prompt Provided to NEXUS</h4>
+            <p>"Build tikiTasker: an AI-driven, Duolingo-style assessment platform where learners answer daily adaptive micro-quizzes, maintain streaks, and automatically receive on-chain and off-chain reward tokens upon mastery. Must have automated schema migrations, zero mock tests, cheat-detection time deltas, and clean REST APIs."</p>
+          </div>
+        </span>
+        for tikiTasker (an AI-powered, Duolingo-style quiz, assessment &amp; reward-distribution platform). NEXUS understood we were talking product-wise, gathered as much information as it needed by asking the tester 
+        <span class="tip-wrap">
+          <button type="button" class="tip-trig">7 alignment questions</button>
+          <div class="tip-box">
+            <h4>7 Alignment Questions Answered Before Bed</h4>
+            <ol>
+              <li>What database layer do you prefer (SQLite / Postgres / Supabase)?</li>
+              <li>How strictly should the anti-cheat timer flag fast clicks (under 1.5s)?</li>
+              <li>Are reward distributions immediate or batched nightly?</li>
+              <li>Should learner streaks freeze after 24 or 36 hours of inactivity?</li>
+              <li>Which auth provider standard should protect student sessions?</li>
+              <li>Do you want email webhooks wired to a live provider or logged locally?</li>
+              <li>What test coverage threshold qualifies the build as ready to ship?</li>
+            </ol>
+          </div>
+        </span>
+        before bed, and took over project management, orchestration, and informed decision-making to build the entire product autonomously overnight as requested.
+      </div>
+      <div style="font-size:14px;color:var(--mut);display:flex;align-items:center;gap:12px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Shipped with 0 human interventions between 23:45 and sunrise.</span>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics rv rv-d3">
+      <div class="m-card">
+        <div class="m-val">56m</div>
+        <div class="m-lbl">Total Build Time</div>
+      </div>
+      <div class="m-card">
+        <div class="m-val">42 / 42</div>
+        <div class="m-lbl">Tests Passing</div>
+      </div>
+      <div class="m-card">
+        <div class="m-val">0</div>
+        <div class="m-lbl">Human Interruptions</div>
+      </div>
+      <div class="m-card">
+        <div class="m-val">3,120</div>
+        <div class="m-lbl">Clean LOC Generated</div>
+      </div>
+    </div>
+
+    <!-- Timeline Breakdown -->
+    <h2 style="font-size:26px;margin-bottom:24px" class="rv">Timeline: How the Hours Unfolded</h2>
+    <div class="timeline rv rv-d1">
+      <div class="t-node">
+        <div class="t-dot done">&#10003;</div>
+        <div class="t-header">
+          <span class="t-time">23:45</span>
+          <span class="t-title">Alignment &amp; Spec Lock</span>
+        </div>
+        <div class="t-desc">
+          NEXUS populated the project memory, generated 5 implementation phases, and locked user choices into <code>.nexus/docs/05_business_logic.md</code>. Tester closed their laptop.
+        </div>
+      </div>
+
+      <div class="t-node">
+        <div class="t-dot done">&#10003;</div>
+        <div class="t-header">
+          <span class="t-time">00:05</span>
+          <span class="t-title">Database Schema, Migrations &amp; Seed Engine</span>
+        </div>
+        <div class="t-desc">
+          Builder specialist provisioned user profiles, question banks, quiz runs, and ledger tables. Schema checked against TypeScript strict mode without any <code>any</code> types.
+        </div>
+      </div>
+
+      <div class="t-node">
+        <div class="t-dot done">&#10003;</div>
+        <div class="t-header">
+          <span class="t-time">00:22</span>
+          <span class="t-title">Adaptive Quiz Generator &amp; Streak Logic</span>
+        </div>
+        <div class="t-desc">
+          Implemented difficulty scaling, 24-hour streak freezing, and point calculation algorithms. Added unit test suites verifying scoring edge cases.
+        </div>
+      </div>
+
+      <div class="t-node">
+        <div class="t-dot done">&#10003;</div>
+        <div class="t-header">
+          <span class="t-time">00:41</span>
+          <span class="t-title">Anti-Cheat Time-Delta &amp; Reward Ledger</span>
+        </div>
+        <div class="t-desc">
+          Enforced minimum 1.5-second question answer boundaries to prevent automated scrapers. Generated idempotency keys for token distribution transactions.
+        </div>
+      </div>
+
+      <div class="t-node">
+        <div class="t-dot done">&#10003;</div>
+        <div class="t-header">
+          <span class="t-time">00:58</span>
+          <span class="t-title">Full Test Verification &amp; Implementation Complete</span>
+        </div>
+        <div class="t-desc">
+          Tester specialist executed <code>vitest run</code>: all 42 tests passing. Implementation tracker marked all 5 build phases complete. Next morning, the tester reviewed ready-to-run code.
+        </div>
+      </div>
+    </div>
+
+    <!-- Telemetry Safeguards -->
+    <div class="telemetry rv">
+      <h2>Built-In Safety: Why the Agent Never Froze or Ran Wild</h2>
+      <p>Running autonomous agents overnight usually fails because of two common runtime traps. NEXUS Harness neutralizes both.</p>
+
+      <div class="t-grid">
+        <div class="t-box">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Child-Quiescent Driver
+          </h3>
+          <p>Standard agents get stuck when background dev servers or file watchers stay open. NEXUS monitors process trees and waits until children are quiet before moving to the next task step.</p>
+        </div>
+
+        <div class="t-box">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            HTTP 402 Credit Clamping
+          </h3>
+          <p>If an API model endpoint runs out of credits or throws rate-limit errors, the harness gracefully pauses and saves state instead of burning infinite loops and corrupting the git history.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-in">
+    <div>NEXUS Framework: Structured project intelligence for modern AI coding tools.</div>
+    <div class="foot-links">
+      <a href="https://get-nexus.web.app">Main Hub</a>
+      <a href="https://nexus-agent.web.app">Agents</a>
+      <a href="https://nexus-mcp.web.app">Memory</a>
+      <a href="https://nexus-tests.web.app">Field Tests</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+<script src="/npm-live.js" defer></script>
+</body>
+</html>

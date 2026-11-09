@@ -1,0 +1,26 @@
+{
+  "projects": {
+    "default": "nexus-harness"
+  },
+  "targets": {
+    "nexus-harness": {
+      "hosting": {
+        "get-nexus": [
+          "get-nexus"
+        ],
+        "nexus-agent": [
+          "nexus-agent"
+        ],
+        "nexus-mcp": [
+          "nexus-mcp"
+        ],
+        "nexus-harness": [
+          "nexus-harness"
+        ],
+        "nexus-tests": [
+          "nexus-tests"
+        ]
+      }
+    }
+  }
+}

@@ -356,9 +356,43 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 .win-card p{font-size:12.5px;color:var(--mut);line-height:1.5}
 .win-bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:auto}
 .win-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--cyan));border-radius:99px}
+
+/* ── ecosystem switcher bar ── */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#06080c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--mint);background:var(--mintbg);border-color:rgba(52,211,153,.35)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+nav{top:32px}
+@media(max-width:720px){.nav-links{top:89px}}
+
+/* ── interactive story tooltips (popover + hover/focus) ── */
+.tip-wrap{position:relative;display:inline-block}
+.tip-trig{font-family:var(--mono);font-size:.92em;color:var(--mint2);background:var(--mintbg);border:1px dashed rgba(52,211,153,.55);border-radius:6px;padding:1px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s;vertical-align:baseline}
+.tip-trig:hover,.tip-trig:focus-visible,:is(:interest-source,.interest-source).tip-trig{background:rgba(52,211,153,.18);border-style:solid;border-color:var(--mint);color:#fff;outline:none}
+.tip-trig .tip-ic{font-size:10px;color:var(--mint);opacity:.85}
+.tip-box{position:absolute;left:0;top:calc(100% + 10px);width:min(460px,88vw);background:#0c1118;border:1px solid rgba(52,211,153,.45);border-radius:12px;padding:16px 18px;box-shadow:0 24px 70px rgba(0,0,0,.78),0 0 0 1px rgba(52,211,153,.12);z-index:80;text-align:left;font-family:var(--disp);font-size:13px;line-height:1.55;color:var(--ink);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none;margin:unset}
+.tip-wrap:hover .tip-box,.tip-wrap:focus-within .tip-box,.tip-box:is(:popover-open,.\:popover-open),:is(:interest-target,.interest-target).tip-box{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.tip-box .tb-k{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mint);margin-bottom:6px;display:block}
+.tip-box .tb-code{font-family:var(--mono);font-size:11.5px;background:rgba(255,255,255,.03);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;color:var(--mint2);margin-top:6px;display:block;white-space:pre-wrap}
+.tip-box ol{padding-left:18px;margin-top:6px;color:var(--mut);font-size:12px;display:flex;flex-direction:column;gap:4px}
+.tip-box ol b{color:var(--ink)}
 </style>
 </head>
 <body>
+<div class="eco-bar" role="navigation" aria-label="NEXUS Ecosystem Sites">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS Network:</span>
+    <a class="eco-link active" href="https://get-nexus.web.app"><i></i>get-nexus (Hub)</a>
+    <a class="eco-link" href="https://nexus-harness.web.app"><i></i>nexus-harness (Visual IDE)</a>
+    <a class="eco-link" href="https://nexus-mcp.web.app"><i></i>nexus-mcp (Project Memory)</a>
+    <a class="eco-link" href="https://nexus-agent.web.app"><i></i>nexus-agent (4-Role Team)</a>
+    <a class="eco-link" href="https://nexus-tests.web.app"><i></i>nexus-tests (Field Lab &amp; Insiders)</a>
+  </div>
+</div>
 <nav>
   <div class="nav-in">
     <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></div>
@@ -461,7 +495,33 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <section id="benchmark" class="heavy-section-deferred">
     <div class="kicker rv">tested in the wild · autonomous field report</div>
     <h2 class="rv rv-d1">56 minutes unattended.<br><em>A real app shipped overnight.</em></h2>
-    <p class="lead rv rv-d2">Most coding assistants are tested on isolated functions while a human babysits every prompt. We handed NEXUS a product vision for <b>tikiTasker</b>—an AI-powered, Duolingo-style quiz, assessment &amp; reward-distribution platform—answered 7 alignment questions before bed, and let it build the entire product autonomously overnight.</p>
+    <p class="lead rv rv-d2" style="max-width:780px">Most coding assistants are tested on isolated functions while a human babysits every prompt. We typed a
+      <span class="tip-wrap">
+        <button type="button" class="tip-trig" interestfor="tip-oneshot" popovertarget="tip-oneshot">1-shot prompt <span class="tip-ic">ⓘ</span></button>
+        <div id="tip-oneshot" popover="hint" class="tip-box">
+          <span class="tb-k">Exact 1-Shot Prompt Given to NEXUS</span>
+          <div>We gave NEXUS a single product-level prompt and zero pre-written code:</div>
+          <code class="tb-code">"Build tikiTasker: an AI-powered, Duolingo-style quiz, assessment &amp; reward-distribution platform where admins can generate or edit timed quizzes with AI, grade candidate submissions automatically, and unlock API-key or coupon prizes for top scorers."</code>
+        </div>
+      </span>
+      for <b>tikiTasker</b> (an AI-powered, Duolingo-style quiz, assessment, and reward-distribution platform). NEXUS immediately understood we were talking at the product level, gathered everything it needed by asking the tester
+      <span class="tip-wrap">
+        <button type="button" class="tip-trig" interestfor="tip-questions" popovertarget="tip-questions">7 alignment questions <span class="tip-ic">ⓘ</span></button>
+        <div id="tip-questions" popover="hint" class="tip-box">
+          <span class="tb-k">The 7 Alignment Questions NEXUS Asked Before Bed</span>
+          <div>Before writing a single line of code, NEXUS interviewed the tester to lock down product rules:</div>
+          <ol>
+            <li><b>Database &amp; Stack:</b> Next.js App Router with Cloudflare D1 SQLite or external Postgres?</li>
+            <li><b>Quiz Authoring:</b> Side-by-side AI chat generator plus manual question editing?</li>
+            <li><b>Question Types:</b> Multiple-choice only, or timed free-text graded by AI?</li>
+            <li><b>Reward Unlocking:</b> Instant prize claim on passing score, or admin approval queue?</li>
+            <li><b>Candidate Identity:</b> Lightweight email/session entry or full OAuth account?</li>
+            <li><b>Anti-Cheat &amp; Retakes:</b> Single attempt per candidate email or unlimited retries?</li>
+            <li><b>Execution Mode:</b> Run the full multi-agent build autonomously overnight after alignment?</li>
+          </ol>
+        </div>
+      </span>
+      before bed, and then took over project management, team orchestration, and informed decision-making to build the entire product autonomously overnight as requested.</p>
 
     <!-- What shipped banner -->
     <div class="bench-banner rv rv-d2">
@@ -541,7 +601,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
     <!-- Telemetry-Driven Enhancements Table -->
     <div style="margin-top:52px">
       <div class="kicker rv">telemetry → engineering</div>
-      <h3 class="rv rv-d1" style="font-size:clamp(22px,2.8vw,32px);font-weight:700;letter-spacing:-.6px;margin-bottom:10px">We audited every second of the session log—<em style="font-style:normal;color:var(--mint)">and upgraded the engine.</em></h3>
+      <h3 class="rv rv-d1" style="font-size:clamp(22px,2.8vw,32px);font-weight:700;letter-spacing:-.6px;margin-bottom:10px">We audited every second of the session log <em style="font-style:normal;color:var(--mint)">and upgraded the engine.</em></h3>
       <p class="lead rv rv-d2">Because NEXUS records every turn, tool call, and subagent event in an append-only log, we traced every friction point from the 56-minute run and shipped five permanent upgrades in <b>CLI v2.0.4</b> and <b>Harness v1.1.3</b>.</p>
 
       <div tabindex="0" role="region" aria-labelledby="benchmark-table-caption" class="table-wrapper rv rv-d2">
@@ -625,7 +685,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <div class="win-card rv rv-d4">
           <div class="wn">30% to 45%</div>
           <div class="wt">Cleaner Context Window</div>
-          <p>Strips out 180+ raw shell outputs, <span class="mono">grep</span> pipes, and error tracebacks—leaving maximum working memory for your actual architecture and code.</p>
+          <p>Strips out 180+ raw shell outputs, <span class="mono">grep</span> pipes, and error tracebacks, leaving maximum working memory for your actual architecture and code.</p>
           <div class="win-bar"><i style="width:42%"></i></div>
         </div>
       </div>

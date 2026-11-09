@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 23 NEXUS Tools: What Your AI Can Do Over MCP</title>
+<meta name="description" content="Explore the 23 schema-validated actions your AI editor gains with NEXUS MCP: 15 read tools for instant project memory and 8 write tools for safe plan updates.">
+<link rel="canonical" href="https://nexus-mcp.web.app/tools">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://nexus-mcp.web.app/tools">
+<meta property="og:site_name" content="NEXUS MCP">
+<meta property="og:title" content="The 23 NEXUS Tools: What Your AI Can Do Over MCP">
+<meta property="og:description" content="Schema-validated tools for waking up, querying project lessons, checking off steps, and verifying test suites safely.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="23 Schema-Validated MCP Tools for AI Coding Assistants">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b11; --bg2:#0d111a; --panel:#0e131d; --panel2:#121824;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#e8edf2; --mut:#8a94a6; --faint:#566070;
+  --vio:#8b7cf6; --vio2:#b4a7fb; --viobg:rgba(139,124,246,.09);
+  --mint:#34d399; --mint2:#6ee7b7; --mintbg:rgba(52,211,153,.08);
+  --cyan:#67e8f9; --amber:#fbbf24; --red:#f87171;
+  --disp:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden;line-height:1.6}
+::selection{background:rgba(139,124,246,.25)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(139,124,246,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(139,124,246,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 75%);}
+main{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* ── ecosystem bar ── */
+.eco-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:32px;background:#05070c;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;display:flex;align-items:center}
+.eco-in{max-width:1120px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.eco-in::-webkit-scrollbar{display:none}
+.eco-lbl{color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-size:9.5px;flex-shrink:0}
+.eco-link{color:var(--mut);padding:3px 9px;border-radius:6px;border:1px solid transparent;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.eco-link:hover{color:var(--ink);border-color:var(--line2)}
+.eco-link.active{color:var(--vio2);background:var(--viobg);border-color:rgba(139,124,246,.4)}
+.eco-link i{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* ── nav ── */
+nav{position:fixed;top:32px;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(8,11,17,.82);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+.logo-mark{width:22px;height:22px;border:1.5px solid var(--vio2);border-radius:6px;position:relative;flex-shrink:0}
+.logo-mark::after{content:'';position:absolute;inset:4px;background:var(--vio2);border-radius:2px;animation:pulse 2.4s infinite}
+.logo span{color:var(--vio2)}
+.nav-links{display:flex;gap:20px;margin-left:auto;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--mut);transition:color .2s;padding:4px 0;border-bottom:2px solid transparent}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.here{color:var(--vio2);border-bottom-color:var(--vio2);font-weight:600}
+.nav-cta{font-family:var(--mono);font-size:12px;padding:7px 14px!important;border:1px solid var(--vio2)!important;border-radius:8px;color:var(--vio2)!important}
+.nav-cta:hover{background:var(--viobg)}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:18px;line-height:1;padding:7px 11px;cursor:pointer}
+@media(max-width:760px){
+  .menu-btn{display:block}
+  .nav-links{display:none;position:fixed;top:89px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 24px 18px;background:rgba(8,11,17,.98);border-bottom:1px solid var(--line)}
+  body.nav-open .nav-links{display:flex}
+  .nav-links a{display:block!important;width:100%;padding:10px 0;font-size:15px;border-bottom:1px solid var(--line)}
+}
+
+/* ── hero ── */
+.hero{padding:138px 0 50px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--vio2);margin-bottom:14px;display:inline-flex;align-items:center;gap:8px;background:var(--viobg);border:1px solid rgba(139,124,246,.32);padding:5px 12px;border-radius:99px}
+.kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--vio2);animation:pulse 1.6s infinite}
+h1{font-size:clamp(34px,4.8vw,54px);line-height:1.08;font-weight:700;letter-spacing:-1.3px;margin-bottom:18px}
+h1 em{font-style:normal;color:var(--vio2)}
+.lead{color:var(--mut);font-size:17px;max-width:760px;margin-bottom:28px;line-height:1.65}
+.lead b{color:var(--ink)}
+
+/* ── tool categories ── */
+.cat-strip{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 20px}
+.cbtn{font-family:var(--mono);font-size:12px;padding:8px 16px;border-radius:8px;border:1px solid var(--line2);background:var(--panel);color:var(--mut);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--vio2);color:var(--ink)}
+.cbtn.active{border-color:var(--vio2);background:var(--viobg);color:var(--vio2);font-weight:600}
+
+/* ── tools layout ── */
+.tools-layout{display:grid;grid-template-columns:360px 1fr;gap:24px;margin-bottom:48px;align-items:start}
+@media(max-width:880px){.tools-layout{grid-template-columns:1fr}}
+.tools-list{display:flex;flex-direction:column;gap:8px;max-height:600px;overflow-y:auto;padding-right:6px}
+.titem{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .2s;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.titem:hover{border-color:var(--line2);color:var(--ink)}
+.titem.active{border-color:var(--vio2);background:var(--viobg);box-shadow:0 0 20px rgba(139,124,246,.12)}
+.titem .tname{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
+.titem.active .tname{color:var(--vio2)}
+.titem .ttype{font-family:var(--mono);font-size:9.5px;letter-spacing:1px;padding:2px 6px;border-radius:4px}
+.ttype.read{background:var(--mintbg);color:var(--mint);border:1px solid rgba(52,211,153,.3)}
+.ttype.write{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+
+.tool-preview{background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+.tp-bar{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel2);display:flex;align-items:center;justify-content:space-between}
+.tp-title{font-family:var(--mono);font-size:12px;color:var(--vio2);font-weight:700}
+.tp-body{padding:20px;font-size:13.5px}
+.tp-body h3{font-size:18px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.tp-body p{color:var(--mut);line-height:1.6;margin-bottom:16px}
+.tp-box{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:11.5px;line-height:1.75;color:var(--ink);overflow-x:auto;white-space:pre-wrap;margin-bottom:12px}
+.tp-box .k{color:var(--vio2)}.tp-box .s{color:var(--mint2)}.tp-box .c{color:var(--faint)}.tp-box .num{color:var(--amber)}
+
+/* ── bottom navigation ── */
+.next-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:40px 0;padding-top:28px;border-top:1px solid var(--line)}
+.btn-nav{font-family:var(--mono);font-size:13px;padding:12px 20px;border-radius:10px;border:1px solid var(--line2);color:var(--ink);transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-nav:hover{border-color:var(--vio2);color:var(--vio2);transform:translateX(2px)}
+
+footer{border-top:1px solid var(--line);padding:38px 0;margin-top:40px}
+.foot{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.foot .links{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.foot a{font-size:13px;color:var(--mut)}
+.foot a:hover{color:var(--vio2)}
+.foot .gda{font-size:12.5px;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="eco-bar" role="navigation" aria-label="NEXUS Ecosystem Sites">
+  <div class="eco-in">
+    <span class="eco-lbl">NEXUS Network:</span>
+    <a class="eco-link" href="https://get-nexus.web.app"><i></i>get-nexus (Hub)</a>
+    <a class="eco-link" href="https://nexus-harness.web.app"><i></i>nexus-harness (Visual IDE)</a>
+    <a class="eco-link active" href="https://nexus-mcp.web.app"><i></i>nexus-mcp (Project Memory)</a>
+    <a class="eco-link" href="https://nexus-agent.web.app"><i></i>nexus-agent (4-Role Team)</a>
+    <a class="eco-link" href="https://nexus-tests.web.app"><i></i>nexus-tests (Field Lab &amp; Insiders)</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>MCP</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
+    <div class="nav-links">
+      <a href="/">1. Guessing vs. Memory</a>
+      <a href="/tools" class="here">2. The 23 Actions</a>
+      <a href="/setup">3. 30-Second Setup</a>
+      <a href="https://get-nexus.web.app/docs">Docs</a>
+      <a class="nav-cta" href="https://get-nexus.web.app/#download">Get Nexus</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+  <div class="hero">
+    <div class="kicker rv">nexus-mcp.web.app · focus 2 of 3</div>
+    <h1 class="rv rv-d1">The 23 actions your AI gains <em>over MCP.</em></h1>
+    <p class="lead rv rv-d2">NEXUS MCP replaces messy manual prompts with structured function calls. Here are the 23 tools divided into four everyday jobs: waking up, looking up past lessons, updating checklist milestones, and running health checks.</p>
+  </div>
+
+  <div class="cat-strip rv rv-d2">
+    <button type="button" class="cbtn active" onclick="filterCat('all')">All 23 Tools</button>
+    <button type="button" class="cbtn" onclick="filterCat('wake')">1. Waking Up &amp; Orienting</button>
+    <button type="button" class="cbtn" onclick="filterCat('memory')">2. Rules &amp; Lessons</button>
+    <button type="button" class="cbtn" onclick="filterCat('plan')">3. Managing Plans</button>
+    <button type="button" class="cbtn" onclick="filterCat('verify')">4. Testing &amp; Health</button>
+  </div>
+
+  <div class="tools-layout rv rv-d3">
+    <div class="tools-list" id="toolsList">
+      <!-- Populated by JavaScript -->
+    </div>
+    <div class="tool-preview" id="toolPreview">
+      <!-- Populated by JavaScript -->
+    </div>
+  </div>
+
+  <div class="next-row rv">
+    <a class="btn-nav" href="/">← 1. Guessing vs. Project Memory</a>
+    <a class="btn-nav" href="/setup">3. Connect Your Editor in 30 Seconds →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="/"><div class="logo-mark"></div>NEXUS&nbsp;<span>MCP</span></a>
+    <span class="gda">by <a href="https://gdaafrica.org" target="_blank" style="color:var(--mut)">GDA Africa</a> · Part of the <a href="https://get-nexus.web.app" style="color:var(--vio2)">NEXUS 2.0 Ecosystem</a></span>
+    <div class="links">
+      <a href="/">Guessing vs. Memory</a>
+      <a href="/tools">The 23 Actions</a>
+      <a href="/setup">30-Second Setup</a>
+      <a href="https://get-nexus.web.app">Main Hub</a>
+      <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+</main>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
+
+const TOOLS=[
+  {
+    name: 'nexus_wake',
+    type: 'READ',
+    cat: 'wake',
+    headline: 'Handshake & Instant Status',
+    desc: 'The single call the AI executes first. Issues a verification token and returns the active plan, next checklist step, and doctor warnings in one round trip.',
+    call: 'tools/call nexus_wake {}',
+    result: '{\n  "token": "NX-WAKE-XN4Z-2026-11-09",\n  "activePlan": "harden-auth",\n  "nextStep": "3. Rate-limit POST /login",\n  "doctorErrors": 0,\n  "doctorWarnings": 0\n}'
+  },
+  {
+    name: 'nexus_get_context',
+    type: 'READ',
+    cat: 'wake',
+    headline: 'Single-Pack Orientation',
+    desc: 'Composes one budget-capped context pack for a specific task: matching lessons, trigger-matched skills, relevant docs, and repo health sensors.',
+    call: 'tools/call nexus_get_context {\n  "task": "rate limit middleware",\n  "agent": "nexus-implementer"\n}',
+    result: '{\n  "plan": { "id": "harden-auth", "nextStep": "3. Rate-limit POST /login" },\n  "knowledge": ["Reuse shared Redis client"],\n  "skills": ["api-design"],\n  "vitals": { "tests": "896 passing" }\n}'
+  },
+  {
+    name: 'nexus_get_vital_signs',
+    type: 'READ',
+    cat: 'wake',
+    headline: 'Live Repository Sensors',
+    desc: 'Reads live git branch status, dirty working tree, passing test counts, and outdated package counts directly from host sensors.',
+    call: 'tools/call nexus_get_vital_signs {}',
+    result: '{\n  "git": { "branch": "main", "dirty": false },\n  "tests": { "passing": 896 },\n  "packages": { "outdated": 1 }\n}'
+  },
+  {
+    name: 'nexus_get_active_plan',
+    type: 'READ',
+    cat: 'wake',
+    headline: 'Current Active Work Unit',
+    desc: 'Returns the full markdown plan of the active milestone with checklist indices, acceptance criteria, and next unverified step.',
+    call: 'tools/call nexus_get_active_plan {}',
+    result: '{\n  "id": "harden-auth",\n  "status": "in_progress",\n  "nextStep": "3. Rate-limit POST /login"\n}'
+  },
+  {
+    name: 'nexus_query_knowledge',
+    type: 'READ',
+    cat: 'memory',
+    headline: 'Look Up Past Bugs & Lessons',
+    desc: 'Searches the append-only project knowledge base by category and keyword. Returns the exact 2 relevant lessons instead of 200 lines.',
+    call: 'tools/call nexus_query_knowledge {\n  "query": "redis connection",\n  "category": "gotcha"\n}',
+    result: '{\n  "total": 1,\n  "entries": [{\n    "category": "gotcha",\n    "title": "Reuse Redis Client",\n    "body": "Never instantiate Redis client inside route handlers."\n  }]\n}'
+  },
+  {
+    name: 'nexus_add_knowledge_entry',
+    type: 'WRITE',
+    cat: 'memory',
+    headline: 'Record a New Lesson Learned',
+    desc: 'Safely appends a new lesson (gotcha, pattern, or convention) to project memory so the next agent session starts smarter.',
+    call: 'tools/call nexus_add_knowledge_entry {\n  "category": "gotcha",\n  "title": "Token refresh rate limit",\n  "body": "Provider limits refresh to 10 req/min; cache locally."\n}',
+    result: '{\n  "appended": true,\n  "title": "Token refresh rate limit"\n}'
+  },
+  {
+    name: 'nexus_get_skill',
+    type: 'READ',
+    cat: 'memory',
+    headline: 'Retrieve Specific Team Convention',
+    desc: 'Loads a specialized project skill markdown file, checking custom team skills first, then core framework guidelines.',
+    call: 'tools/call nexus_get_skill { "name": "api-design" }',
+    result: '{\n  "name": "api-design",\n  "source": "core",\n  "markdown": "# API Design Guidelines: REST endpoints, Zod schemas..."\n}'
+  },
+  {
+    name: 'nexus_list_skills',
+    type: 'READ',
+    cat: 'memory',
+    headline: 'List Available Project Skills',
+    desc: 'Lists all available team conventions and disciplines with their triggering keywords.',
+    call: 'tools/call nexus_list_skills {}',
+    result: '{\n  "skills": [\n    { "name": "api-design", "triggers": ["rest", "api", "middleware"] },\n    { "name": "database-patterns", "triggers": ["sql", "migrations"] }\n  ]\n}'
+  },
+  {
+    name: 'nexus_brief',
+    type: 'READ',
+    cat: 'memory',
+    headline: 'Executive Status Summary',
+    desc: 'Returns a 30-line executive digest of recently shipped commits, active plans, vital signs, and suggested next tasks.',
+    call: 'tools/call nexus_brief { "since": "7 days ago" }',
+    result: '{\n  "markdown": "## Brief: Shipped (3) · Active: harden-auth (step 3) · Tests: 896 green"\n}'
+  },
+  {
+    name: 'nexus_plan_create',
+    type: 'WRITE',
+    cat: 'plan',
+    headline: 'Scaffold a New Plan Safely',
+    desc: 'Creates a structured feature, bugfix, or refactor plan in .nexus/plans/ without touching frontmatter by hand.',
+    call: 'tools/call nexus_plan_create {\n  "title": "Add rate limiting",\n  "type": "feature",\n  "steps": ["Create middleware", "Write tests"]\n}',
+    result: '{\n  "id": "add-rate-limiting",\n  "status": "draft"\n}'
+  },
+  {
+    name: 'nexus_plan_start',
+    type: 'WRITE',
+    cat: 'plan',
+    headline: 'Begin Work on a Plan',
+    desc: 'Transitions a draft plan to in_progress and points the active plan tracker to it.',
+    call: 'tools/call nexus_plan_start { "id": "add-rate-limiting" }',
+    result: '{\n  "id": "add-rate-limiting",\n  "status": "in_progress"\n}'
+  },
+  {
+    name: 'nexus_plan_tick',
+    type: 'WRITE',
+    cat: 'plan',
+    headline: 'Check Off Completed Milestone',
+    desc: 'Marks a numbered checklist step completed. If the plan ID is omitted, it automatically updates the currently active plan.',
+    call: 'tools/call nexus_plan_tick { "id": "add-rate-limiting", "step": 1 }',
+    result: '{\n  "checked": true,\n  "nextStep": "2. Write tests"\n}'
+  },
+  {
+    name: 'nexus_plan_note',
+    type: 'WRITE',
+    cat: 'plan',
+    headline: 'Append Architectural Decision',
+    desc: 'Appends a timestamped note to the plan file so future developers know why an architectural path was chosen.',
+    call: 'tools/call nexus_plan_note {\n  "message": "Selected sliding window rate limiting via Redis"\n}',
+    result: '{\n  "noted": "2026-11-09T14:30:00Z. Selected sliding window..."\n}'
+  },
+  {
+    name: 'nexus_plan_record_alignment',
+    type: 'WRITE',
+    cat: 'plan',
+    headline: 'Record Product Alignment',
+    desc: 'Records the answers to pre-flight alignment questions in the plan to satisfy the planning gate before coding.',
+    call: 'tools/call nexus_plan_record_alignment {\n  "summary": "7 product decisions locked with tester"\n}',
+    result: '{\n  "recorded": true,\n  "gateSatisfied": true\n}'
+  },
+  {
+    name: 'nexus_plan_done',
+    type: 'WRITE',
+    cat: 'plan',
+    headline: 'Mark Plan Finished & Log Progress',
+    desc: 'Marks the plan done and automatically appends a completion entry to the project Progress Log.',
+    call: 'tools/call nexus_plan_done { "id": "add-rate-limiting" }',
+    result: '{\n  "status": "done",\n  "progressLogged": true\n}'
+  },
+  {
+    name: 'nexus_plan_verify',
+    type: 'WRITE',
+    cat: 'verify',
+    headline: 'Execute Provable Done Verification',
+    desc: 'Runs the real test suite in .nexus/verify.json and attaches machine proof and verification tiers directly to the plan.',
+    call: 'tools/call nexus_plan_verify { "id": "add-rate-limiting" }',
+    result: '{\n  "passed": true,\n  "verified_tiers": ["typecheck", "unit-test"],\n  "not_verified": ["runtime-smoke"]\n}'
+  },
+  {
+    name: 'nexus_doctor',
+    type: 'READ',
+    cat: 'verify',
+    headline: 'Scan 16 Project Health Checks',
+    desc: 'Audits the codebase for 16 common drift issues: plans marked done without tests, stale docs, missing handshakes, or bloated instructions.',
+    call: 'tools/call nexus_doctor { "minSeverity": "warn" }',
+    result: '{\n  "findings": [],\n  "summary": { "errors": 0, "warnings": 0 }\n}'
+  },
+  {
+    name: 'nexus_project_graph',
+    type: 'READ',
+    cat: 'verify',
+    headline: 'Derive Requirement to Evidence Graph',
+    desc: 'Maps requirements to features, tasks, and test evidence to verify nothing was built without a business requirement.',
+    call: 'tools/call nexus_project_graph {}',
+    result: '{\n  "requirements": 6,\n  "features": 9,\n  "tasks": 31,\n  "evidence": 28\n}'
+  }
+];
+
+let activeIdx=0;
+let currentCat='all';
+
+function filterCat(cat){
+  currentCat=cat;
+  document.querySelectorAll('.cbtn').forEach(b=>{
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(cat) || (cat==='all' && b.textContent.includes('All')));
+  });
+  renderList();
+}
+
+function renderList(){
+  const list=document.getElementById('toolsList');
+  list.innerHTML='';
+  const filtered=TOOLS.filter(t=>currentCat==='all' || t.cat===currentCat);
+  filtered.forEach((t,i)=>{
+    const el=document.createElement('div');
+    el.className='titem'+(i===0?' active':'');
+    el.innerHTML=`
+      <span class="tname">${t.name}</span>
+      <span class="ttype ${t.type.toLowerCase()}">${t.type}</span>
+    `;
+    el.onclick=()=>{
+      document.querySelectorAll('.titem').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      showPreview(t);
+    };
+    list.appendChild(el);
+  });
+  if(filtered.length>0) showPreview(filtered[0]);
+}
+
+function showPreview(t){
+  const p=document.getElementById('toolPreview');
+  p.innerHTML=`
+    <div class="tp-bar">
+      <span class="tp-title">${t.name}</span>
+      <span class="ttype ${t.type.toLowerCase()}">${t.type}</span>
+    </div>
+    <div class="tp-body">
+      <h3>${t.headline}</h3>
+      <p>${t.desc}</p>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:6px">EXAMPLE INVOCATION</div>
+      <div class="tp-box"><span class="k">${t.call}</span></div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:6px">STRUCTURED RESPONSE</div>
+      <div class="tp-box">${t.result}</div>
+    </div>
+  `;
+}
+
+renderList();
+</script>
+<script src="/npm-live.js" defer></script>
+</body>
+</html>
+
