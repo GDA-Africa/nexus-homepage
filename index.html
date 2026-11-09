@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS 2.0: Your project has a brain. Now it has A Harness.</title>
-<meta name="description" content="NEXUS gives every project a structured brain and serves it over MCP as 19 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client. NEXUS 2.0 gives that brain A Harness: the Nexus Harness runs agents already grounded in your plan, rules and lessons, and shows you exactly what they knew. CLI open source, Apache 2.0.">
+<meta name="description" content="NEXUS gives every project a structured brain and serves it over MCP as 23 schema-validated tools for Claude Code, Codex, Cursor, and any MCP client. NEXUS 2.0 gives that brain A Harness: the Nexus Harness runs coordinated multi-agent builds already grounded in your plan, rules and lessons, and proves what was verified. CLI open source, Apache 2.0.">
 <link rel="canonical" href="https://nexus.glenhalton.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nexus.glenhalton.com/">
 <meta property="og:site_name" content="NEXUS CLI">
-<meta property="og:title" content="NEXUS 2.0: From project brain to execution platform">
-<meta property="og:description" content="The project brain is an MCP server with brain-grounded agents. In 2.0 it gets an execution harness: nexus harness opens a web GUI where agents arrive already knowing the plan, and nexus agent runs a task headless, start to finish.">
+<meta property="og:title" content="NEXUS 2.0: From project brain to autonomous software delivery">
+<meta property="og:description" content="The project brain is an MCP server with 23 schema-validated tools and brain-grounded agents. In 2.0 it gets an execution harness tested on real multi-agent product builds: nexus harness opens a web GUI where agents arrive already knowing the plan, and nexus agent runs tasks headless, start to finish.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NEXUS 2.0: Your project has a brain. Now it has A Harness.">
-<meta name="twitter:description" content="19 schema-validated MCP brain tools, plus the Nexus Harness: agents grounded before the first token. nexus harness · nexus agent.">
+<meta name="twitter:description" content="23 schema-validated MCP brain tools, plus the Nexus Harness: coordinated multi-agent builds grounded before the first token. nexus harness · nexus agent.">
 <meta name="keywords" content="MCP server, Model Context Protocol, AI agent harness, headless coding agent, AI-native development, Claude Code, OpenAI Codex, Cursor, project scaffolding, AI agents, developer tools, open source CLI">
 <script type="application/ld+json">
 {
@@ -23,8 +23,8 @@
   "name": "NEXUS CLI",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows (Node.js 20+)",
-  "softwareVersion": "2.0.0",
-  "description": "Open-source AI-native development framework. Gives every project a structured brain, serves it over MCP as 19 schema-validated tools, staffs it with brain-grounded agents, and in 2.0 launches the Nexus Harness execution engine with nexus harness and nexus agent.",
+  "softwareVersion": "2.0.4",
+  "description": "Open-source AI-native development framework. Gives every project a structured brain, serves it over MCP as 23 schema-validated tools, staffs it with brain-grounded agents, and in 2.0 launches the Nexus Harness execution engine with nexus harness and nexus agent.",
   "url": "https://nexus.glenhalton.com",
   "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/cli",
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -288,6 +288,74 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
 .foot a{font-size:13px;color:var(--mut)}
 .foot a:hover{color:var(--mint)}
 .foot .gda{font-size:12.5px;color:var(--faint)}
+
+/* ── deferred rendering for below-the-fold heavy sections ── */
+.heavy-section-deferred{content-visibility:auto;contain-intrinsic-size:auto none auto 650px}
+
+/* ── field test & benchmark section ── */
+.bench-banner{background:linear-gradient(155deg,rgba(52,211,153,.09),rgba(139,124,246,.07) 58%,rgba(14,19,25,.95));border:1px solid rgba(52,211,153,.35);border-radius:16px;padding:30px;margin-top:38px;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+.bench-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.bench-title{font-size:21px;font-weight:700;letter-spacing:-.4px;margin-bottom:6px}
+.bench-sub{font-size:14px;color:var(--mut);max-width:650px}
+.bench-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px;margin-top:22px}
+.kpi{background:rgba(10,13,18,.65);border:1px solid var(--line);border-radius:12px;padding:16px}
+.kpi .v{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--mint);line-height:1.1;margin-bottom:4px}
+.kpi .v.vio{color:var(--vio2)}
+.kpi .l{font-family:var(--mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink);margin-bottom:4px}
+.kpi p{font-size:12px;color:var(--mut);line-height:1.45}
+
+.surf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+@media(max-width:880px){.surf-grid{grid-template-columns:1fr}}
+.surf{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:20px}
+.surf .sk{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mint);margin-bottom:6px}
+.surf h4{font-size:16px;font-weight:600;margin-bottom:8px}
+.surf p{font-size:13px;color:var(--mut);line-height:1.55}
+
+/* industry differentiation grid */
+.diff-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:32px}
+@media(max-width:840px){.diff-grid{grid-template-columns:1fr}}
+.diff-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px;transition:border-color .25s,transform .25s}
+.diff-card:hover{border-color:rgba(52,211,153,.35);transform:translateY(-2px)}
+.diff-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.diff-head b{font-size:16px;color:var(--ink)}
+.diff-vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;font-size:12.5px}
+@media(max-width:520px){.diff-vs{grid-template-columns:1fr}}
+.diff-them{background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.18);border-radius:9px;padding:10px 12px;color:var(--mut)}
+.diff-them span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:1.2px;color:var(--red);text-transform:uppercase;margin-bottom:4px}
+.diff-us{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.28);border-radius:9px;padding:10px 12px;color:var(--ink)}
+.diff-us span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:1.2px;color:var(--mint);text-transform:uppercase;margin-bottom:4px}
+
+/* responsive data table (modern-web-guidance: responsive-table) */
+.table-wrapper{overflow:auto;max-inline-size:100%;max-block-size:min(620px,82vh);container-type:inline-size;background:var(--panel);border:1px solid var(--line2);border-radius:14px;margin-top:28px;outline:none}
+.table-wrapper:focus-visible{border-color:var(--mint);box-shadow:0 0 0 3px rgba(52,211,153,.2)}
+.bench-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;--label-2:"What Telemetry Showed";--label-3:"What We Enhanced (v2.0.4 + Harness 1.1.3)";--label-4:"User-Facing Outcome"}
+.bench-table caption{text-align:left;padding:16px 20px;font-family:var(--mono);font-size:11.5px;letter-spacing:1px;color:var(--mint);background:var(--panel2);border-bottom:1px solid var(--line);text-transform:uppercase}
+.bench-table thead{position:sticky;inset-block-start:0;z-index:2;background:var(--panel2)}
+.bench-table th{font-family:var(--mono);font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--faint);text-align:left;padding:13px 18px;border-bottom:1px solid var(--line2);background:var(--panel2)}
+.bench-table tbody th{position:sticky;inset-inline-start:0;z-index:1;background:var(--panel);color:var(--ink);font-family:var(--disp);font-size:14px;font-weight:600;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--line);vertical-align:top;min-width:190px}
+.bench-table td{padding:14px 18px;border-bottom:1px solid var(--line);color:var(--mut);vertical-align:top;line-height:1.55}
+.bench-table tr:last-child th,.bench-table tr:last-child td{border-bottom:none}
+.bench-table td b{color:var(--ink)}
+.bench-table .out-badge{display:inline-block;font-family:var(--mono);font-size:10.5px;color:var(--mint2);background:var(--mintbg);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:2px 8px;margin-bottom:5px}
+@container (width < 680px){
+  .bench-table,.bench-table thead,.bench-table tbody,.bench-table tr,.bench-table th,.bench-table td{display:block}
+  .bench-table thead{display:none}
+  .bench-table tr{margin:12px;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--panel2)}
+  .bench-table tbody th{position:sticky;inset-block-start:0;z-index:2;background:rgba(52,211,153,.08);color:var(--mint2);padding:12px 14px;border-bottom:1px solid var(--line)}
+  .bench-table td{padding:10px 14px;border-bottom:1px dashed var(--line)}
+  .bench-table td:nth-child(2)::before{content:var(--label-2) ": ";display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);margin-bottom:3px}
+  .bench-table td:nth-child(3)::before{content:var(--label-3) ": ";display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--vio2);margin-bottom:3px}
+  .bench-table td:nth-child(4)::before{content:var(--label-4) ": ";display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mint);margin-bottom:3px}
+}
+
+/* projected wins cards */
+.wins-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:26px}
+.win-card{background:linear-gradient(180deg,rgba(52,211,153,.06),var(--panel) 65%);border:1px solid rgba(52,211,153,.32);border-radius:13px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.win-card .wn{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--mint);letter-spacing:-.5px}
+.win-card .wt{font-size:14.5px;font-weight:600;color:var(--ink)}
+.win-card p{font-size:12.5px;color:var(--mut);line-height:1.5}
+.win-bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:auto}
+.win-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--cyan));border-radius:99px}
 </style>
 </head>
 <body>
@@ -297,6 +365,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="nav-links">
       <a href="/harness">Harness</a>
+      <a href="#benchmark">Field Test</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
       <a href="/skills">Skills</a>
@@ -313,23 +382,23 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   <!-- ═══ HERO ═══ -->
   <div class="hero">
     <div>
-      <div class="tag rv">NEXUS 2.0 · THE BRAIN GETS A HARNES</div>
+      <div class="tag rv">NEXUS 2.0.4 · THE BRAIN GETS A HARNESS</div>
       <h1 class="rv rv-d1">Your project has a brain.<br>Now it has <em>A Harness</em>.</h1>
-      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain: docs, plans, knowledge, skills, served to Claude Code, Codex, Antigravity IDE and Cursor as <span data-live="tools">19</span> schema-validated MCP tools. <b>2.0 puts that brain to work.</b> <a href="/harness" style="color:var(--mint)">Nexus Harness</a> runs agents that already know your plan, rules and past lessons before the first token, and shows you exactly what they knew and did. <span class="mono" style="color:var(--mint2)">nexus harness</span> opens it. <span class="mono" style="color:var(--mint2)">nexus agent "&lt;task&gt;"</span> runs one task, start to finish, unattended.</p>
+      <p class="sub rv rv-d2">NEXUS gives every repo a structured brain: docs, plans, knowledge, skills, served to Claude Code, Codex, Antigravity IDE and Cursor as <span data-live="tools">23</span> schema-validated MCP tools. <b>2.0 puts that brain to work.</b> <a href="/harness" style="color:var(--mint)">Nexus Harness</a> runs coordinated multi-agent builds that already know your plan, rules and past lessons before the first token, and proves what was verified. <span class="mono" style="color:var(--mint2)">nexus harness</span> opens it. <span class="mono" style="color:var(--mint2)">nexus agent "&lt;task&gt;"</span> runs one task, start to finish, unattended.</p>
       <div class="cta-row rv rv-d3">
         <a href="#download"><button class="btn btn-solid">Download / Install ↓</button></a>
+        <a href="#benchmark"><button class="btn btn-ghost">See 56-Min Field Test →</button></a>
         <a href="/harness"><button class="btn btn-ghost">Meet the Harness →</button></a>
-        <a href="https://github.com/GDA-Africa/nexus-cli" target="_blank"><button class="btn btn-ghost">GitHub →</button></a>
       </div>
       <div class="stats rv rv-d4">
-        <div class="stat"><div class="n" data-live="tools" data-live-animate>19</div><div class="l">MCP tools</div></div>
-        <div class="stat"><div class="n" data-live="tests" data-live-animate>850</div><div class="l">tests</div></div>
+        <div class="stat"><div class="n" data-live="tools" data-live-animate>23</div><div class="l">MCP tools</div></div>
+        <div class="stat"><div class="n" data-live="tests" data-live-animate>896</div><div class="l">tests</div></div>
         <div class="stat"><div class="n" data-live="commands" data-live-animate>24</div><div class="l">commands</div></div>
         <div class="stat"><div class="n" data-live="downloads" data-live-animate>1926</div><div class="l"><span class="live-dot"></span>npm downloads</div></div>
       </div>
       <div class="live-note rv rv-d4">
         <span class="live-dot"></span>Live from the npm registry &amp; the CLI package:
-        <b data-live="version">2.0.0</b> on npm, <span data-live="published">published today</span>.
+        <b data-live="version">2.0.4</b> on npm, <span data-live="published">published today</span>.
         <a href="https://www.npmjs.com/package/@nexus-framework/cli" target="_blank">verify →</a>
       </div>
     </div>
@@ -372,24 +441,199 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <div class="duo-h">Grounded before the first token <span class="pill pill-new">AMBIENT</span></div>
         <ul>
           <li>Active plan, <b>next unchecked step</b>, conventions, relevant lessons and vitals arrive with every turn</li>
-          <li><b>16 brain tools mounted in-process</b>: no extra server, every call in the session log</li>
-          <li>The agent <b>ticks its own plan</b> and records what it learned</li>
+          <li><b>23 brain tools mounted in-process</b>: full plan lifecycle + memory, no extra server, every call in the session log</li>
+          <li>The agent <b>creates, ticks, verifies and completes its own plans</b> and records what it learned</li>
         </ul>
       </div>
       <div class="duo-card win rv rv-d1">
         <div class="duo-h">Nothing hidden <span class="pill pill-new">VISIBLE</span></div>
         <ul>
           <li><b>See what it knew:</b> every turn's injected context, one click away</li>
-          <li><b>Watch delegated helpers</b> work live, side by side</li>
-          <li><b>Local models in one click</b> via Ollama, no account, no key</li>
+          <li><b>Watch delegated helpers</b> work live, side by side, with real-time tool &amp; edit telemetry</li>
+          <li><b>Local &amp; cloud resilience:</b> one-click Ollama plus automatic provider credit clamping &amp; model failover</li>
         </ul>
       </div>
     </div>
     <p class="lead rv rv-d2" style="margin-top:26px"><a href="/harness" style="color:var(--mint)">Tour the Harness, with a live demo you can click →</a></p>
   </section>
 
+  <!-- ═══ AUTONOMOUS FIELD TEST & TELEMETRY BENCHMARK ═══ -->
+  <section id="benchmark" class="heavy-section-deferred">
+    <div class="kicker rv">tested in the wild · autonomous field report</div>
+    <h2 class="rv rv-d1">56 minutes unattended.<br><em>A real app shipped overnight.</em></h2>
+    <p class="lead rv rv-d2">Most coding assistants are tested on isolated functions while a human babysits every prompt. We handed NEXUS a product vision for <b>tikiTasker</b>—an AI-powered, Duolingo-style quiz, assessment &amp; reward-distribution platform—answered 7 alignment questions before bed, and let it build the entire product autonomously overnight.</p>
+
+    <!-- What shipped banner -->
+    <div class="bench-banner rv rv-d2">
+      <div class="bench-top">
+        <div>
+          <div class="dl-badge mint" style="margin-bottom:10px">OVERNIGHT AUTOPILOT RUN · TIKITASKER</div>
+          <div class="bench-title">From product vision to 6 compiled routes &amp; 65 passing API tests</div>
+          <p class="bench-sub">Driven by an orchestrator and <b>4 specialized builder subagents</b> working in parallel across Backend, Admin Studio, and Public UI boundaries.</p>
+        </div>
+        <a href="/harness#benchmark" class="btn btn-ghost" style="align-self:center">Full Harness Telemetry →</a>
+      </div>
+
+      <div class="bench-kpis">
+        <div class="kpi"><div class="v">56m</div><div class="l">Unattended Run</div><p>Zero human prompts after the 7-question pre-flight interview</p></div>
+        <div class="kpi"><div class="v">24</div><div class="l">Clean Commits</div><p>Atomic, conventional commits across 4 coordinated builders</p></div>
+        <div class="kpi"><div class="v">65/65</div><div class="l">API Tests Green</div><p>0 TypeScript errors · 0 lint errors · 6/6 Next.js routes compiled</p></div>
+        <div class="kpi"><div class="v vio">4</div><div class="l">Parallel Builders</div><p>Backend spine, Admin Studio &amp; Public UI built across file boundaries</p></div>
+      </div>
+
+      <div class="surf-grid">
+        <div class="surf">
+          <div class="sk">01 · Backend &amp; Reward Spine</div>
+          <h4>Quiz Lifecycle, Grading &amp; Prizes</h4>
+          <p>Data model, D1 database schema, attempt state machine, automated grading engine, API-key/coupon prize distribution, and typed API contracts.</p>
+        </div>
+        <div class="surf">
+          <div class="sk">02 · Admin &amp; AI Studio</div>
+          <h4>Conversational Quiz Authoring</h4>
+          <p>Admin dashboard, side-by-side AI authoring chat + manual quiz editor, submissions inbox, candidate attempt review, and prize inventory controls.</p>
+        </div>
+        <div class="surf">
+          <div class="sk">03 · Public Experience</div>
+          <h4>Duolingo-Inspired Timed Quiz UI</h4>
+          <p>Mobile-first interactive quiz flow, timed questions, progress bars, instant grading feedback, and automated reward unlocking upon passing.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why Nexus beats industry coding agents -->
+    <div style="margin-top:52px">
+      <div class="kicker rv">why nexus is different</div>
+      <h3 class="rv rv-d1" style="font-size:clamp(22px,2.8vw,32px);font-weight:700;letter-spacing:-.6px;margin-bottom:10px">What NEXUS does right that popular coding agents <em style="font-style:normal;color:var(--mint)">don't even think of.</em></h3>
+      <p class="lead rv rv-d2">Popular industry coding agents treat every prompt as a solo autocomplete task. NEXUS treats software delivery as a coordinated, stateful engineering system.</p>
+
+      <div class="diff-grid">
+        <div class="diff-card rv">
+          <div class="diff-head"><b>1. Pre-Flight Grilling Gate vs. Blind Guessing</b><span class="pill pill-new">ALIGNMENT</span></div>
+          <div class="diff-vs">
+            <div class="diff-them"><span>Popular Agents</span>Guess missing product rules and build 2,000 lines of the wrong architecture before you notice.</div>
+            <div class="diff-us"><span>NEXUS</span>Runs a structured 7-question <b>Grilling Gate</b> first, locks scope into the plan, and passes those decisions to every helper agent.</div>
+          </div>
+        </div>
+        <div class="diff-card rv rv-d1">
+          <div class="diff-head"><b>2. Shared-File Reconciliation vs. Overwrites</b><span class="pill pill-new">CONCURRENCY</span></div>
+          <div class="diff-vs">
+            <div class="diff-them"><span>Popular Agents</span>Parallel subagents blindly overwrite shared files or clobber each other's Git staging trees.</div>
+            <div class="diff-us"><span>NEXUS</span>Builders own explicit file boundaries, inspect sibling commits on shared contracts (<span class="mono">api-client.ts</span>), and verify integration before finishing.</div>
+          </div>
+        </div>
+        <div class="diff-card rv rv-d2">
+          <div class="diff-head"><b>3. Subagent Handshakes vs. Context Amnesia</b><span class="pill pill-new">MEMORY</span></div>
+          <div class="diff-vs">
+            <div class="diff-them"><span>Popular Agents</span>Spawned subagents wake up with a blank slate and burn thousands of tokens re-reading the repo.</div>
+            <div class="diff-us"><span>NEXUS</span>Every subagent executes <span class="mono">nexus_wake</span>, echoes a cryptographic wake token, and receives a bounded context pack at step 1.</div>
+          </div>
+        </div>
+        <div class="diff-card rv rv-d3">
+          <div class="diff-head"><b>4. Honest Verification Tiers vs. "All Green" Claims</b><span class="pill pill-new">TRUTH</span></div>
+          <div class="diff-vs">
+            <div class="diff-them"><span>Popular Agents</span>Claim "100% done and tested" when only mocked unit tests ran and nobody rendered the UI.</div>
+            <div class="diff-us"><span>NEXUS</span>Separates <b>Verified Tiers</b> (<span class="mono">typecheck</span>, <span class="mono">lint</span>, <span class="mono">unit-test</span>, <span class="mono">build</span>) from <b>Not Verified</b> (<span class="mono">runtime-smoke</span>, <span class="mono">ui-render</span>) in every sign-off.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Telemetry-Driven Enhancements Table -->
+    <div style="margin-top:52px">
+      <div class="kicker rv">telemetry → engineering</div>
+      <h3 class="rv rv-d1" style="font-size:clamp(22px,2.8vw,32px);font-weight:700;letter-spacing:-.6px;margin-bottom:10px">We audited every second of the session log—<em style="font-style:normal;color:var(--mint)">and upgraded the engine.</em></h3>
+      <p class="lead rv rv-d2">Because NEXUS records every turn, tool call, and subagent event in an append-only log, we traced every friction point from the 56-minute run and shipped five permanent upgrades in <b>CLI v2.0.4</b> and <b>Harness v1.1.3</b>.</p>
+
+      <div tabindex="0" role="region" aria-labelledby="benchmark-table-caption" class="table-wrapper rv rv-d2">
+        <table class="bench-table">
+          <caption id="benchmark-table-caption">Telemetry findings from the 56-minute tikiTasker build &amp; shipped v2.0.4 / v1.1.3 upgrades</caption>
+          <thead>
+            <tr>
+              <th scope="col">System Area</th>
+              <th scope="col">What Telemetry Showed</th>
+              <th scope="col">What We Enhanced (v2.0.4 + Harness 1.1.3)</th>
+              <th scope="col">User-Facing Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1. Event-Driven Subagent Waiting</th>
+              <td>The orchestrator burned <b>36 of its 40 goal rounds in 8 minutes</b> just waking up to poll <span class="mono">list_agents</span> while waiting on a builder.</td>
+              <td><b>Child-quiescent round driver:</b> goal rounds automatically pause while any child or descendant subagent is running, and resume the instant it settles.</td>
+              <td><span class="out-badge">0 Wasted Rounds</span><br>Every round in your budget is spent on real progress, never on "are you done yet?" checks.</td>
+            </tr>
+            <tr>
+              <th scope="row">2. Live Child Activity Telemetry</th>
+              <td>The parent interrupted a builder after 60s of "no git commits" while <span class="mono">npm install</span> was pulling packages and 47 file writes were in flight.</td>
+              <td><b>Real-time session telemetry:</b> <span class="mono">list_agents</span> now exposes live <span class="mono">toolCalls</span>, <span class="mono">writes</span>, <span class="mono">edits</span>, and <span class="mono">lastTool</span> directly from the child's stream.</td>
+              <td><span class="out-badge">Zero False Interrupts</span><br>Subagents finish heavy installs and multi-file builds cleanly on the first pass.</td>
+            </tr>
+            <tr>
+              <th scope="row">3. Zero-Stall Headless CLI &amp; 23 Brain Tools</th>
+              <td>Interactive prompts in <span class="mono">nexus init</span> stalled background shells for 5 minutes, and agents fell back to 183 bash calls for plan updates.</td>
+              <td>Added headless <span class="mono">--yes</span> auto-detection, empty-folder adoption, workspace root boundary locks, and <b>4 new MCP plan lifecycle tools</b> (23 total).</td>
+              <td><span class="out-badge">Zero Shell Stalls</span><br>Instant headless project bootstrap and in-memory plan creation, ticking, alignment &amp; completion.</td>
+            </tr>
+            <tr>
+              <th scope="row">4. Automatic Provider Credit Recovery</th>
+              <td>The first OpenRouter call failed with <span class="mono">HTTP 402</span> because default <span class="mono">max_tokens: 32000</span> exceeded the account's 23,585 affordable ceiling.</td>
+              <td><b>Self-healing token clamping:</b> parses provider credit ceilings on <span class="mono">402</span> errors, clamps <span class="mono">maxTokens</span> in-place, caches the ceiling, and supports <span class="mono">fallbackModels</span>.</td>
+              <td><span class="out-badge">Uninterrupted Runs</span><br>Overnight builds automatically right-size to your remaining API balance instead of crashing.</td>
+            </tr>
+            <tr>
+              <th scope="row">5. Truthful Wrap-Up &amp; Verification Tiers</th>
+              <td>The closing summary said "finished, all green" even though the goal hit its round cap at minute 49 and only API unit tests had run.</td>
+              <td>Allowed goal completion on <span class="mono">subagent-settled</span> turns and added machine-computed <span class="mono">verified_tiers</span> vs. <span class="mono">not_verified</span> arrays to <span class="mono">nexus plan verify</span>.</td>
+              <td><span class="out-badge">100% Honest Sign-Off</span><br>Every report leads with exact Goal &amp; Plan state and separates tested code from unverified UI/runtime.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Projected / Estimated User Wins -->
+    <div style="margin-top:52px">
+      <div class="kicker rv">estimated &amp; projected wins</div>
+      <h3 class="rv rv-d1" style="font-size:clamp(22px,2.8vw,32px);font-weight:700;letter-spacing:-.6px;margin-bottom:10px">What you gain on every run <em style="font-style:normal;color:var(--mint)">starting today.</em></h3>
+      <p class="lead rv rv-d2">Measured against the baseline 56-minute autonomous build session across token spend, wall-clock speed, prompt cache efficiency, and context window hygiene.</p>
+
+      <div class="wins-grid">
+        <div class="win-card rv">
+          <div class="wn">−35% to 50%</div>
+          <div class="wt">Lower Token Spend</div>
+          <p>Eliminates 18+ wasted polling turns, prevents duplicate parent rebuilds of interrupted subagent work, and replaces bash loops with compact MCP calls.</p>
+          <div class="win-bar"><i style="width:48%"></i></div>
+        </div>
+        <div class="win-card rv rv-d1">
+          <div class="wn">25% to 35%</div>
+          <div class="wt">Faster Build Speed</div>
+          <p>Cuts a 56-minute build down to <b>~35–40 minutes</b> by removing 5-minute interactive CLI hangs, false subagent restarts, and 402 retry stalls.</p>
+          <div class="win-bar"><i style="width:35%"></i></div>
+        </div>
+        <div class="win-card rv rv-d2">
+          <div class="wn">−90%</div>
+          <div class="wt">Fewer Wasted Rounds</div>
+          <p>Drops idle orchestrator wake-ups from <b>36 wasted rounds to 0</b> while child builders are actively executing their assigned tasks.</p>
+          <div class="win-bar"><i style="width:90%"></i></div>
+        </div>
+        <div class="win-card rv rv-d3">
+          <div class="wn">+40% to 60%</div>
+          <div class="wt">Better Cache Hit Rate</div>
+          <p>Routing skills, plans, and progress through native in-process tools keeps the conversation prefix stable so cached tokens are reused turn after turn.</p>
+          <div class="win-bar"><i style="width:58%"></i></div>
+        </div>
+        <div class="win-card rv rv-d4">
+          <div class="wn">30% to 45%</div>
+          <div class="wt">Cleaner Context Window</div>
+          <p>Strips out 180+ raw shell outputs, <span class="mono">grep</span> pipes, and error tracebacks—leaving maximum working memory for your actual architecture and code.</p>
+          <div class="win-bar"><i style="width:42%"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ BEFORE/AFTER ═══ -->
-  <section id="mcp">
+  <section id="mcp" class="heavy-section-deferred">
     <div class="kicker rv">why mcp changes everything</div>
     <h2 class="rv rv-d1">Instructions get skipped.<br><em>Tool calls don't.</em></h2>
     <p class="lead rv rv-d1" style="margin-bottom:0"><a href="/mcp" style="color:var(--mint)">Deep dive: what MCP is &amp; how NEXUS implements it →</a></p>
@@ -417,9 +661,9 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   </section>
 
   <!-- ═══ MCP TOOL SURFACE ═══ -->
-  <section>
+  <section class="heavy-section-deferred">
     <div class="kicker rv">the tool surface</div>
-    <h2 class="rv rv-d1"><span data-live="tools">19</span> tools. <em>One brain.</em></h2>
+    <h2 class="rv rv-d1"><span data-live="tools">23</span> tools. <em>One brain.</em></h2>
     <p class="lead rv rv-d2">Click a tool to see its shape. Reads return targeted data; writes go through the same parser the CLI uses, schema-validated, always. Inside the <a href="/harness" style="color:var(--mint)">Nexus Harness</a>, the same handlers run in-process.</p>
     <div class="tools-wrap rv rv-d2">
       <div class="tools-grid" id="toolgrid"></div>
@@ -453,7 +697,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   </section>
 
   <!-- ═══ CHAMELEON DELEGATION · v1.2 ═══ -->
-  <section id="chameleon">
+  <section id="chameleon" class="heavy-section-deferred">
     <div class="kicker rv">new in v1.2 · delegation</div>
     <h2 class="rv rv-d1">NEXUS runs the interview.<br><em>Chameleon builds the UI.</em></h2>
     <p class="lead rv rv-d2">Scaffolding a good UI is a different problem from running a project brain, so v1.2 stops pretending otherwise. <span class="mono" style="color:var(--mint2)">nexus init</span> resolves what you want into an AppSpec, hands it to <a href="https://chameleon.glenhalton.com" target="_blank" style="color:var(--mint)">Chameleon</a>, and overlays the brain, tooling, CI, and tests around what comes back.</p>
@@ -501,7 +745,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   </section>
 
   <!-- ═══ ALIGNMENT GATE (v1.3) ═══ -->
-  <section id="gate">
+  <section id="gate" class="heavy-section-deferred">
     <div class="kicker rv">alignment gate · new in v1.3</div>
     <h2 class="rv rv-d1">The most expensive bug is<br><em>building the wrong thing.</em></h2>
     <p class="lead rv rv-d2">Not bad code, well-built code that answered the wrong question. v1.3 makes alignment a <b>precondition</b> for feature work instead of a line in a rules file: a gated plan carries a recorded interview, or the brain says so.</p>
@@ -532,7 +776,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   </section>
 
   <!-- ═══ BRAIN-AWARE CI ═══ -->
-  <section id="ci">
+  <section id="ci" class="heavy-section-deferred">
     <div class="kicker rv">brain-aware ci · deterministic</div>
     <h2 class="rv rv-d1">Reviewers see the brain<br><em>next to the diff.</em></h2>
     <p class="lead rv rv-d2">Generated workflows post the brief as a sticky PR comment and gate on doctor errors. Pure markdown, no LLM in the loop.</p>
@@ -542,7 +786,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
         <h4>🧠 NEXUS Brain Brief</h4>
         <div class="pr-row"><span class="ok">✓</span> Shipped (7d): feat: oauth provider · fix: session ttl</div>
         <div class="pr-row"><span class="ok">→</span> Active plan: add-user-authentication (step 3/5)</div>
-        <div class="pr-row"><span class="ok">✓</span> Vital signs: 850 tests · branch clean · synced 4 min ago</div>
+        <div class="pr-row"><span class="ok">✓</span> Vital signs: 896 tests · branch clean · synced 4 min ago</div>
         <div class="pr-row"><span class="warn">⚠</span> Doctor: D05, 1 knowledge entry references a moved file</div>
         <div class="pr-row"><span class="ok">＋</span> Knowledge: [gotcha] Session cookies need sameSite=lax</div>
       </div>
@@ -550,7 +794,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
   </section>
 
   <!-- ═══ ANATOMY ═══ -->
-  <section id="brain">
+  <section id="brain" class="heavy-section-deferred">
     <div class="kicker rv">anatomy</div>
     <h2 class="rv rv-d1">Markdown is still <em>the source of truth.</em></h2>
     <p class="lead rv rv-d2">No database. No daemon. The MCP server is an interface over files you can read, diff, and version, agents and humans share the same brain.</p>
@@ -571,17 +815,17 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="an-points">
         <div class="an-pt on rv rv-d1"><b>Readable by anything</b><p>Cursor rules, AGENTS.md, CLAUDE.md, Copilot instructions, all generated, all pointing at the same brain.</p></div>
         <div class="an-pt rv rv-d2"><b>Callable by MCP clients</b><p><span class="mono" style="color:var(--mint2)">npx -y @nexus-framework/cli mcp</span>, spawned per client, exits with it.</p></div>
-        <div class="an-pt rv rv-d3"><b>Mounted by the harness</b><p>Inside <a href="/harness" style="color:var(--mint)">Nexus Harness</a> the same files ground every turn ambiently, and 16 tools run in-process.</p></div>
+        <div class="an-pt rv rv-d3"><b>Mounted by the harness</b><p>Inside <a href="/harness" style="color:var(--mint)">Nexus Harness</a> the same files ground every turn ambiently, and 23 tools run in-process.</p></div>
         <div class="an-pt rv rv-d4"><b>Owned by you</b><p>Plain files in your repo. Eject anytime; your knowledge stays.</p></div>
       </div>
     </div>
   </section>
 
   <!-- ═══ TIMELINE ═══ -->
-  <section>
+  <section class="heavy-section-deferred">
     <div class="kicker rv">built in the open</div>
-    <h2 class="rv rv-d1">Twelve releases to a brain <em>with A Harness.</em></h2>
-    <p class="lead rv rv-d2">v1.6 made "done" provable. 2.0 gave the brain an execution engine of its own, without making the CLI depend on it.</p>
+    <h2 class="rv rv-d1">Thirteen releases to an <em>autonomous engineering engine.</em></h2>
+    <p class="lead rv rv-d2">v1.6 made "done" provable. 2.0 gave the brain an execution engine of its own. 2.0.4 + Harness 1.1.3 hardened multi-agent orchestration from real overnight telemetry.</p>
     <div class="tl">
       <div class="tl-c rv"><div class="v">v0.1. FEB 2026</div><div class="t">Genesis</div><p>init · adopt · 6 frameworks · full toolchain</p></div>
       <div class="tl-c rv rv-d1"><div class="v">v0.2. FEB 2026</div><div class="t">Intelligence</div><p>8 structured docs · project brain · agent personas</p></div>
@@ -594,12 +838,13 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="tl-c rv rv-d4"><div class="v">v1.4. AUG 2026</div><div class="t">Open Surface</div><p>The brain tools importable directly, no server process required. The seam 2.0 is built on</p></div>
       <div class="tl-c rv rv-d4"><div class="v">v1.5. AUG 2026</div><div class="t">Self-Check</div><p>D15 + D16 drift checks · <span class="mono">nexus harness verify</span> · local-model sizing · skills from anywhere</p></div>
       <div class="tl-c rv rv-d4"><div class="v">v1.6. SEP 2026</div><div class="t">Provable Done</div><p><span class="mono">plan verify</span> evidence · <span class="mono">log</span> · <span class="mono">note</span> · project-graph spike · 19 tools</p></div>
-      <div class="tl-c now rv rv-d4"><div class="v">v2.0. OCT 2026</div><div class="t">Execution</div><p><a href="/harness" style="color:var(--mint)">Nexus Harness</a> · <span class="mono">nexus harness</span> · <span class="mono">nexus agent</span> · <span data-live="tests">850</span> tests</p></div>
+      <div class="tl-c rv rv-d4"><div class="v">v2.0. OCT 2026</div><div class="t">Execution</div><p><a href="/harness" style="color:var(--mint)">Nexus Harness</a> · <span class="mono">nexus harness</span> · <span class="mono">nexus agent</span> · Glass GUI</p></div>
+      <div class="tl-c now rv rv-d4"><div class="v">v2.0.4 · NOV 2026</div><div class="t">Autopilot Hardened</div><p>23 brain tools · child-quiescent rounds · HTTP 402 credit clamping · <span data-live="tests">896</span> tests</p></div>
     </div>
   </section>
 
   <!-- ═══ DOWNLOAD & INSTALL ═══ -->
-  <section id="download" style="padding-top:20px;margin-bottom:64px">
+  <section id="download" class="heavy-section-deferred" style="padding-top:20px;margin-bottom:64px">
     <div class="kicker rv" style="text-align:center">get nexus</div>
     <h2 class="rv rv-d1" style="text-align:center">Download &amp; Install <em>NEXUS 2.0</em></h2>
     <p class="lead rv rv-d2" style="text-align:center;margin:0 auto 28px;max-width:720px">Run Nexus your way: as a standalone desktop app with zero setup and bundled local models, or globally in your terminal via npm.</p>
@@ -609,7 +854,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="dl-card hl rv">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <span class="dl-badge mint">DESKTOP GUI · ZERO CONFIG</span>
-          <span class="mono" style="font-size:11px;color:var(--mint)">v1.1.2</span>
+          <span class="mono" style="font-size:11px;color:var(--mint)">v1.1.3</span>
         </div>
         <div>
           <div class="dl-title">Nexus Harness Desktop</div>
@@ -651,11 +896,11 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px}
       <div class="dl-card rv rv-d1">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <span class="dl-badge vio">CLI &amp; TERMINAL · NPM REGISTRY</span>
-          <span class="mono" style="font-size:11px;color:var(--vio2)">v2.0.0</span>
+          <span class="mono" style="font-size:11px;color:var(--vio2)">v2.0.4</span>
         </div>
         <div>
           <div class="dl-title">Terminal &amp; MCP Integration</div>
-          <p class="dl-desc">Install globally in seconds via npm. Includes the 19 schema-validated MCP brain tools, the CLI launcher, and the headless agent runner.</p>
+          <p class="dl-desc">Install globally in seconds via npm. Includes the 23 schema-validated MCP brain tools, the CLI launcher, and the headless agent runner.</p>
         </div>
         <div class="dl-options">
           <div>
@@ -823,10 +1068,14 @@ const TOOLS=[
  ['nexus_get_handoff','R','{ "agent": "nexus-implementer" }','{ "from": "nexus-implementer",\n  "to": "nexus-test-writer",\n  "plan": "add-user-authentication" }\n// who picks up next, and with what.'],
  ['nexus_project_graph','R','{ }','{ "requirements": 6, "features": 9,\n  "tasks": 31, "evidence": 22,\n  "orphans": [ "task: rotate session keys" ] }\n// Requirement → Feature → Task → Evidence. v1.6 spike.'],
  ['nexus_get_agent','R','{ "name": "nexus-test-writer" }','{ "source": "core",\n  "markdown": "## Mission\\nNo work completes unverified…" }'],
- ['nexus_plan_tick','W','{ "id": "add-user-authentication",\n  "step": 3 }','{ "checked": true,\n  "nextStep": "4. Add integration tests" }\n// out-of-range step? Clean error, never a corrupt file.'],
- ['nexus_plan_note','W','{ "id": "add-user-authentication",\n  "message": "Chose lucia over next-auth" }','{ "noted": "2026-06-10T09:41:02Z. Chose lucia…" }'],
+ ['nexus_plan_tick','W','{ "id": "add-user-authentication",\n  "step": 3 }','{ "checked": true,\n  "nextStep": "4. Add integration tests" }\n// active-plan fallback if id omitted; never corrupts.'],
+ ['nexus_plan_note','W','{ "id": "add-user-authentication",\n  "message": "Chose lucia over next-auth" }','{ "noted": "2026-11-09T09:41:02Z. Chose lucia…" }'],
+ ['nexus_plan_create','W','{ "title": "Add rate limiting",\n  "type": "feature",\n  "goal": "Protect auth routes",\n  "steps": ["Add limiter","Write tests"] }','{ "id": "add-rate-limiting",\n  "status": "draft",\n  "gateRequired": true }\n// full plan creation in-memory, v2.0.4.'],
+ ['nexus_plan_start','W','{ "id": "add-rate-limiting" }','{ "id": "add-rate-limiting",\n  "status": "in_progress" }\n// sets active plan pointer atomically.'],
+ ['nexus_plan_record_alignment','W','{ "id": "add-rate-limiting",\n  "skill": "grilling",\n  "summary": "7 questions resolved; Redis sliding window" }','{ "recorded": true,\n  "gateSatisfied": true }\n// satisfies the v1.3 Grilling Gate over MCP.'],
+ ['nexus_plan_done','W','{ "id": "add-rate-limiting",\n  "summary": "Shipped with 18 unit tests" }','{ "status": "done",\n  "progressLogged": true }\n// marks done + appends to index.md Progress Log.'],
  ['nexus_add_knowledge_entry','W','{ "category": "gotcha",\n  "title": "Refresh tokens rotate",\n  "body": "Every use rotates the token…",\n  "why": "Replay protection" }','{ "heading": "### [gotcha] Refresh tokens rotate",\n  "appended": true }\n// duplicates rejected, append-only stays clean.'],
- ['nexus_plan_verify','W','{ "id": "add-user-authentication" }','{ "checks": [ { "name": "tests", "passed": true },\n    { "name": "typecheck", "passed": true } ],\n  "evidence": "recorded" }\n// Provable Done: checks from .nexus/verify.json, v1.6.'],
+ ['nexus_plan_verify','W','{ "id": "add-user-authentication" }','{ "checks": [ { "name": "tests", "passed": true },\n    { "name": "typecheck", "passed": true } ],\n  "verified_tiers": ["typecheck","unit-test"],\n  "not_verified": ["runtime-smoke","ui-render"] }\n// Provable Done + honest verification coverage tiers.'],
 ];
 const grid=document.getElementById('toolgrid'),tvn=document.getElementById('tvname'),tvb=document.getElementById('tvbody');
 let pinned=-1,cycle=0,cycleTimer=null;

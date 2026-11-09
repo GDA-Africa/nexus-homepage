@@ -109,7 +109,7 @@ footer a{color:var(--mut)}
 <nav class="top">
   <div class="top-in">
     <a class="logo" href="index.html"><div class="logo-mark"></div>NEXUS&nbsp;<span>CLI</span></a>
-    <span class="crumb">/ docs / v2.0.0</span>
+    <span class="crumb">/ docs / v2.0.4</span>
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="top-links">
       <a href="/harness">Harness</a>
@@ -222,8 +222,8 @@ footer a{color:var(--mut)}
   </section>
 
   <section id="mcp-tools">
-    <h2>The <span data-live="tools">19</span> tools</h2>
-    <p>15 read tools and 4 write tools over <span class="mono">nexus mcp</span>. Inside the <a href="#harness">Nexus Harness</a>, 16 of them are mounted in-process; <span class="mono">nexus_get_context</span>, <span class="mono">nexus_project_graph</span> and <span class="mono">nexus_plan_verify</span> are not in that set, because context arrives ambiently.</p>
+    <h2>The <span data-live="tools">23</span> tools</h2>
+    <p>15 read tools and 8 write tools over <span class="mono">nexus mcp</span>. Inside the <a href="#harness">Nexus Harness</a>, all 23 of them are mounted in-process alongside ambient context injection.</p>
     <div class="tbl-wrap"><table>
       <tr><th>Tool</th><th></th><th>What it does</th></tr>
       <tr><td>nexus_wake</td><td><span class="r">READ</span></td><td>Session handshake: deterministic <span class="mono">NX-WAKE-…</span> token + active plan + next step + doctor warn/error counts, in one call. Echo the token in your first response.</td></tr>
@@ -235,16 +235,20 @@ footer a{color:var(--mut)}
       <tr><td>nexus_list_plans</td><td><span class="r">READ</span></td><td>All plans with status, owner, phase; optional status filter.</td></tr>
       <tr><td>nexus_get_plan</td><td><span class="r">READ</span></td><td>Full markdown of one plan by id.</td></tr>
       <tr><td>nexus_list_skills</td><td><span class="r">READ</span></td><td>Installed skills across custom/core/community with triggers, match your task before significant work.</td></tr>
-      <tr><td>nexus_get_skill</td><td><span class="r">READ</span></td><td>One skill's markdown, honoring custom &gt; core &gt; community precedence.</td></tr>
+      <tr><td>nexus_get_skill</td><td><span class="r">READ</span></td><td>One skill's markdown, honoring custom &gt; core &gt; community precedence (supports aliases like <span class="mono">grill</span> → <span class="mono">grilling</span>).</td></tr>
       <tr><td>nexus_get_context</td><td><span class="r">READ</span></td><td><b>v1.1.</b> ONE composed context pack per task: active plan slice + matching knowledge + trigger-matched skills + vitals digest + agent-recipe docs. Deterministic, budget-capped.</td></tr>
       <tr><td>nexus_list_agents</td><td><span class="r">READ</span></td><td><b>v1.1.</b> List brain-grounded agent roles (custom &gt; core &gt; community) with triggers.</td></tr>
       <tr><td>nexus_get_agent</td><td><span class="r">READ</span></td><td><b>v1.1.</b> One agent definition: context recipe, tool allowlist, working agreement.</td></tr>
       <tr><td>nexus_get_handoff</td><td><span class="r">READ</span></td><td><b>v1.1.</b> The agent pipeline (implementer → test-writer → reviewer → doc-keeper, or the project’s custom chain) and, given the current agent, the next one to dispatch. Main-thread orchestrated.</td></tr>
       <tr><td>nexus_project_graph</td><td><span class="r">READ</span></td><td><b>v1.6, spike.</b> The derived project graph, Requirement → Feature → Task → Evidence, as JSON plus a markdown digest. Same data as <span class="mono">nexus graph</span>.</td></tr>
-      <tr><td>nexus_plan_tick</td><td><span class="w">WRITE</span></td><td>Mark a checklist step done (1-based index) or reopen it. Out-of-range steps return a clean error, never a corrupt file.</td></tr>
-      <tr><td>nexus_plan_note</td><td><span class="w">WRITE</span></td><td>Append a timestamped note to a plan's Notes section.</td></tr>
+      <tr><td>nexus_plan_create</td><td><span class="w">WRITE</span></td><td><b>v2.0.4.</b> Create a new plan in <span class="mono">.nexus/plans/</span> with title, type, goal, steps, and acceptance criteria.</td></tr>
+      <tr><td>nexus_plan_start</td><td><span class="w">WRITE</span></td><td><b>v2.0.4.</b> Mark a plan <span class="mono">in_progress</span> and set the active plan pointer.</td></tr>
+      <tr><td>nexus_plan_record_alignment</td><td><span class="w">WRITE</span></td><td><b>v2.0.4.</b> Record a completed alignment interview (<span class="mono">## Grilling</span>) in the target or active plan to satisfy the v1.3 gate.</td></tr>
+      <tr><td>nexus_plan_tick</td><td><span class="w">WRITE</span></td><td>Mark a checklist step done (1-based index) or reopen it. Falls back to the active plan when <span class="mono">id</span> is omitted.</td></tr>
+      <tr><td>nexus_plan_note</td><td><span class="w">WRITE</span></td><td>Append a timestamped note to a plan's Notes section (supports active-plan fallback).</td></tr>
+      <tr><td>nexus_plan_done</td><td><span class="w">WRITE</span></td><td><b>v2.0.4.</b> Mark a plan <span class="mono">done</span> and automatically append a completion entry to the <span class="mono">index.md</span> Progress Log.</td></tr>
       <tr><td>nexus_add_knowledge_entry</td><td><span class="w">WRITE</span></td><td>Append a validated entry (category, title, 1–3 sentence body, optional why/how-to-apply). Duplicates rejected, append-only stays clean.</td></tr>
-      <tr><td>nexus_plan_verify</td><td><span class="w">WRITE</span></td><td><b>v1.6.</b> Run the checks in <span class="mono">.nexus/verify.json</span> and record machine evidence in the plan's Evidence section. See <a href="#plans">Provable Done</a>.</td></tr>
+      <tr><td>nexus_plan_verify</td><td><span class="w">WRITE</span></td><td><b>v1.6 / v2.0.4.</b> Run the checks in <span class="mono">.nexus/verify.json</span> and record machine evidence plus <span class="mono">verified_tiers</span> and <span class="mono">not_verified</span> coverage in the plan's Evidence section. See <a href="#plans">Provable Done</a>.</td></tr>
     </table></div>
   </section>
 
@@ -264,8 +268,8 @@ footer a{color:var(--mut)}
     <h2>Commands, project setup</h2>
     <div class="tbl-wrap"><table>
       <tr><th>Command</th><th>What it does</th></tr>
-      <tr><td>nexus init [name]</td><td>Scaffold a new project: interactive strategy questions, framework templates, full <span class="mono">.nexus/</span> brain, skills, <span class="mono">.mcp.json</span>, CI workflow, agent instruction files. <span class="mono">--local</span> keeps .nexus out of git; <span class="mono">--adopt</span> is shorthand for adopt. <b>v1.2:</b> <span class="mono">--ui chameleon|none</span> picks the UI generator for this run, see <a href="#chameleon">Chameleon delegation</a>.</td></tr>
-      <tr><td>nexus adopt [path]</td><td>Add the brain + AI config + skills to an <b>existing</b> project. Never touches source code. <span class="mono">--force</span> skips project detection.</td></tr>
+      <tr><td>nexus init [name]</td><td>Scaffold a new project: interactive strategy questions (or headless <span class="mono">-y, --yes</span>), framework templates, full <span class="mono">.nexus/</span> brain, skills, <span class="mono">.mcp.json</span>, CI workflow, agent instruction files. <span class="mono">--local</span> keeps .nexus out of git; <span class="mono">--adopt</span> is shorthand for adopt. <b>v1.2:</b> <span class="mono">--ui chameleon|none</span> picks the UI generator for this run, see <a href="#chameleon">Chameleon delegation</a>.</td></tr>
+      <tr><td>nexus adopt [path]</td><td>Add the brain + AI config + skills to an <b>existing</b> (or empty) project. Never touches source code. <span class="mono">-y, --yes</span> runs headlessly without prompts; <span class="mono">--force</span> skips project detection.</td></tr>
       <tr><td>nexus upgrade [path]</td><td>Regenerate templates with the smart file strategy: docs with <span class="mono">status: populated</span> frontmatter are preserved, template-state files are refreshed. Plans and state always survive.</td></tr>
       <tr><td>nexus repair [path]</td><td>Fix missing or corrupted .nexus files without replacing anything valid.</td></tr>
       <tr><td>nexus use [chameleon|none]</td><td>Show or set the UI generator NEXUS delegates to. <span class="mono">--global</span> writes it for every project, <span class="mono">--explain</span> names the config file it came from. Opt-in; default is <span class="mono">none</span>.</td></tr>

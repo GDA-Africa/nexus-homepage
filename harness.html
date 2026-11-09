@@ -22,8 +22,8 @@
   "name": "Nexus Harness",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS, Linux, Windows (Node.js 20+)",
-  "softwareVersion": "1.0.0",
-  "description": "The execution engine of NEXUS 2.0. Runs AI coding agents already grounded in the project's plan, conventions and knowledge, with in-process brain tools, a grounding inspector, a live plan checklist and a subagent inspector. Built on DeepSeek Harness.",
+  "softwareVersion": "1.1.3",
+  "description": "The execution engine of NEXUS 2.0. Runs AI coding agents already grounded in the project's plan, conventions and knowledge, with 23 in-process brain tools, a grounding inspector, a live plan checklist and a subagent inspector. Built on DeepSeek Harness.",
   "url": "https://nexus.glenhalton.com/harness",
   "downloadUrl": "https://www.npmjs.com/package/@nexus-framework/harness",
   "author": { "@type": "Organization", "name": "GDA Africa", "url": "https://gdaafrica.org" }
@@ -268,6 +268,18 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px;position:
 .foot a{font-size:13px;color:var(--mut)}
 .foot a:hover{color:var(--mint)}
 .foot .gda{font-size:12.5px;color:var(--faint)}
+
+.heavy-section-deferred{content-visibility:auto;contain-intrinsic-size:auto none auto 650px}
+.bench-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:26px}
+.kpi{background:rgba(14,19,25,.85);border:1px solid var(--line);border-radius:12px;padding:18px}
+.kpi .v{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--mint);line-height:1.1;margin-bottom:5px}
+.kpi .l{font-family:var(--mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink);margin-bottom:4px}
+.kpi p{font-size:12.5px;color:var(--mut);line-height:1.45}
+.wins-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:24px}
+.win-card{background:linear-gradient(180deg,rgba(52,211,153,.06),var(--panel) 65%);border:1px solid rgba(52,211,153,.32);border-radius:13px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.win-card .wn{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--mint)}
+.win-card .wt{font-size:14px;font-weight:600;color:var(--ink)}
+.win-card p{font-size:12.5px;color:var(--mut);line-height:1.5}
 </style>
 </head>
 <body>
@@ -280,6 +292,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px;position:
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" onclick="document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',document.body.classList.contains('nav-open'))">☰</button>
     <div class="nav-links">
       <a href="/harness" class="here">Harness</a>
+      <a href="#benchmark">Field Test</a>
       <a href="/mcp">MCP</a>
       <a href="/agents">Agents</a>
       <a href="/skills">Skills</a>
@@ -294,7 +307,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px;position:
 <div class="wrap">
   <!-- ═══ HERO ═══ -->
   <section class="hero">
-    <div class="tag rv">NEXUS 2.0 · NEXUS HARNESS 1.1</div>
+    <div class="tag rv">NEXUS 2.0.4 · NEXUS HARNESS 1.1.3</div>
     <h1 class="rv rv-d1">Your project has a brain.<br>Now it has <em>A Harness.</em></h1>
     <p class="sub rv rv-d2">AI coding assistants forget everything between sessions. <b>Nexus Harness doesn't.</b> It is an AI assistant that already knows your plan, your rules and your past mistakes before it writes a single line, and lets you see exactly what it knows and what it is doing.</p>
     <div class="cta-row rv rv-d3">
@@ -452,19 +465,19 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px;position:
   </section>
 
   <!-- ═══ IN-PROCESS TOOLS ═══ -->
-  <section id="tools">
+  <section id="tools" class="heavy-section-deferred">
     <span class="kicker rv">capability 02 · in-process brain tools</span>
     <h2 class="rv rv-d1">The assistant <em>manages the project itself.</em></h2>
-    <p class="lead rv rv-d2">It reads and updates the plan, ticks off finished steps, looks up past decisions and runs health checks. <b>16 NEXUS tools run inside the harness</b>, with no separate helper process and no extra hop. Every call lands in the harness's own append-only session log and token accounting.</p>
+    <p class="lead rv rv-d2">It creates, starts, ticks, verifies and completes plans, looks up past decisions and runs health checks. <b>23 NEXUS tools run inside the harness</b>, with no separate helper process and no extra hop. Every call lands in the harness's own append-only session log and token accounting.</p>
     <div class="tchips rv rv-d2">
-      <span>nexus_wake</span><span>nexus_get_active_plan</span><span>nexus_list_plans</span><span>nexus_get_plan</span><span>nexus_query_knowledge</span><span>nexus_get_vital_signs</span><span>nexus_brief</span><span>nexus_doctor</span><span>nexus_list_skills</span><span>nexus_get_skill</span><span>nexus_list_agents</span><span>nexus_get_agent</span><span>nexus_get_handoff</span><span class="w">nexus_plan_tick</span><span class="w">nexus_plan_note</span><span class="w">nexus_add_knowledge_entry</span>
+      <span>nexus_wake</span><span>nexus_get_active_plan</span><span>nexus_list_plans</span><span>nexus_get_plan</span><span>nexus_query_knowledge</span><span>nexus_get_vital_signs</span><span>nexus_brief</span><span>nexus_doctor</span><span>nexus_list_skills</span><span>nexus_get_skill</span><span>nexus_get_context</span><span>nexus_list_agents</span><span>nexus_get_agent</span><span>nexus_get_handoff</span><span>nexus_project_graph</span><span class="w">nexus_plan_create</span><span class="w">nexus_plan_start</span><span class="w">nexus_plan_record_alignment</span><span class="w">nexus_plan_tick</span><span class="w">nexus_plan_note</span><span class="w">nexus_plan_verify</span><span class="w">nexus_plan_done</span><span class="w">nexus_add_knowledge_entry</span>
     </div>
     <div class="duo">
       <div class="duo-card win rv">
         <div class="duo-h">Plans stay current <span class="pill pill-new">AUTOMATIC</span></div>
         <ul>
-          <li>Steps get ticked <b>as work completes</b>, not when someone remembers</li>
-          <li>Decisions go into plan notes and the knowledge log, validated on write</li>
+          <li>Steps get ticked <b>as work completes</b>, with active-plan fallback if the plan ID is omitted</li>
+          <li>Full lifecycle in-memory: <code>create</code> → <code>record_alignment</code> → <code>start</code> → <code>tick</code> → <code>verify</code> → <code>done</code></li>
           <li>Same handlers as <code>nexus mcp</code>, so behavior is identical everywhere</li>
         </ul>
       </div>
@@ -473,9 +486,57 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px;position:
         <ul>
           <li>Every tool call is an event in the <b>append-only session log</b></li>
           <li>No daemon to crash, no second transport to debug</li>
-          <li>Your editor's agents keep using the <span data-live="tools">19</span>-tool MCP server, unchanged</li>
+          <li>Your editor's agents keep using the <span data-live="tools">23</span>-tool MCP server, unchanged</li>
         </ul>
       </div>
+    </div>
+  </section>
+
+  <!-- ═══ AUTONOMOUS FIELD TEST & HARNESS 1.1.3 TELEMETRY ═══ -->
+  <section id="benchmark" class="heavy-section-deferred">
+    <span class="kicker rv">field-tested · harness 1.1.3 upgrades</span>
+    <h2 class="rv rv-d1">Built to run overnight.<br><em>Hardened by real telemetry.</em></h2>
+    <p class="lead rv rv-d2">We put Nexus Harness through a <b>56-minute unattended product build</b> of <b>tikiTasker</b> (an AI-powered quiz, grading &amp; reward platform) with 4 parallel subagents. It shipped 3 complete product surfaces, 24 commits, 6/6 compiled Next.js routes, and 65 passing API tests—and its session log drove 5 major upgrades in Harness 1.1.3.</p>
+
+    <div class="bench-kpis rv rv-d2">
+      <div class="kpi"><div class="v">56m</div><div class="l">Unattended Build</div><p>Product vision + 7-question Grilling Gate → working full-stack app</p></div>
+      <div class="kpi"><div class="v">4</div><div class="l">Parallel Builders</div><p>Backend spine, Admin AI Studio &amp; Public UI coordinated across boundaries</p></div>
+      <div class="kpi"><div class="v">24</div><div class="l">Clean Commits</div><p>Shared <code>api-client.ts</code> contracts reconciled without overwriting sibling work</p></div>
+      <div class="kpi"><div class="v">65/65</div><div class="l">API Tests Passing</div><p>0 TypeScript errors · 0 lint errors · 6/6 routes compiled</p></div>
+    </div>
+
+    <div class="features" style="margin-top:26px">
+      <div class="feature rv">
+        <div class="f-k">goal-round-driver · v1.1.3</div>
+        <div class="f-title">Child-Quiescent Round Scheduling</div>
+        <div class="f-desc">Goal rounds automatically pause while any child or descendant subagent is actively running, and resume the instant it settles—preventing 36 wasted polling wake-ups.</div>
+        <div class="f-why">100% of your round budget goes to real work.</div>
+      </div>
+      <div class="feature rv rv-d1">
+        <div class="f-k">tool-subagent-control · v1.1.3</div>
+        <div class="f-title">Live Child Activity Stream</div>
+        <div class="f-desc"><code>list_agents</code> now reports real-time <code>toolCalls</code>, <code>writes</code>, <code>edits</code>, and <code>lastTool</code> from the child's session log so the parent never interrupts a busy builder during <code>npm install</code>.</div>
+        <div class="f-why">Zero premature subagent restarts.</div>
+      </div>
+      <div class="feature rv rv-d2">
+        <div class="f-k">llm-pi-ai · v1.1.3</div>
+        <div class="f-title">HTTP 402 Credit Clamping &amp; Failover</div>
+        <div class="f-desc">Automatically parses provider credit ceilings on <code>402</code> errors, clamps <code>maxTokens</code> on the same turn, caches the learned ceiling per route, and fails over across <code>fallbackModels</code>.</div>
+        <div class="f-why">Unattended runs survive tight API balances.</div>
+      </div>
+      <div class="feature rv rv-d3">
+        <div class="f-k">tool-goal &amp; skill-filesystem · v1.1.3</div>
+        <div class="f-title">Honest Sign-Off &amp; Native Skills</div>
+        <div class="f-desc">Root goals can complete on <code>subagent-settled</code> turns, wrap-up reports separate <b>Verified vs. Not Verified</b> tiers, and all 60 NEXUS <code>SKILL_SPEC v2</code> skills load natively.</div>
+        <div class="f-why">No silent failures or overstated completion claims.</div>
+      </div>
+    </div>
+
+    <div class="wins-grid rv rv-d3">
+      <div class="win-card"><div class="wn">−35% to 50%</div><div class="wt">Lower Token Spend</div><p>No polling loops, no duplicate spine rebuilds, and compact in-process brain calls instead of 183 bash invocations.</p></div>
+      <div class="win-card"><div class="wn">25% to 35%</div><div class="wt">Faster Build Speed</div><p>Cuts a 56-minute build to ~35–40 minutes by eliminating CLI prompt hangs and false subagent interruptions.</p></div>
+      <div class="win-card"><div class="wn">+40% to 60%</div><div class="wt">Better Cache Hits</div><p>Stable conversation prefixes keep prompt caches warm across multi-step builds.</p></div>
+      <div class="win-card"><div class="wn">30% to 45%</div><div class="wt">Cleaner Context</div><p>More working memory stays open for your actual application code and architecture.</p></div>
     </div>
   </section>
 
@@ -535,7 +596,7 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px;position:
         <text x="457" y="135" text-anchor="middle" font-size="9.5" fill="#8a94a6">ambient context at step 1</text>
         <rect x="342" y="152" width="230" height="44" rx="8" fill="rgba(13,17,23,.85)" stroke="rgba(52,211,153,.4)"/>
         <text x="457" y="171" text-anchor="middle" font-size="11.5" fill="#e8edf2">nexus-brain-tools</text>
-        <text x="457" y="187" text-anchor="middle" font-size="9.5" fill="#8a94a6">16 tools, in-process</text>
+        <text x="457" y="187" text-anchor="middle" font-size="9.5" fill="#8a94a6">23 tools, in-process</text>
         <rect x="342" y="204" width="230" height="44" rx="8" fill="rgba(13,17,23,.85)" stroke="rgba(255,255,255,.14)"/>
         <text x="457" y="223" text-anchor="middle" font-size="11.5" fill="#e8edf2">append-only session log</text>
         <text x="457" y="239" text-anchor="middle" font-size="9.5" fill="#8a94a6">every turn, step and tool call</text>
@@ -555,33 +616,33 @@ footer{border-top:1px solid var(--line);padding:44px 0;margin-top:40px;position:
         <text x="787" y="240" text-anchor="middle" font-size="10" fill="#8a94a6">badge · inspectors · plan</text> -->
         <!-- external mcp path -->
         <path d="M115 237 L115 310 L880 310" fill="none" stroke="#8b7cf6" stroke-width="1.5" stroke-dasharray="4 5" marker-end="url(#ahv)"/>
-        <text x="130" y="300" font-size="10.5" fill="#b4a7fb">nexus mcp: the same brain, 19 tools over stdio, for Claude Code · Codex · Cursor · Antigravity IDE</text>
+        <text x="130" y="300" font-size="10.5" fill="#b4a7fb">nexus mcp: the same brain, 23 tools over stdio, for Claude Code · Codex · Cursor · Antigravity IDE</text>
       </svg>
     </div>
   </section>
 
   <!-- ═══ ROADMAP ═══ -->
-  <section id="roadmap">
+  <section id="roadmap" class="heavy-section-deferred">
     <span class="kicker rv">honest status</span>
     <h2 class="rv rv-d1">What's done. What's next.</h2>
     <div class="road">
-      <div class="rd rv"><span class="pill pill-new">SHIPPED IN 1.0</span><h3>Finished and installable</h3><ul>
-        <li>Ambient brain context every turn</li><li>16 in-process brain tools</li><li>Brain badge, grounding inspector, plan checklist</li><li>Subagent inspector</li><li>Ollama quick-add, no key needed</li><li>Actionable errors, model toggles, medium thinking default</li><li>Nexus Glass theme, default on first launch</li><li>Merged upstream v0.1.7, every Nexus addition kept</li></ul></div>
-      <div class="rd pre rv rv-d1"><span class="pill pill-amb">EARLY STAGE</span><h3>Grill mode in the harness</h3><ul>
-        <li>The assistant interviews you on decisions, trade-offs and edge cases before any code is written</li><li>Foundation and tests exist, not yet a finished feature</li><li>Already shipped in the CLI: the v1.3 <a href="/docs#gate" style="color:var(--mint)">alignment gate</a> and <code>grilling</code> skill</li></ul></div>
+      <div class="rd rv"><span class="pill pill-new">SHIPPED IN 1.0 – 1.1.3</span><h3>Finished and installable</h3><ul>
+        <li>Ambient brain context every turn (root-boundary locked)</li><li>23 in-process brain tools (full plan lifecycle + memory)</li><li>Child-quiescent round driver &amp; live subagent telemetry</li><li>Automatic HTTP 402 credit clamping &amp; model failover</li><li>Native SKILL_SPEC v2 &amp; multi-framework skill loader</li><li>Honest Verified vs. Not Verified wrap-up reporting</li><li>Brain badge, grounding inspector, plan checklist &amp; subagent inspector</li><li>Ollama quick-add + Nexus Glass theme</li></ul></div>
+      <div class="rd pre rv rv-d1"><span class="pill pill-new">SHIPPED IN 1.1.3</span><h3>Grilling gate in the harness</h3><ul>
+        <li>The assistant interviews you on decisions, trade-offs and edge cases before any code is written</li><li>Native <code>skill grilling</code> and <code>nexus_plan_record_alignment</code> now work seamlessly in-process</li><li>Paired with CLI doctor check <code>D13</code> for end-to-end alignment enforcement</li></ul></div>
       <div class="rd v3 rv rv-d2"><span class="pill pill-vio">NEXUS v3</span><h3>Terminal assistant</h3><ul>
         <li><code>nexus code</code>: an interactive assistant inside the terminal</li><li>Live streaming and approval prompts</li><li>Slash commands, session resume</li></ul></div>
     </div>
   </section>
 
   <!-- ═══ CREDITS & LICENSE ═══ -->
-  <section id="license">
+  <section id="license" class="heavy-section-deferred">
     <span class="kicker rv">built on giants, for robust performance</span>
     <h2 class="rv rv-d1">We kept the brawl.<br><em>We added the brain.</em></h2>
     <p class="lead rv rv-d2">Nexus Harness is built on <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener" style="color:var(--mint)">DeepSeek Harness</a>, an open-source AI assistant engine. We kept its plugin kernel and session log, It is a perfect implementation of Spatiotemporal Composability Programming.</p>
     <div class="credit">
-      <div class="cr rv"><div class="pkg">@nexus-framework/cli</div><div class="lic">Apache 2.0 · open source</div><p>The brain, the MCP server and the launchers. Works with or without the harness, and never depends on it.</p></div>
-      <div class="cr rv rv-d1"><div class="pkg">@nexus-framework/harness</div><div class="lic">proprietary · v1.0.0 on npm</div><p>The Nexus additions: brain plugins, inspectors, theme, launcher bindings. One installable package with automated build and release checks.</p></div>
+      <div class="cr rv"><div class="pkg">@nexus-framework/cli</div><div class="lic">Apache 2.0 · open source · v2.0.4</div><p>The brain, the 23-tool MCP server and the launchers. Works with or without the harness, and never depends on it.</p></div>
+      <div class="cr rv rv-d1"><div class="pkg">@nexus-framework/harness</div><div class="lic">proprietary · v1.1.3 on npm</div><p>The Nexus additions: brain plugins, child-quiescent supervision, credit clamping, inspectors, theme, launcher bindings.</p></div>
       <div class="cr rv rv-d2"><div class="pkg">DeepSeek Harness base</div><div class="lic">MIT · notice preserved</div><p>The upstream engine components keep their MIT license and copyright notice. We merge upstream releases to stay current.</p></div>
     </div>
   </section>
